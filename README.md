@@ -3,6 +3,7 @@ Angular7+ form validator
 >make error tips easy and automatic. don't need to manually write error tips templates.
 
 ## Demo
+[Live Demo](https://why520crazy.github.io/ngx-validator/index.html)
 
 ## Installation
 
