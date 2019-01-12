@@ -36,7 +36,7 @@ import { NgxValidatorModule } from '@why520crazy/ngx-validator';
 class AppModule {}
 ```
 
-#### add directive for form
+#### Add directives to form elements
 add `ngx-form-validator` directive to form element and add `ngxFormSubmit` directive to submit button.
 
 ```
