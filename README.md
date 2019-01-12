@@ -4,7 +4,10 @@ Angular7+ form validator
 
 ## Demo
 [Live Demo](https://why520crazy.github.io/ngx-validator/index.html)
+
+
 [Use Case](https://worktile.com/signup?utm_source=w5c-ngx-validator)
+
 ## Installation
 
 ```
@@ -71,6 +74,7 @@ $ npm run publish
 ## Links
 
 [Angular.io](https://angular.io)
+
 [Angular.cn](https://angular.cn)
 
 ## License
