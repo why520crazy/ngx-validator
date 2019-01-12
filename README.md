@@ -13,18 +13,45 @@ yarn add @why520crazy/ngx-validator
 ```
 ## Usage
 
-### Loading the module in the app/root module
+#### Loading the module in the app module
+
 ```
 import { NgxValidatorModule } from '@why520crazy/ngx-validator';
 
 @NgModule({
   imports: [
     CommonModule,
-    NgxValidatorModule.forRoot()
+    NgxValidatorModule.forRoot({
+        showElementError: boolean | ((element: HTMLElement, errorMessages: string[]) => void),
+        removeElementError: boolean | ((element: HTMLElement, errorMessages: string[]) => void),
+        validationMessages: {
+            username: {
+                required: 'Username is required.',
+                pattern: 'Incorrect username format.'
+            }
+        }
+    })
   ]
 })
 class AppModule {}
 ```
+
+#### add directive for form
+add `ngx-form-validator` directive to form element and add `ngxFormSubmit` directive to submit button.
+
+```
+ <form name="exampleForm" novalidate ngx-form-validator [ngxFormValidatorConfig]="validatorConfig">
+   <div class="form-group">
+       <label for="email1">Email address</label>
+        <input type="email" class="form-control" name="email" id="email1"
+                [(ngModel)]="model.email" required placeholder="Enter email" />
+    </div>
+    <button type="button" (ngxFormSubmit)="submit()" class="btn btn-primary">Submit</button>
+ <form>
+```
+
+
+
 ## Development
 
 ```
