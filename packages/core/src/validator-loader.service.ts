@@ -47,6 +47,7 @@ export class NgxValidatorLoader {
             return globalValidationMessages[key];
         }
     }
+
     constructor(
         @Optional()
         @Inject(NGX_VALIDATOR_CONFIG)

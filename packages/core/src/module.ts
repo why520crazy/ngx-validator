@@ -1,7 +1,11 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { NgxFormValidatorDirective } from './directives/form-validator.directive';
 import { NgxFormSubmitDirective } from './directives/form-submit.directive';
-import { FormsModule } from '@angular/forms';
+import {
+    NgxFormValidatorGlobalConfig,
+    NGX_VALIDATOR_CONFIG
+} from './validator.class';
 
 @NgModule({
     declarations: [NgxFormValidatorDirective, NgxFormSubmitDirective],
@@ -9,10 +13,15 @@ import { FormsModule } from '@angular/forms';
     exports: [NgxFormValidatorDirective, NgxFormSubmitDirective, FormsModule]
 })
 export class NgxValidatorModule {
-    forRoot(): ModuleWithProviders {
+    static forRoot(config: NgxFormValidatorGlobalConfig): ModuleWithProviders {
         return {
             ngModule: NgxValidatorModule,
-            providers: []
+            providers: [
+                {
+                    provide: NGX_VALIDATOR_CONFIG,
+                    useValue: config
+                }
+            ]
         };
     }
 }
