@@ -1,8 +1,13 @@
-<div class="container">
+<div class="example-container">
     <h2 class="title">@why520crazy/ngx-validator Example</h2>
     <div class="row">
-        <div class="col-sm">
-            <form name="exampleForm" novalidate ngx-form-validator [ngxFormValidatorConfig]="validatorConfig">
+        <div class="col-sm col-sm-6">
+            <form
+                name="exampleForm"
+                novalidate
+                ngx-form-validator
+                [ngxFormValidatorConfig]="validatorConfig"
+            >
                 <div class="form-group">
                     <label for="email1">Email address</label>
                     <input
@@ -53,6 +58,8 @@
                 </button>
             </form>
         </div>
-        <div class="col-sm">Code</div>
+        <div class="col-sm col-sm-6">
+            <pre><code [highlight]="exampleCode"></code></pre>
+        </div>
     </div>
 </div>

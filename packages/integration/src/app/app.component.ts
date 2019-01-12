@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NgxFormValidatorConfig } from '../../../core/src/public_api';
+import { exampleCode } from './example-code';
 
 @Component({
     selector: 'app-root',
@@ -8,6 +9,8 @@ import { NgxFormValidatorConfig } from '../../../core/src/public_api';
 })
 export class AppComponent {
     message = '';
+
+    exampleCode = exampleCode;
 
     model = {
         username: '',
@@ -19,7 +22,8 @@ export class AppComponent {
         validationMessages: {
             username: {
                 required: '用户名不能为空',
-                pattern:'用户名格式不正确，以字母，数字，下划线组成，首字母不能位数字，必须是2-20个字符'
+                pattern:
+                    '用户名格式不正确，以字母，数字，下划线组成，首字母不能位数字，必须是2-20个字符'
             }
         }
     };
