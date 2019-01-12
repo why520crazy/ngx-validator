@@ -6,7 +6,7 @@
         "ng": "ng",
         "start": "ng serve",
         "build": "ng build core",
-        "build:docs": "ng build integration",
+        "build:docs": "ng build integration --baseHref /ngx-validator",
         "publish": "cd ./dist/core && npm publish",
         "test": "ng test core",
         "test:demo": "ng test",
