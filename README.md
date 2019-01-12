@@ -4,7 +4,7 @@ Angular7+ form validator
 
 ## Demo
 [Live Demo](https://why520crazy.github.io/ngx-validator/index.html)
-
+[Use Case](https://worktile.com/signup?utm_source=w5c-ngx-validator)
 ## Installation
 
 ```
