@@ -652,7 +652,7 @@ webpackEmptyAsyncContext.id = "./packages/integration/src/$$_lazy_route_resource
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n    <h2 class=\"title\">@why520crazy/ngx-validator Example</h2>\n    <div class=\"row\">\n        <div class=\"col-sm\">\n            <form name=\"exampleForm\" novalidate ngx-form-validator [ngxFormValidatorConfig]=\"validatorConfig\">\n                <div class=\"form-group\">\n                    <label for=\"email1\">Email address</label>\n                    <input\n                        type=\"email\"\n                        class=\"form-control\"\n                        name=\"email\"\n                        id=\"email1\"\n                        [(ngModel)]=\"model.email\"\n                        required\n                        aria-describedby=\"emailHelp\"\n                        placeholder=\"Enter email\"\n                    />\n                </div>\n                <div class=\"form-group\">\n                    <label for=\"username\">Username</label>\n                    <input\n                        type=\"text\"\n                        class=\"form-control\"\n                        id=\"username\"\n                        required\n                        pattern=\"^[A-Za-z]{1}[0-9A-Za-z_]{1,19}\"\n                        name=\"username\"\n                        [(ngModel)]=\"model.username\"\n                        placeholder=\"Enter username\"\n                    />\n                </div>\n                <div class=\"form-group\">\n                    <label for=\"exampleInputPassword1\">Password</label>\n                    <input\n                        type=\"password\"\n                        class=\"form-control\"\n                        [(ngModel)]=\"model.password\"\n                        name=\"password\"\n                        required\n                        id=\"exampleInputPassword1\"\n                        placeholder=\"Password\"\n                    />\n                </div>\n                <div class=\"form-group\" *ngIf=\"message\">\n                    <div class=\"alert alert-success\">{{ message }}</div>\n                </div>\n                <button\n                    type=\"button\"\n                    (ngxFormSubmit)=\"submit()\"\n                    class=\"btn btn-primary\"\n                >\n                    Submit\n                </button>\n            </form>\n        </div>\n        <div class=\"col-sm\">Code</div>\n    </div>\n</div>\n"
+module.exports = "<div class=\"example-container\">\n    <h2 class=\"title\">@why520crazy/ngx-validator Example</h2>\n    <div class=\"row\">\n        <div class=\"col-sm col-sm-6\">\n            <form\n                name=\"exampleForm\"\n                novalidate\n                ngx-form-validator\n                [ngxFormValidatorConfig]=\"validatorConfig\"\n            >\n                <div class=\"form-group\">\n                    <label for=\"email1\">Email address</label>\n                    <input\n                        type=\"email\"\n                        class=\"form-control\"\n                        name=\"email\"\n                        id=\"email1\"\n                        [(ngModel)]=\"model.email\"\n                        required\n                        aria-describedby=\"emailHelp\"\n                        placeholder=\"Enter email\"\n                    />\n                </div>\n                <div class=\"form-group\">\n                    <label for=\"username\">Username</label>\n                    <input\n                        type=\"text\"\n                        class=\"form-control\"\n                        id=\"username\"\n                        required\n                        pattern=\"^[A-Za-z]{1}[0-9A-Za-z_]{1,19}\"\n                        name=\"username\"\n                        [(ngModel)]=\"model.username\"\n                        placeholder=\"Enter username\"\n                    />\n                </div>\n                <div class=\"form-group\">\n                    <label for=\"exampleInputPassword1\">Password</label>\n                    <input\n                        type=\"password\"\n                        class=\"form-control\"\n                        [(ngModel)]=\"model.password\"\n                        name=\"password\"\n                        required\n                        id=\"exampleInputPassword1\"\n                        placeholder=\"Password\"\n                    />\n                </div>\n                <div class=\"form-group\" *ngIf=\"message\">\n                    <div class=\"alert alert-success\">{{ message }}</div>\n                </div>\n                <button\n                    type=\"button\"\n                    (ngxFormSubmit)=\"submit()\"\n                    class=\"btn btn-primary\"\n                >\n                    Submit\n                </button>\n            </form>\n        </div>\n        <div class=\"col-sm col-sm-6\">\n            <pre><code [highlight]=\"exampleCode\"></code></pre>\n        </div>\n    </div>\n</div>\n"
 
 /***/ }),
 
@@ -663,7 +663,7 @@ module.exports = "<div class=\"container\">\n    <h2 class=\"title\">@why520craz
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".container {\n  margin-top: 30px; }\n  .container .title {\n    text-align: center;\n    margin-bottom: 30px; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9oYWlmZW5nL0lULzAxX1N0dWR5L3Byb2plY3RzL25neC12YWxpZGF0b3IvcGFja2FnZXMvaW50ZWdyYXRpb24vc3JjL2FwcC9hcHAuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBS0E7RUFFUSxpQkFBUyxFQU1oQjtFQVJEO0lBS1EsbUJBQWtCO0lBQ2xCLG9CQUFtQixFQUN0QiIsImZpbGUiOiJwYWNrYWdlcy9pbnRlZ3JhdGlvbi9zcmMvYXBwL2FwcC5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi8vIC5leGFtcGxlLWNhcmQge1xuLy8gICB3aWR0aDogNjAwcHg7XG4vLyAgIGhlaWdodDogODAwcHg7XG4vLyB9XG5cbi5jb250YWluZXIge1xuICAgIG1hcmdpbjoge1xuICAgICAgICB0b3A6IDMwcHg7XG4gICAgfVxuICAgIC50aXRsZSB7XG4gICAgICAgIHRleHQtYWxpZ246IGNlbnRlcjtcbiAgICAgICAgbWFyZ2luLWJvdHRvbTogMzBweDtcbiAgICB9XG59XG4iXX0= */"
+module.exports = ".example-container {\n  margin: 30px 60px; }\n  .example-container .title {\n    text-align: center;\n    margin-bottom: 30px; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9oYWlmZW5nL0lULzAxX1N0dWR5L3Byb2plY3RzL25neC12YWxpZGF0b3IvcGFja2FnZXMvaW50ZWdyYXRpb24vc3JjL2FwcC9hcHAuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBS0E7RUFDSSxrQkFBaUIsRUFLcEI7RUFORDtJQUdRLG1CQUFrQjtJQUNsQixvQkFBbUIsRUFDdEIiLCJmaWxlIjoicGFja2FnZXMvaW50ZWdyYXRpb24vc3JjL2FwcC9hcHAuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIvLyAuZXhhbXBsZS1jYXJkIHtcbi8vICAgd2lkdGg6IDYwMHB4O1xuLy8gICBoZWlnaHQ6IDgwMHB4O1xuLy8gfVxuXG4uZXhhbXBsZS1jb250YWluZXIge1xuICAgIG1hcmdpbjogMzBweCA2MHB4O1xuICAgIC50aXRsZSB7XG4gICAgICAgIHRleHQtYWxpZ246IGNlbnRlcjtcbiAgICAgICAgbWFyZ2luLWJvdHRvbTogMzBweDtcbiAgICB9XG59XG4iXX0= */"
 
 /***/ }),
 
@@ -678,6 +678,7 @@ module.exports = ".container {\n  margin-top: 30px; }\n  .container .title {\n  
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppComponent", function() { return AppComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _example_code__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./example-code */ "./packages/integration/src/app/example-code.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -685,9 +686,11 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
+
 var AppComponent = /** @class */ (function () {
     function AppComponent() {
         this.message = '';
+        this.exampleCode = _example_code__WEBPACK_IMPORTED_MODULE_1__["exampleCode"];
         this.model = {
             username: '',
             email: '',
@@ -726,17 +729,25 @@ var AppComponent = /** @class */ (function () {
 /*!****************************************************!*\
   !*** ./packages/integration/src/app/app.module.ts ***!
   \****************************************************/
-/*! exports provided: AppModule */
+/*! exports provided: hljsLanguages, AppModule */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hljsLanguages", function() { return hljsLanguages; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppModule", function() { return AppModule; });
 /* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/platform-browser */ "./node_modules/@angular/platform-browser/fesm5/platform-browser.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _core_src_public_api__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../core/src/public_api */ "./packages/core/src/public_api.ts");
 /* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./app.component */ "./packages/integration/src/app/app.component.ts");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var ngx_highlightjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ngx-highlightjs */ "./node_modules/ngx-highlightjs/fesm5/ngx-highlightjs.js");
+/* harmony import */ var highlight_js_lib_languages_xml__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! highlight.js/lib/languages/xml */ "./node_modules/highlight.js/lib/languages/xml.js");
+/* harmony import */ var highlight_js_lib_languages_xml__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(highlight_js_lib_languages_xml__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var highlight_js_lib_languages_scss__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! highlight.js/lib/languages/scss */ "./node_modules/highlight.js/lib/languages/scss.js");
+/* harmony import */ var highlight_js_lib_languages_scss__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(highlight_js_lib_languages_scss__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var highlight_js_lib_languages_typescript__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! highlight.js/lib/languages/typescript */ "./node_modules/highlight.js/lib/languages/typescript.js");
+/* harmony import */ var highlight_js_lib_languages_typescript__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(highlight_js_lib_languages_typescript__WEBPACK_IMPORTED_MODULE_8__);
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -748,13 +759,31 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 
 
+
+
+
+
+function hljsLanguages() {
+    return [
+        { name: 'typescript', func: highlight_js_lib_languages_typescript__WEBPACK_IMPORTED_MODULE_8___default.a },
+        { name: 'scss', func: highlight_js_lib_languages_scss__WEBPACK_IMPORTED_MODULE_7___default.a },
+        { name: 'xml', func: highlight_js_lib_languages_xml__WEBPACK_IMPORTED_MODULE_6___default.a }
+    ];
+}
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
     AppModule = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
             declarations: [_app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"]],
-            imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormsModule"], _core_src_public_api__WEBPACK_IMPORTED_MODULE_2__["NgxValidatorModule"]],
+            imports: [
+                _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
+                _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormsModule"],
+                _core_src_public_api__WEBPACK_IMPORTED_MODULE_2__["NgxValidatorModule"],
+                ngx_highlightjs__WEBPACK_IMPORTED_MODULE_5__["HighlightModule"].forRoot({
+                    languages: hljsLanguages
+                })
+            ],
             providers: [],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"]]
         })
@@ -762,6 +791,21 @@ var AppModule = /** @class */ (function () {
     return AppModule;
 }());
 
+
+
+/***/ }),
+
+/***/ "./packages/integration/src/app/example-code.ts":
+/*!******************************************************!*\
+  !*** ./packages/integration/src/app/example-code.ts ***!
+  \******************************************************/
+/*! exports provided: exampleCode */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "exampleCode", function() { return exampleCode; });
+var exampleCode = "\n@Component({\n    selector: 'app-example',\n    template: `\n<form name=\"exampleForm\" novalidate ngx-form-validator [ngxFormValidatorConfig]=\"validatorConfig\">\n   <div class=\"form-group\">\n       <label for=\"email1\">Email address</label>\n        <input type=\"email\" class=\"form-control\" name=\"email\" id=\"email1\"\n                [(ngModel)]=\"model.email\" required placeholder=\"Enter email\" />\n    </div>\n    <button type=\"button\" (ngxFormSubmit)=\"submit()\" class=\"btn btn-primary\">Submit</button>\n <form>\n    `\n})\nexport class AppExampleComponent {\n\n    model = {\n        username: '',\n        email: '',\n        password: ''\n    };\n\n    validatorConfig: NgxFormValidatorConfig = {\n        validationMessages: {\n            username: {\n                required: '\u7528\u6237\u540D\u4E0D\u80FD\u4E3A\u7A7A',\n                pattern:\n                    '\u7528\u6237\u540D\u683C\u5F0F\u4E0D\u6B63\u786E\uFF0C\u4EE5\u5B57\u6BCD\uFF0C\u6570\u5B57\uFF0C\u4E0B\u5212\u7EBF\u7EC4\u6210\uFF0C\u9996\u5B57\u6BCD\u4E0D\u80FD\u4F4D\u6570\u5B57\uFF0C\u5FC5\u987B\u662F2-20\u4E2A\u5B57\u7B26'\n            }\n        }\n    };\n\n    submit() {\n        console('This form has submit');\n    }\n}\n";
 
 
 /***/ }),

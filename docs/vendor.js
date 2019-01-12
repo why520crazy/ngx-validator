@@ -62943,6 +62943,1699 @@ var VERSION = new _angular_core__WEBPACK_IMPORTED_MODULE_2__["Version"]('7.0.3')
 
 /***/ }),
 
+/***/ "./node_modules/highlight.js/lib/highlight.js":
+/*!****************************************************!*\
+  !*** ./node_modules/highlight.js/lib/highlight.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+Syntax highlighting with language autodetection.
+https://highlightjs.org/
+*/
+
+(function(factory) {
+
+  // Find the global object for export to both the browser and web workers.
+  var globalObject = typeof window === 'object' && window ||
+                     typeof self === 'object' && self;
+
+  // Setup highlight.js for different environments. First is Node.js or
+  // CommonJS.
+  if(true) {
+    factory(exports);
+  } else {}
+
+}(function(hljs) {
+  // Convenience variables for build-in objects
+  var ArrayProto = [],
+      objectKeys = Object.keys;
+
+  // Global internal variables used within the highlight.js library.
+  var languages = {},
+      aliases   = {};
+
+  // Regular expressions used throughout the highlight.js library.
+  var noHighlightRe    = /^(no-?highlight|plain|text)$/i,
+      languagePrefixRe = /\blang(?:uage)?-([\w-]+)\b/i,
+      fixMarkupRe      = /((^(<[^>]+>|\t|)+|(?:\n)))/gm;
+
+  var spanEndTag = '</span>';
+
+  // Global options used when within external APIs. This is modified when
+  // calling the `hljs.configure` function.
+  var options = {
+    classPrefix: 'hljs-',
+    tabReplace: null,
+    useBR: false,
+    languages: undefined
+  };
+
+
+  /* Utility functions */
+
+  function escape(value) {
+    return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function tag(node) {
+    return node.nodeName.toLowerCase();
+  }
+
+  function testRe(re, lexeme) {
+    var match = re && re.exec(lexeme);
+    return match && match.index === 0;
+  }
+
+  function isNotHighlighted(language) {
+    return noHighlightRe.test(language);
+  }
+
+  function blockLanguage(block) {
+    var i, match, length, _class;
+    var classes = block.className + ' ';
+
+    classes += block.parentNode ? block.parentNode.className : '';
+
+    // language-* takes precedence over non-prefixed class names.
+    match = languagePrefixRe.exec(classes);
+    if (match) {
+      return getLanguage(match[1]) ? match[1] : 'no-highlight';
+    }
+
+    classes = classes.split(/\s+/);
+
+    for (i = 0, length = classes.length; i < length; i++) {
+      _class = classes[i]
+
+      if (isNotHighlighted(_class) || getLanguage(_class)) {
+        return _class;
+      }
+    }
+  }
+
+  function inherit(parent) {  // inherit(parent, override_obj, override_obj, ...)
+    var key;
+    var result = {};
+    var objects = Array.prototype.slice.call(arguments, 1);
+
+    for (key in parent)
+      result[key] = parent[key];
+    objects.forEach(function(obj) {
+      for (key in obj)
+        result[key] = obj[key];
+    });
+    return result;
+  }
+
+  /* Stream merging */
+
+  function nodeStream(node) {
+    var result = [];
+    (function _nodeStream(node, offset) {
+      for (var child = node.firstChild; child; child = child.nextSibling) {
+        if (child.nodeType === 3)
+          offset += child.nodeValue.length;
+        else if (child.nodeType === 1) {
+          result.push({
+            event: 'start',
+            offset: offset,
+            node: child
+          });
+          offset = _nodeStream(child, offset);
+          // Prevent void elements from having an end tag that would actually
+          // double them in the output. There are more void elements in HTML
+          // but we list only those realistically expected in code display.
+          if (!tag(child).match(/br|hr|img|input/)) {
+            result.push({
+              event: 'stop',
+              offset: offset,
+              node: child
+            });
+          }
+        }
+      }
+      return offset;
+    })(node, 0);
+    return result;
+  }
+
+  function mergeStreams(original, highlighted, value) {
+    var processed = 0;
+    var result = '';
+    var nodeStack = [];
+
+    function selectStream() {
+      if (!original.length || !highlighted.length) {
+        return original.length ? original : highlighted;
+      }
+      if (original[0].offset !== highlighted[0].offset) {
+        return (original[0].offset < highlighted[0].offset) ? original : highlighted;
+      }
+
+      /*
+      To avoid starting the stream just before it should stop the order is
+      ensured that original always starts first and closes last:
+
+      if (event1 == 'start' && event2 == 'start')
+        return original;
+      if (event1 == 'start' && event2 == 'stop')
+        return highlighted;
+      if (event1 == 'stop' && event2 == 'start')
+        return original;
+      if (event1 == 'stop' && event2 == 'stop')
+        return highlighted;
+
+      ... which is collapsed to:
+      */
+      return highlighted[0].event === 'start' ? original : highlighted;
+    }
+
+    function open(node) {
+      function attr_str(a) {return ' ' + a.nodeName + '="' + escape(a.value).replace('"', '&quot;') + '"';}
+      result += '<' + tag(node) + ArrayProto.map.call(node.attributes, attr_str).join('') + '>';
+    }
+
+    function close(node) {
+      result += '</' + tag(node) + '>';
+    }
+
+    function render(event) {
+      (event.event === 'start' ? open : close)(event.node);
+    }
+
+    while (original.length || highlighted.length) {
+      var stream = selectStream();
+      result += escape(value.substring(processed, stream[0].offset));
+      processed = stream[0].offset;
+      if (stream === original) {
+        /*
+        On any opening or closing tag of the original markup we first close
+        the entire highlighted node stack, then render the original tag along
+        with all the following original tags at the same offset and then
+        reopen all the tags on the highlighted stack.
+        */
+        nodeStack.reverse().forEach(close);
+        do {
+          render(stream.splice(0, 1)[0]);
+          stream = selectStream();
+        } while (stream === original && stream.length && stream[0].offset === processed);
+        nodeStack.reverse().forEach(open);
+      } else {
+        if (stream[0].event === 'start') {
+          nodeStack.push(stream[0].node);
+        } else {
+          nodeStack.pop();
+        }
+        render(stream.splice(0, 1)[0]);
+      }
+    }
+    return result + escape(value.substr(processed));
+  }
+
+  /* Initialization */
+
+  function expand_mode(mode) {
+    if (mode.variants && !mode.cached_variants) {
+      mode.cached_variants = mode.variants.map(function(variant) {
+        return inherit(mode, {variants: null}, variant);
+      });
+    }
+    return mode.cached_variants || (mode.endsWithParent && [inherit(mode)]) || [mode];
+  }
+
+  function compileLanguage(language) {
+
+    function reStr(re) {
+        return (re && re.source) || re;
+    }
+
+    function langRe(value, global) {
+      return new RegExp(
+        reStr(value),
+        'm' + (language.case_insensitive ? 'i' : '') + (global ? 'g' : '')
+      );
+    }
+
+    function compileMode(mode, parent) {
+      if (mode.compiled)
+        return;
+      mode.compiled = true;
+
+      mode.keywords = mode.keywords || mode.beginKeywords;
+      if (mode.keywords) {
+        var compiled_keywords = {};
+
+        var flatten = function(className, str) {
+          if (language.case_insensitive) {
+            str = str.toLowerCase();
+          }
+          str.split(' ').forEach(function(kw) {
+            var pair = kw.split('|');
+            compiled_keywords[pair[0]] = [className, pair[1] ? Number(pair[1]) : 1];
+          });
+        };
+
+        if (typeof mode.keywords === 'string') { // string
+          flatten('keyword', mode.keywords);
+        } else {
+          objectKeys(mode.keywords).forEach(function (className) {
+            flatten(className, mode.keywords[className]);
+          });
+        }
+        mode.keywords = compiled_keywords;
+      }
+      mode.lexemesRe = langRe(mode.lexemes || /\w+/, true);
+
+      if (parent) {
+        if (mode.beginKeywords) {
+          mode.begin = '\\b(' + mode.beginKeywords.split(' ').join('|') + ')\\b';
+        }
+        if (!mode.begin)
+          mode.begin = /\B|\b/;
+        mode.beginRe = langRe(mode.begin);
+        if (mode.endSameAsBegin)
+          mode.end = mode.begin;
+        if (!mode.end && !mode.endsWithParent)
+          mode.end = /\B|\b/;
+        if (mode.end)
+          mode.endRe = langRe(mode.end);
+        mode.terminator_end = reStr(mode.end) || '';
+        if (mode.endsWithParent && parent.terminator_end)
+          mode.terminator_end += (mode.end ? '|' : '') + parent.terminator_end;
+      }
+      if (mode.illegal)
+        mode.illegalRe = langRe(mode.illegal);
+      if (mode.relevance == null)
+        mode.relevance = 1;
+      if (!mode.contains) {
+        mode.contains = [];
+      }
+      mode.contains = Array.prototype.concat.apply([], mode.contains.map(function(c) {
+        return expand_mode(c === 'self' ? mode : c)
+      }));
+      mode.contains.forEach(function(c) {compileMode(c, mode);});
+
+      if (mode.starts) {
+        compileMode(mode.starts, parent);
+      }
+
+      var terminators =
+        mode.contains.map(function(c) {
+          return c.beginKeywords ? '\\.?(' + c.begin + ')\\.?' : c.begin;
+        })
+        .concat([mode.terminator_end, mode.illegal])
+        .map(reStr)
+        .filter(Boolean);
+      mode.terminators = terminators.length ? langRe(terminators.join('|'), true) : {exec: function(/*s*/) {return null;}};
+    }
+
+    compileMode(language);
+  }
+
+  /*
+  Core highlighting function. Accepts a language name, or an alias, and a
+  string with the code to highlight. Returns an object with the following
+  properties:
+
+  - relevance (int)
+  - value (an HTML string with highlighting markup)
+
+  */
+  function highlight(name, value, ignore_illegals, continuation) {
+
+    function escapeRe(value) {
+      return new RegExp(value.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'm');
+    }
+
+    function subMode(lexeme, mode) {
+      var i, length;
+
+      for (i = 0, length = mode.contains.length; i < length; i++) {
+        if (testRe(mode.contains[i].beginRe, lexeme)) {
+          if (mode.contains[i].endSameAsBegin) {
+            mode.contains[i].endRe = escapeRe( mode.contains[i].beginRe.exec(lexeme)[0] );
+          }
+          return mode.contains[i];
+        }
+      }
+    }
+
+    function endOfMode(mode, lexeme) {
+      if (testRe(mode.endRe, lexeme)) {
+        while (mode.endsParent && mode.parent) {
+          mode = mode.parent;
+        }
+        return mode;
+      }
+      if (mode.endsWithParent) {
+        return endOfMode(mode.parent, lexeme);
+      }
+    }
+
+    function isIllegal(lexeme, mode) {
+      return !ignore_illegals && testRe(mode.illegalRe, lexeme);
+    }
+
+    function keywordMatch(mode, match) {
+      var match_str = language.case_insensitive ? match[0].toLowerCase() : match[0];
+      return mode.keywords.hasOwnProperty(match_str) && mode.keywords[match_str];
+    }
+
+    function buildSpan(classname, insideSpan, leaveOpen, noPrefix) {
+      var classPrefix = noPrefix ? '' : options.classPrefix,
+          openSpan    = '<span class="' + classPrefix,
+          closeSpan   = leaveOpen ? '' : spanEndTag
+
+      openSpan += classname + '">';
+
+      return openSpan + insideSpan + closeSpan;
+    }
+
+    function processKeywords() {
+      var keyword_match, last_index, match, result;
+
+      if (!top.keywords)
+        return escape(mode_buffer);
+
+      result = '';
+      last_index = 0;
+      top.lexemesRe.lastIndex = 0;
+      match = top.lexemesRe.exec(mode_buffer);
+
+      while (match) {
+        result += escape(mode_buffer.substring(last_index, match.index));
+        keyword_match = keywordMatch(top, match);
+        if (keyword_match) {
+          relevance += keyword_match[1];
+          result += buildSpan(keyword_match[0], escape(match[0]));
+        } else {
+          result += escape(match[0]);
+        }
+        last_index = top.lexemesRe.lastIndex;
+        match = top.lexemesRe.exec(mode_buffer);
+      }
+      return result + escape(mode_buffer.substr(last_index));
+    }
+
+    function processSubLanguage() {
+      var explicit = typeof top.subLanguage === 'string';
+      if (explicit && !languages[top.subLanguage]) {
+        return escape(mode_buffer);
+      }
+
+      var result = explicit ?
+                   highlight(top.subLanguage, mode_buffer, true, continuations[top.subLanguage]) :
+                   highlightAuto(mode_buffer, top.subLanguage.length ? top.subLanguage : undefined);
+
+      // Counting embedded language score towards the host language may be disabled
+      // with zeroing the containing mode relevance. Usecase in point is Markdown that
+      // allows XML everywhere and makes every XML snippet to have a much larger Markdown
+      // score.
+      if (top.relevance > 0) {
+        relevance += result.relevance;
+      }
+      if (explicit) {
+        continuations[top.subLanguage] = result.top;
+      }
+      return buildSpan(result.language, result.value, false, true);
+    }
+
+    function processBuffer() {
+      result += (top.subLanguage != null ? processSubLanguage() : processKeywords());
+      mode_buffer = '';
+    }
+
+    function startNewMode(mode) {
+      result += mode.className? buildSpan(mode.className, '', true): '';
+      top = Object.create(mode, {parent: {value: top}});
+    }
+
+    function processLexeme(buffer, lexeme) {
+
+      mode_buffer += buffer;
+
+      if (lexeme == null) {
+        processBuffer();
+        return 0;
+      }
+
+      var new_mode = subMode(lexeme, top);
+      if (new_mode) {
+        if (new_mode.skip) {
+          mode_buffer += lexeme;
+        } else {
+          if (new_mode.excludeBegin) {
+            mode_buffer += lexeme;
+          }
+          processBuffer();
+          if (!new_mode.returnBegin && !new_mode.excludeBegin) {
+            mode_buffer = lexeme;
+          }
+        }
+        startNewMode(new_mode, lexeme);
+        return new_mode.returnBegin ? 0 : lexeme.length;
+      }
+
+      var end_mode = endOfMode(top, lexeme);
+      if (end_mode) {
+        var origin = top;
+        if (origin.skip) {
+          mode_buffer += lexeme;
+        } else {
+          if (!(origin.returnEnd || origin.excludeEnd)) {
+            mode_buffer += lexeme;
+          }
+          processBuffer();
+          if (origin.excludeEnd) {
+            mode_buffer = lexeme;
+          }
+        }
+        do {
+          if (top.className) {
+            result += spanEndTag;
+          }
+          if (!top.skip && !top.subLanguage) {
+            relevance += top.relevance;
+          }
+          top = top.parent;
+        } while (top !== end_mode.parent);
+        if (end_mode.starts) {
+          if (end_mode.endSameAsBegin) {
+            end_mode.starts.endRe = end_mode.endRe;
+          }
+          startNewMode(end_mode.starts, '');
+        }
+        return origin.returnEnd ? 0 : lexeme.length;
+      }
+
+      if (isIllegal(lexeme, top))
+        throw new Error('Illegal lexeme "' + lexeme + '" for mode "' + (top.className || '<unnamed>') + '"');
+
+      /*
+      Parser should not reach this point as all types of lexemes should be caught
+      earlier, but if it does due to some bug make sure it advances at least one
+      character forward to prevent infinite looping.
+      */
+      mode_buffer += lexeme;
+      return lexeme.length || 1;
+    }
+
+    var language = getLanguage(name);
+    if (!language) {
+      throw new Error('Unknown language: "' + name + '"');
+    }
+
+    compileLanguage(language);
+    var top = continuation || language;
+    var continuations = {}; // keep continuations for sub-languages
+    var result = '', current;
+    for(current = top; current !== language; current = current.parent) {
+      if (current.className) {
+        result = buildSpan(current.className, '', true) + result;
+      }
+    }
+    var mode_buffer = '';
+    var relevance = 0;
+    try {
+      var match, count, index = 0;
+      while (true) {
+        top.terminators.lastIndex = index;
+        match = top.terminators.exec(value);
+        if (!match)
+          break;
+        count = processLexeme(value.substring(index, match.index), match[0]);
+        index = match.index + count;
+      }
+      processLexeme(value.substr(index));
+      for(current = top; current.parent; current = current.parent) { // close dangling modes
+        if (current.className) {
+          result += spanEndTag;
+        }
+      }
+      return {
+        relevance: relevance,
+        value: result,
+        language: name,
+        top: top
+      };
+    } catch (e) {
+      if (e.message && e.message.indexOf('Illegal') !== -1) {
+        return {
+          relevance: 0,
+          value: escape(value)
+        };
+      } else {
+        throw e;
+      }
+    }
+  }
+
+  /*
+  Highlighting with language detection. Accepts a string with the code to
+  highlight. Returns an object with the following properties:
+
+  - language (detected language)
+  - relevance (int)
+  - value (an HTML string with highlighting markup)
+  - second_best (object with the same structure for second-best heuristically
+    detected language, may be absent)
+
+  */
+  function highlightAuto(text, languageSubset) {
+    languageSubset = languageSubset || options.languages || objectKeys(languages);
+    var result = {
+      relevance: 0,
+      value: escape(text)
+    };
+    var second_best = result;
+    languageSubset.filter(getLanguage).filter(autoDetection).forEach(function(name) {
+      var current = highlight(name, text, false);
+      current.language = name;
+      if (current.relevance > second_best.relevance) {
+        second_best = current;
+      }
+      if (current.relevance > result.relevance) {
+        second_best = result;
+        result = current;
+      }
+    });
+    if (second_best.language) {
+      result.second_best = second_best;
+    }
+    return result;
+  }
+
+  /*
+  Post-processing of the highlighted markup:
+
+  - replace TABs with something more useful
+  - replace real line-breaks with '<br>' for non-pre containers
+
+  */
+  function fixMarkup(value) {
+    return !(options.tabReplace || options.useBR)
+      ? value
+      : value.replace(fixMarkupRe, function(match, p1) {
+          if (options.useBR && match === '\n') {
+            return '<br>';
+          } else if (options.tabReplace) {
+            return p1.replace(/\t/g, options.tabReplace);
+          }
+          return '';
+      });
+  }
+
+  function buildClassName(prevClassName, currentLang, resultLang) {
+    var language = currentLang ? aliases[currentLang] : resultLang,
+        result   = [prevClassName.trim()];
+
+    if (!prevClassName.match(/\bhljs\b/)) {
+      result.push('hljs');
+    }
+
+    if (prevClassName.indexOf(language) === -1) {
+      result.push(language);
+    }
+
+    return result.join(' ').trim();
+  }
+
+  /*
+  Applies highlighting to a DOM node containing code. Accepts a DOM node and
+  two optional parameters for fixMarkup.
+  */
+  function highlightBlock(block) {
+    var node, originalStream, result, resultNode, text;
+    var language = blockLanguage(block);
+
+    if (isNotHighlighted(language))
+        return;
+
+    if (options.useBR) {
+      node = document.createElementNS('http://www.w3.org/1999/xhtml', 'div');
+      node.innerHTML = block.innerHTML.replace(/\n/g, '').replace(/<br[ \/]*>/g, '\n');
+    } else {
+      node = block;
+    }
+    text = node.textContent;
+    result = language ? highlight(language, text, true) : highlightAuto(text);
+
+    originalStream = nodeStream(node);
+    if (originalStream.length) {
+      resultNode = document.createElementNS('http://www.w3.org/1999/xhtml', 'div');
+      resultNode.innerHTML = result.value;
+      result.value = mergeStreams(originalStream, nodeStream(resultNode), text);
+    }
+    result.value = fixMarkup(result.value);
+
+    block.innerHTML = result.value;
+    block.className = buildClassName(block.className, language, result.language);
+    block.result = {
+      language: result.language,
+      re: result.relevance
+    };
+    if (result.second_best) {
+      block.second_best = {
+        language: result.second_best.language,
+        re: result.second_best.relevance
+      };
+    }
+  }
+
+  /*
+  Updates highlight.js global options with values passed in the form of an object.
+  */
+  function configure(user_options) {
+    options = inherit(options, user_options);
+  }
+
+  /*
+  Applies highlighting to all <pre><code>..</code></pre> blocks on a page.
+  */
+  function initHighlighting() {
+    if (initHighlighting.called)
+      return;
+    initHighlighting.called = true;
+
+    var blocks = document.querySelectorAll('pre code');
+    ArrayProto.forEach.call(blocks, highlightBlock);
+  }
+
+  /*
+  Attaches highlighting to the page load event.
+  */
+  function initHighlightingOnLoad() {
+    addEventListener('DOMContentLoaded', initHighlighting, false);
+    addEventListener('load', initHighlighting, false);
+  }
+
+  function registerLanguage(name, language) {
+    var lang = languages[name] = language(hljs);
+    if (lang.aliases) {
+      lang.aliases.forEach(function(alias) {aliases[alias] = name;});
+    }
+  }
+
+  function listLanguages() {
+    return objectKeys(languages);
+  }
+
+  function getLanguage(name) {
+    name = (name || '').toLowerCase();
+    return languages[name] || languages[aliases[name]];
+  }
+
+  function autoDetection(name) {
+    var lang = getLanguage(name);
+    return lang && !lang.disableAutodetect;
+  }
+
+  /* Interface definition */
+
+  hljs.highlight = highlight;
+  hljs.highlightAuto = highlightAuto;
+  hljs.fixMarkup = fixMarkup;
+  hljs.highlightBlock = highlightBlock;
+  hljs.configure = configure;
+  hljs.initHighlighting = initHighlighting;
+  hljs.initHighlightingOnLoad = initHighlightingOnLoad;
+  hljs.registerLanguage = registerLanguage;
+  hljs.listLanguages = listLanguages;
+  hljs.getLanguage = getLanguage;
+  hljs.autoDetection = autoDetection;
+  hljs.inherit = inherit;
+
+  // Common regexps
+  hljs.IDENT_RE = '[a-zA-Z]\\w*';
+  hljs.UNDERSCORE_IDENT_RE = '[a-zA-Z_]\\w*';
+  hljs.NUMBER_RE = '\\b\\d+(\\.\\d+)?';
+  hljs.C_NUMBER_RE = '(-?)(\\b0[xX][a-fA-F0-9]+|(\\b\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)'; // 0x..., 0..., decimal, float
+  hljs.BINARY_NUMBER_RE = '\\b(0b[01]+)'; // 0b...
+  hljs.RE_STARTERS_RE = '!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|-|-=|/=|/|:|;|<<|<<=|<=|<|===|==|=|>>>=|>>=|>=|>>>|>>|>|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~';
+
+  // Common modes
+  hljs.BACKSLASH_ESCAPE = {
+    begin: '\\\\[\\s\\S]', relevance: 0
+  };
+  hljs.APOS_STRING_MODE = {
+    className: 'string',
+    begin: '\'', end: '\'',
+    illegal: '\\n',
+    contains: [hljs.BACKSLASH_ESCAPE]
+  };
+  hljs.QUOTE_STRING_MODE = {
+    className: 'string',
+    begin: '"', end: '"',
+    illegal: '\\n',
+    contains: [hljs.BACKSLASH_ESCAPE]
+  };
+  hljs.PHRASAL_WORDS_MODE = {
+    begin: /\b(a|an|the|are|I'm|isn't|don't|doesn't|won't|but|just|should|pretty|simply|enough|gonna|going|wtf|so|such|will|you|your|they|like|more)\b/
+  };
+  hljs.COMMENT = function (begin, end, inherits) {
+    var mode = hljs.inherit(
+      {
+        className: 'comment',
+        begin: begin, end: end,
+        contains: []
+      },
+      inherits || {}
+    );
+    mode.contains.push(hljs.PHRASAL_WORDS_MODE);
+    mode.contains.push({
+      className: 'doctag',
+      begin: '(?:TODO|FIXME|NOTE|BUG|XXX):',
+      relevance: 0
+    });
+    return mode;
+  };
+  hljs.C_LINE_COMMENT_MODE = hljs.COMMENT('//', '$');
+  hljs.C_BLOCK_COMMENT_MODE = hljs.COMMENT('/\\*', '\\*/');
+  hljs.HASH_COMMENT_MODE = hljs.COMMENT('#', '$');
+  hljs.NUMBER_MODE = {
+    className: 'number',
+    begin: hljs.NUMBER_RE,
+    relevance: 0
+  };
+  hljs.C_NUMBER_MODE = {
+    className: 'number',
+    begin: hljs.C_NUMBER_RE,
+    relevance: 0
+  };
+  hljs.BINARY_NUMBER_MODE = {
+    className: 'number',
+    begin: hljs.BINARY_NUMBER_RE,
+    relevance: 0
+  };
+  hljs.CSS_NUMBER_MODE = {
+    className: 'number',
+    begin: hljs.NUMBER_RE + '(' +
+      '%|em|ex|ch|rem'  +
+      '|vw|vh|vmin|vmax' +
+      '|cm|mm|in|pt|pc|px' +
+      '|deg|grad|rad|turn' +
+      '|s|ms' +
+      '|Hz|kHz' +
+      '|dpi|dpcm|dppx' +
+      ')?',
+    relevance: 0
+  };
+  hljs.REGEXP_MODE = {
+    className: 'regexp',
+    begin: /\//, end: /\/[gimuy]*/,
+    illegal: /\n/,
+    contains: [
+      hljs.BACKSLASH_ESCAPE,
+      {
+        begin: /\[/, end: /\]/,
+        relevance: 0,
+        contains: [hljs.BACKSLASH_ESCAPE]
+      }
+    ]
+  };
+  hljs.TITLE_MODE = {
+    className: 'title',
+    begin: hljs.IDENT_RE,
+    relevance: 0
+  };
+  hljs.UNDERSCORE_TITLE_MODE = {
+    className: 'title',
+    begin: hljs.UNDERSCORE_IDENT_RE,
+    relevance: 0
+  };
+  hljs.METHOD_GUARD = {
+    // excludes method names from keyword processing
+    begin: '\\.\\s*' + hljs.UNDERSCORE_IDENT_RE,
+    relevance: 0
+  };
+
+  return hljs;
+}));
+
+
+/***/ }),
+
+/***/ "./node_modules/highlight.js/lib/languages/scss.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/highlight.js/lib/languages/scss.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = function(hljs) {
+  var IDENT_RE = '[a-zA-Z-][a-zA-Z0-9_-]*';
+  var VARIABLE = {
+    className: 'variable',
+    begin: '(\\$' + IDENT_RE + ')\\b'
+  };
+  var HEXCOLOR = {
+    className: 'number', begin: '#[0-9A-Fa-f]+'
+  };
+  var DEF_INTERNALS = {
+    className: 'attribute',
+    begin: '[A-Z\\_\\.\\-]+', end: ':',
+    excludeEnd: true,
+    illegal: '[^\\s]',
+    starts: {
+      endsWithParent: true, excludeEnd: true,
+      contains: [
+        HEXCOLOR,
+        hljs.CSS_NUMBER_MODE,
+        hljs.QUOTE_STRING_MODE,
+        hljs.APOS_STRING_MODE,
+        hljs.C_BLOCK_COMMENT_MODE,
+        {
+          className: 'meta', begin: '!important'
+        }
+      ]
+    }
+  };
+  return {
+    case_insensitive: true,
+    illegal: '[=/|\']',
+    contains: [
+      hljs.C_LINE_COMMENT_MODE,
+      hljs.C_BLOCK_COMMENT_MODE,
+      {
+        className: 'selector-id', begin: '\\#[A-Za-z0-9_-]+',
+        relevance: 0
+      },
+      {
+        className: 'selector-class', begin: '\\.[A-Za-z0-9_-]+',
+        relevance: 0
+      },
+      {
+        className: 'selector-attr', begin: '\\[', end: '\\]',
+        illegal: '$'
+      },
+      {
+        className: 'selector-tag', // begin: IDENT_RE, end: '[,|\\s]'
+        begin: '\\b(a|abbr|acronym|address|area|article|aside|audio|b|base|big|blockquote|body|br|button|canvas|caption|cite|code|col|colgroup|command|datalist|dd|del|details|dfn|div|dl|dt|em|embed|fieldset|figcaption|figure|footer|form|frame|frameset|(h[1-6])|head|header|hgroup|hr|html|i|iframe|img|input|ins|kbd|keygen|label|legend|li|link|map|mark|meta|meter|nav|noframes|noscript|object|ol|optgroup|option|output|p|param|pre|progress|q|rp|rt|ruby|samp|script|section|select|small|span|strike|strong|style|sub|sup|table|tbody|td|textarea|tfoot|th|thead|time|title|tr|tt|ul|var|video)\\b',
+        relevance: 0
+      },
+      {
+        begin: ':(visited|valid|root|right|required|read-write|read-only|out-range|optional|only-of-type|only-child|nth-of-type|nth-last-of-type|nth-last-child|nth-child|not|link|left|last-of-type|last-child|lang|invalid|indeterminate|in-range|hover|focus|first-of-type|first-line|first-letter|first-child|first|enabled|empty|disabled|default|checked|before|after|active)'
+      },
+      {
+        begin: '::(after|before|choices|first-letter|first-line|repeat-index|repeat-item|selection|value)'
+      },
+      VARIABLE,
+      {
+        className: 'attribute',
+        begin: '\\b(z-index|word-wrap|word-spacing|word-break|width|widows|white-space|visibility|vertical-align|unicode-bidi|transition-timing-function|transition-property|transition-duration|transition-delay|transition|transform-style|transform-origin|transform|top|text-underline-position|text-transform|text-shadow|text-rendering|text-overflow|text-indent|text-decoration-style|text-decoration-line|text-decoration-color|text-decoration|text-align-last|text-align|tab-size|table-layout|right|resize|quotes|position|pointer-events|perspective-origin|perspective|page-break-inside|page-break-before|page-break-after|padding-top|padding-right|padding-left|padding-bottom|padding|overflow-y|overflow-x|overflow-wrap|overflow|outline-width|outline-style|outline-offset|outline-color|outline|orphans|order|opacity|object-position|object-fit|normal|none|nav-up|nav-right|nav-left|nav-index|nav-down|min-width|min-height|max-width|max-height|mask|marks|margin-top|margin-right|margin-left|margin-bottom|margin|list-style-type|list-style-position|list-style-image|list-style|line-height|letter-spacing|left|justify-content|initial|inherit|ime-mode|image-orientation|image-resolution|image-rendering|icon|hyphens|height|font-weight|font-variant-ligatures|font-variant|font-style|font-stretch|font-size-adjust|font-size|font-language-override|font-kerning|font-feature-settings|font-family|font|float|flex-wrap|flex-shrink|flex-grow|flex-flow|flex-direction|flex-basis|flex|filter|empty-cells|display|direction|cursor|counter-reset|counter-increment|content|column-width|column-span|column-rule-width|column-rule-style|column-rule-color|column-rule|column-gap|column-fill|column-count|columns|color|clip-path|clip|clear|caption-side|break-inside|break-before|break-after|box-sizing|box-shadow|box-decoration-break|bottom|border-width|border-top-width|border-top-style|border-top-right-radius|border-top-left-radius|border-top-color|border-top|border-style|border-spacing|border-right-width|border-right-style|border-right-color|border-right|border-radius|border-left-width|border-left-style|border-left-color|border-left|border-image-width|border-image-source|border-image-slice|border-image-repeat|border-image-outset|border-image|border-color|border-collapse|border-bottom-width|border-bottom-style|border-bottom-right-radius|border-bottom-left-radius|border-bottom-color|border-bottom|border|background-size|background-repeat|background-position|background-origin|background-image|background-color|background-clip|background-attachment|background-blend-mode|background|backface-visibility|auto|animation-timing-function|animation-play-state|animation-name|animation-iteration-count|animation-fill-mode|animation-duration|animation-direction|animation-delay|animation|align-self|align-items|align-content)\\b',
+        illegal: '[^\\s]'
+      },
+      {
+        begin: '\\b(whitespace|wait|w-resize|visible|vertical-text|vertical-ideographic|uppercase|upper-roman|upper-alpha|underline|transparent|top|thin|thick|text|text-top|text-bottom|tb-rl|table-header-group|table-footer-group|sw-resize|super|strict|static|square|solid|small-caps|separate|se-resize|scroll|s-resize|rtl|row-resize|ridge|right|repeat|repeat-y|repeat-x|relative|progress|pointer|overline|outside|outset|oblique|nowrap|not-allowed|normal|none|nw-resize|no-repeat|no-drop|newspaper|ne-resize|n-resize|move|middle|medium|ltr|lr-tb|lowercase|lower-roman|lower-alpha|loose|list-item|line|line-through|line-edge|lighter|left|keep-all|justify|italic|inter-word|inter-ideograph|inside|inset|inline|inline-block|inherit|inactive|ideograph-space|ideograph-parenthesis|ideograph-numeric|ideograph-alpha|horizontal|hidden|help|hand|groove|fixed|ellipsis|e-resize|double|dotted|distribute|distribute-space|distribute-letter|distribute-all-lines|disc|disabled|default|decimal|dashed|crosshair|collapse|col-resize|circle|char|center|capitalize|break-word|break-all|bottom|both|bolder|bold|block|bidi-override|below|baseline|auto|always|all-scroll|absolute|table|table-cell)\\b'
+      },
+      {
+        begin: ':', end: ';',
+        contains: [
+          VARIABLE,
+          HEXCOLOR,
+          hljs.CSS_NUMBER_MODE,
+          hljs.QUOTE_STRING_MODE,
+          hljs.APOS_STRING_MODE,
+          {
+            className: 'meta', begin: '!important'
+          }
+        ]
+      },
+      {
+        begin: '@', end: '[{;]',
+        keywords: 'mixin include extend for if else each while charset import debug media page content font-face namespace warn',
+        contains: [
+          VARIABLE,
+          hljs.QUOTE_STRING_MODE,
+          hljs.APOS_STRING_MODE,
+          HEXCOLOR,
+          hljs.CSS_NUMBER_MODE,
+          {
+            begin: '\\s[A-Za-z0-9_.-]+',
+            relevance: 0
+          }
+        ]
+      }
+    ]
+  };
+};
+
+/***/ }),
+
+/***/ "./node_modules/highlight.js/lib/languages/typescript.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/highlight.js/lib/languages/typescript.js ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = function(hljs) {
+  var JS_IDENT_RE = '[A-Za-z$_][0-9A-Za-z$_]*';
+  var KEYWORDS = {
+    keyword:
+      'in if for while finally var new function do return void else break catch ' +
+      'instanceof with throw case default try this switch continue typeof delete ' +
+      'let yield const class public private protected get set super ' +
+      'static implements enum export import declare type namespace abstract ' +
+      'as from extends async await',
+    literal:
+      'true false null undefined NaN Infinity',
+    built_in:
+      'eval isFinite isNaN parseFloat parseInt decodeURI decodeURIComponent ' +
+      'encodeURI encodeURIComponent escape unescape Object Function Boolean Error ' +
+      'EvalError InternalError RangeError ReferenceError StopIteration SyntaxError ' +
+      'TypeError URIError Number Math Date String RegExp Array Float32Array ' +
+      'Float64Array Int16Array Int32Array Int8Array Uint16Array Uint32Array ' +
+      'Uint8Array Uint8ClampedArray ArrayBuffer DataView JSON Intl arguments require ' +
+      'module console window document any number boolean string void Promise'
+  };
+
+  var DECORATOR = {
+    className: 'meta',
+    begin: '@' + JS_IDENT_RE,
+  };
+
+  var ARGS =
+  {
+    begin: '\\(',
+    end: /\)/,
+    keywords: KEYWORDS,
+    contains: [
+      'self',
+      hljs.QUOTE_STRING_MODE,
+      hljs.APOS_STRING_MODE,
+      hljs.NUMBER_MODE
+    ]
+  };
+
+  var PARAMS = {
+    className: 'params',
+    begin: /\(/, end: /\)/,
+    excludeBegin: true,
+    excludeEnd: true,
+    keywords: KEYWORDS,
+    contains: [
+      hljs.C_LINE_COMMENT_MODE,
+      hljs.C_BLOCK_COMMENT_MODE,
+      DECORATOR,
+      ARGS
+    ]
+  };
+
+  return {
+    aliases: ['ts'],
+    keywords: KEYWORDS,
+    contains: [
+      {
+        className: 'meta',
+        begin: /^\s*['"]use strict['"]/
+      },
+      hljs.APOS_STRING_MODE,
+      hljs.QUOTE_STRING_MODE,
+      { // template string
+        className: 'string',
+        begin: '`', end: '`',
+        contains: [
+          hljs.BACKSLASH_ESCAPE,
+          {
+            className: 'subst',
+            begin: '\\$\\{', end: '\\}'
+          }
+        ]
+      },
+      hljs.C_LINE_COMMENT_MODE,
+      hljs.C_BLOCK_COMMENT_MODE,
+      {
+        className: 'number',
+        variants: [
+          { begin: '\\b(0[bB][01]+)' },
+          { begin: '\\b(0[oO][0-7]+)' },
+          { begin: hljs.C_NUMBER_RE }
+        ],
+        relevance: 0
+      },
+      { // "value" container
+        begin: '(' + hljs.RE_STARTERS_RE + '|\\b(case|return|throw)\\b)\\s*',
+        keywords: 'return throw case',
+        contains: [
+          hljs.C_LINE_COMMENT_MODE,
+          hljs.C_BLOCK_COMMENT_MODE,
+          hljs.REGEXP_MODE,
+          {
+            className: 'function',
+            begin: '(\\(.*?\\)|' + hljs.IDENT_RE + ')\\s*=>', returnBegin: true,
+            end: '\\s*=>',
+            contains: [
+              {
+                className: 'params',
+                variants: [
+                  {
+                    begin: hljs.IDENT_RE
+                  },
+                  {
+                    begin: /\(\s*\)/,
+                  },
+                  {
+                    begin: /\(/, end: /\)/,
+                    excludeBegin: true, excludeEnd: true,
+                    keywords: KEYWORDS,
+                    contains: [
+                      'self',
+                      hljs.C_LINE_COMMENT_MODE,
+                      hljs.C_BLOCK_COMMENT_MODE
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        relevance: 0
+      },
+      {
+        className: 'function',
+        begin: 'function', end: /[\{;]/, excludeEnd: true,
+        keywords: KEYWORDS,
+        contains: [
+          'self',
+          hljs.inherit(hljs.TITLE_MODE, { begin: JS_IDENT_RE }),
+          PARAMS
+        ],
+        illegal: /%/,
+        relevance: 0 // () => {} is more typical in TypeScript
+      },
+      {
+        beginKeywords: 'constructor', end: /\{/, excludeEnd: true,
+        contains: [
+          'self',
+          PARAMS
+        ]
+      },
+      { // prevent references like module.id from being higlighted as module definitions
+        begin: /module\./,
+        keywords: { built_in: 'module' },
+        relevance: 0
+      },
+      {
+        beginKeywords: 'module', end: /\{/, excludeEnd: true
+      },
+      {
+        beginKeywords: 'interface', end: /\{/, excludeEnd: true,
+        keywords: 'interface extends'
+      },
+      {
+        begin: /\$[(.]/ // relevance booster for a pattern common to JS libs: `$(something)` and `$.something`
+      },
+      {
+        begin: '\\.' + hljs.IDENT_RE, relevance: 0 // hack: prevents detection of keywords after dots
+      },
+      DECORATOR,
+      ARGS
+    ]
+  };
+};
+
+/***/ }),
+
+/***/ "./node_modules/highlight.js/lib/languages/xml.js":
+/*!********************************************************!*\
+  !*** ./node_modules/highlight.js/lib/languages/xml.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = function(hljs) {
+  var XML_IDENT_RE = '[A-Za-z0-9\\._:-]+';
+  var TAG_INTERNALS = {
+    endsWithParent: true,
+    illegal: /</,
+    relevance: 0,
+    contains: [
+      {
+        className: 'attr',
+        begin: XML_IDENT_RE,
+        relevance: 0
+      },
+      {
+        begin: /=\s*/,
+        relevance: 0,
+        contains: [
+          {
+            className: 'string',
+            endsParent: true,
+            variants: [
+              {begin: /"/, end: /"/},
+              {begin: /'/, end: /'/},
+              {begin: /[^\s"'=<>`]+/}
+            ]
+          }
+        ]
+      }
+    ]
+  };
+  return {
+    aliases: ['html', 'xhtml', 'rss', 'atom', 'xjb', 'xsd', 'xsl', 'plist'],
+    case_insensitive: true,
+    contains: [
+      {
+        className: 'meta',
+        begin: '<!DOCTYPE', end: '>',
+        relevance: 10,
+        contains: [{begin: '\\[', end: '\\]'}]
+      },
+      hljs.COMMENT(
+        '<!--',
+        '-->',
+        {
+          relevance: 10
+        }
+      ),
+      {
+        begin: '<\\!\\[CDATA\\[', end: '\\]\\]>',
+        relevance: 10
+      },
+      {
+        className: 'meta',
+        begin: /<\?xml/, end: /\?>/, relevance: 10
+      },
+      {
+        begin: /<\?(php)?/, end: /\?>/,
+        subLanguage: 'php',
+        contains: [
+          // We don't want the php closing tag ?> to close the PHP block when
+          // inside any of the following blocks:
+          {begin: '/\\*', end: '\\*/', skip: true},
+          {begin: 'b"', end: '"', skip: true},
+          {begin: 'b\'', end: '\'', skip: true},
+          hljs.inherit(hljs.APOS_STRING_MODE, {illegal: null, className: null, contains: null, skip: true}),
+          hljs.inherit(hljs.QUOTE_STRING_MODE, {illegal: null, className: null, contains: null, skip: true})
+        ]
+      },
+      {
+        className: 'tag',
+        /*
+        The lookahead pattern (?=...) ensures that 'begin' only matches
+        '<style' as a single word, followed by a whitespace or an
+        ending braket. The '$' is needed for the lexeme to be recognized
+        by hljs.subMode() that tests lexemes outside the stream.
+        */
+        begin: '<style(?=\\s|>|$)', end: '>',
+        keywords: {name: 'style'},
+        contains: [TAG_INTERNALS],
+        starts: {
+          end: '</style>', returnEnd: true,
+          subLanguage: ['css', 'xml']
+        }
+      },
+      {
+        className: 'tag',
+        // See the comment in the <style tag about the lookahead pattern
+        begin: '<script(?=\\s|>|$)', end: '>',
+        keywords: {name: 'script'},
+        contains: [TAG_INTERNALS],
+        starts: {
+          end: '\<\/script\>', returnEnd: true,
+          subLanguage: ['actionscript', 'javascript', 'handlebars', 'xml']
+        }
+      },
+      {
+        className: 'tag',
+        begin: '</?', end: '/?>',
+        contains: [
+          {
+            className: 'name', begin: /[^\/><\s]+/, relevance: 0
+          },
+          TAG_INTERNALS
+        ]
+      }
+    ]
+  };
+};
+
+/***/ }),
+
+/***/ "./node_modules/ngx-highlightjs/fesm5/ngx-highlightjs.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/ngx-highlightjs/fesm5/ngx-highlightjs.js ***!
+  \***************************************************************/
+/*! exports provided: Highlight, HIGHLIGHT_OPTIONS, HighlightModule, HighlightJS, HighlightChildren */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Highlight", function() { return Highlight; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HIGHLIGHT_OPTIONS", function() { return HIGHLIGHT_OPTIONS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HighlightModule", function() { return HighlightModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HighlightJS", function() { return HighlightJS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HighlightChildren", function() { return HighlightChildren; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var highlight_js_lib_highlight_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! highlight.js/lib/highlight.js */ "./node_modules/highlight.js/lib/highlight.js");
+/* harmony import */ var highlight_js_lib_highlight_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(highlight_js_lib_highlight_js__WEBPACK_IMPORTED_MODULE_1__);
+
+
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ */
+/** @type {?} */
+var HIGHLIGHT_OPTIONS = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["InjectionToken"]('HIGHLIGHT_OPTIONS');
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ */
+var HighlightJS = /** @class */ (function () {
+    function HighlightJS(options) {
+        var _this = this;
+        if (options) {
+            // Register HighlightJS languages
+            options.languages().map(function (language) {
+                return _this.registerLanguage(language.name, language.func);
+            });
+            if (options.config) {
+                // Set global config if present
+                this.configure(options.config);
+            }
+        }
+        // Throw an error if no languages were registered.
+        if (this.listLanguages().length < 1) {
+            throw new Error('[HighlightJS]: No languages were registered!');
+        }
+    }
+    /**
+     * Core highlighting function.
+     * @param name Accepts a language name, or an alias
+     * @param value A string with the code to highlight.
+     * @param ignore_illegals When present and evaluates to a true value, forces highlighting to finish
+     * even in case of detecting illegal syntax for the language instead of throwing an exception.
+     * @param continuation An optional mode stack representing unfinished parsing.
+     * When present, the function will restart parsing from this state instead of initializing a new one
+     */
+    /**
+     * Core highlighting function.
+     * @param {?} name Accepts a language name, or an alias
+     * @param {?} value A string with the code to highlight.
+     * @param {?} ignore_illegals When present and evaluates to a true value, forces highlighting to finish
+     * even in case of detecting illegal syntax for the language instead of throwing an exception.
+     * @param {?=} continuation An optional mode stack representing unfinished parsing.
+     * When present, the function will restart parsing from this state instead of initializing a new one
+     * @return {?}
+     */
+    HighlightJS.prototype.highlight = /**
+     * Core highlighting function.
+     * @param {?} name Accepts a language name, or an alias
+     * @param {?} value A string with the code to highlight.
+     * @param {?} ignore_illegals When present and evaluates to a true value, forces highlighting to finish
+     * even in case of detecting illegal syntax for the language instead of throwing an exception.
+     * @param {?=} continuation An optional mode stack representing unfinished parsing.
+     * When present, the function will restart parsing from this state instead of initializing a new one
+     * @return {?}
+     */
+    function (name, value, ignore_illegals, continuation) {
+        return highlight_js_lib_highlight_js__WEBPACK_IMPORTED_MODULE_1___default.a.highlight(name, value, ignore_illegals, continuation);
+    };
+    /**
+     * Highlighting with language detection.
+     * @param value Accepts a string with the code to highlight
+     * @param languageSubset An optional array of language names and aliases restricting detection to only those languages.
+     * The subset can also be set with configure, but the local parameter overrides the option if set.
+     */
+    /**
+     * Highlighting with language detection.
+     * @param {?} value Accepts a string with the code to highlight
+     * @param {?} languageSubset An optional array of language names and aliases restricting detection to only those languages.
+     * The subset can also be set with configure, but the local parameter overrides the option if set.
+     * @return {?}
+     */
+    HighlightJS.prototype.highlightAuto = /**
+     * Highlighting with language detection.
+     * @param {?} value Accepts a string with the code to highlight
+     * @param {?} languageSubset An optional array of language names and aliases restricting detection to only those languages.
+     * The subset can also be set with configure, but the local parameter overrides the option if set.
+     * @return {?}
+     */
+    function (value, languageSubset) {
+        return highlight_js_lib_highlight_js__WEBPACK_IMPORTED_MODULE_1___default.a.highlightAuto(value, languageSubset);
+    };
+    /**
+     * Post-processing of the highlighted markup.
+     * Currently consists of replacing indentation TAB characters and using <br> tags instead of new-line characters.
+     * Options are set globally with configure.
+     * @param value Accepts a string with the highlighted markup
+     */
+    /**
+     * Post-processing of the highlighted markup.
+     * Currently consists of replacing indentation TAB characters and using <br> tags instead of new-line characters.
+     * Options are set globally with configure.
+     * @param {?} value Accepts a string with the highlighted markup
+     * @return {?}
+     */
+    HighlightJS.prototype.fixMarkup = /**
+     * Post-processing of the highlighted markup.
+     * Currently consists of replacing indentation TAB characters and using <br> tags instead of new-line characters.
+     * Options are set globally with configure.
+     * @param {?} value Accepts a string with the highlighted markup
+     * @return {?}
+     */
+    function (value) {
+        return highlight_js_lib_highlight_js__WEBPACK_IMPORTED_MODULE_1___default.a.fixMarkup(value);
+    };
+    /**
+     * Applies highlighting to a DOM node containing code.
+     * The function uses language detection by default but you can specify the language in the class attribute of the DOM node.
+     * See the class reference for all available language names and aliases.
+     * @param block The element to apply highlight on.
+     */
+    /**
+     * Applies highlighting to a DOM node containing code.
+     * The function uses language detection by default but you can specify the language in the class attribute of the DOM node.
+     * See the class reference for all available language names and aliases.
+     * @param {?} block The element to apply highlight on.
+     * @return {?}
+     */
+    HighlightJS.prototype.highlightBlock = /**
+     * Applies highlighting to a DOM node containing code.
+     * The function uses language detection by default but you can specify the language in the class attribute of the DOM node.
+     * See the class reference for all available language names and aliases.
+     * @param {?} block The element to apply highlight on.
+     * @return {?}
+     */
+    function (block) {
+        highlight_js_lib_highlight_js__WEBPACK_IMPORTED_MODULE_1___default.a.highlightBlock(block);
+    };
+    /**
+     * Configures global options:
+     * @param config
+     */
+    /**
+     * Configures global options:
+     * @param {?} config
+     * @return {?}
+     */
+    HighlightJS.prototype.configure = /**
+     * Configures global options:
+     * @param {?} config
+     * @return {?}
+     */
+    function (config) {
+        highlight_js_lib_highlight_js__WEBPACK_IMPORTED_MODULE_1___default.a.configure(config);
+    };
+    /**
+     * Applies highlighting to all <pre><code>..</code></pre> blocks on a page.
+     */
+    /**
+     * Applies highlighting to all <pre><code>..</code></pre> blocks on a page.
+     * @return {?}
+     */
+    HighlightJS.prototype.initHighlighting = /**
+     * Applies highlighting to all <pre><code>..</code></pre> blocks on a page.
+     * @return {?}
+     */
+    function () {
+        highlight_js_lib_highlight_js__WEBPACK_IMPORTED_MODULE_1___default.a.initHighlighting();
+    };
+    /**
+     * Adds new language to the library under the specified name. Used mostly internally.
+     * @param name A string with the name of the language being registered
+     * @param language A function that returns an object which represents the language definition.
+     * The function is passed the hljs object to be able to use common regular expressions defined within it.
+     */
+    /**
+     * Adds new language to the library under the specified name. Used mostly internally.
+     * @param {?} name A string with the name of the language being registered
+     * @param {?} language A function that returns an object which represents the language definition.
+     * The function is passed the hljs object to be able to use common regular expressions defined within it.
+     * @return {?}
+     */
+    HighlightJS.prototype.registerLanguage = /**
+     * Adds new language to the library under the specified name. Used mostly internally.
+     * @param {?} name A string with the name of the language being registered
+     * @param {?} language A function that returns an object which represents the language definition.
+     * The function is passed the hljs object to be able to use common regular expressions defined within it.
+     * @return {?}
+     */
+    function (name, language) {
+        highlight_js_lib_highlight_js__WEBPACK_IMPORTED_MODULE_1___default.a.registerLanguage(name, language);
+    };
+    /**
+     * @return The languages names list.
+     */
+    /**
+     * @return {?} The languages names list.
+     */
+    HighlightJS.prototype.listLanguages = /**
+     * @return {?} The languages names list.
+     */
+    function () {
+        return highlight_js_lib_highlight_js__WEBPACK_IMPORTED_MODULE_1___default.a.listLanguages();
+    };
+    /**
+     * Looks up a language by name or alias.
+     * @param name Language name
+     * @return The language object if found, undefined otherwise.
+     */
+    /**
+     * Looks up a language by name or alias.
+     * @param {?} name Language name
+     * @return {?} The language object if found, undefined otherwise.
+     */
+    HighlightJS.prototype.getLanguage = /**
+     * Looks up a language by name or alias.
+     * @param {?} name Language name
+     * @return {?} The language object if found, undefined otherwise.
+     */
+    function (name) {
+        return highlight_js_lib_highlight_js__WEBPACK_IMPORTED_MODULE_1___default.a.getLanguage(name);
+    };
+    HighlightJS.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"], args: [{
+                    providedIn: 'root'
+                },] }
+    ];
+    /** @nocollapse */
+    HighlightJS.ctorParameters = function () { return [
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"], args: [HIGHLIGHT_OPTIONS,] }] }
+    ]; };
+    /** @nocollapse */ HighlightJS.ngInjectableDef = Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["defineInjectable"])({ factory: function HighlightJS_Factory() { return new HighlightJS(Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["inject"])(HIGHLIGHT_OPTIONS, 8)); }, token: HighlightJS, providedIn: "root" });
+    return HighlightJS;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ */
+var Highlight = /** @class */ (function () {
+    function Highlight(_hljs, _zone) {
+        this._hljs = _hljs;
+        this._zone = _zone;
+        /**
+         * Stream that emits when code string is highlighted
+         */
+        this.highlighted = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+    }
+    /**
+     * @param {?} changes
+     * @return {?}
+     */
+    Highlight.prototype.ngOnChanges = /**
+     * @param {?} changes
+     * @return {?}
+     */
+    function (changes) {
+        if (changes['code'] &&
+            changes['code'].currentValue !== changes['code'].previousValue) {
+            this.highlightElement(this.code, this.languages);
+        }
+    };
+    /**
+     * Highlighting with language detection and fix markup.
+     * @param value Accepts a string with the code to highlight
+     * @param languageSubset An optional array of language names and aliases restricting detection to only those languages.
+     * The subset can also be set with configure, but the local parameter overrides the option if set.
+     */
+    /**
+     * Highlighting with language detection and fix markup.
+     * @param {?} code
+     * @param {?=} languages
+     * @return {?}
+     */
+    Highlight.prototype.highlightElement = /**
+     * Highlighting with language detection and fix markup.
+     * @param {?} code
+     * @param {?=} languages
+     * @return {?}
+     */
+    function (code, languages) {
+        var _this = this;
+        this._zone.runOutsideAngular(function () {
+            /** @type {?} */
+            var res = _this._hljs.highlightAuto(code, languages);
+            _this.highlightedCode = res.value;
+            _this.highlighted.emit(res);
+        });
+    };
+    Highlight.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"], args: [{
+                    host: {
+                        '[class.hljs]': 'true',
+                        '[innerHTML]': 'highlightedCode'
+                    },
+                    selector: '[highlight]'
+                },] }
+    ];
+    /** @nocollapse */
+    Highlight.ctorParameters = function () { return [
+        { type: HighlightJS },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"] }
+    ]; };
+    Highlight.propDecorators = {
+        languages: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] }],
+        code: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"], args: ['highlight',] }],
+        highlighted: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] }]
+    };
+    return Highlight;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ */
+var HighlightChildren = /** @class */ (function () {
+    function HighlightChildren(_zone, _el, _hljs, _renderer) {
+        this._zone = _zone;
+        this._el = _el;
+        this._hljs = _hljs;
+        this._renderer = _renderer;
+    }
+    /**
+     * @return {?}
+     */
+    HighlightChildren.prototype.ngAfterContentInit = /**
+     * @return {?}
+     */
+    function () {
+        this.highlightChildren(this.selector);
+    };
+    /**
+     * Highlight a code block
+     * @param el Code block element
+     */
+    /**
+     * Highlight a code block
+     * @param {?} el Code block element
+     * @return {?}
+     */
+    HighlightChildren.prototype.highlightElement = /**
+     * Highlight a code block
+     * @param {?} el Code block element
+     * @return {?}
+     */
+    function (el) {
+        this._hljs.highlightBlock(el);
+        this._renderer.addClass(el, 'hljs');
+    };
+    /**
+     * Highlight multiple code blocks
+     * @param selector elements selector
+     */
+    /**
+     * Highlight multiple code blocks
+     * @param {?} selector elements selector
+     * @return {?}
+     */
+    HighlightChildren.prototype.highlightChildren = /**
+     * Highlight multiple code blocks
+     * @param {?} selector elements selector
+     * @return {?}
+     */
+    function (selector) {
+        var _this = this;
+        this._zone.runOutsideAngular(function () {
+            /** @type {?} */
+            var elementsToHighlight = _this._el.nativeElement.querySelectorAll(selector || 'code');
+            elementsToHighlight.forEach(function (element) {
+                // Highlight element when text is present
+                /** @type {?} */
+                var observer = new MutationObserver(function () {
+                    if (element.childNodes.length === 1 &&
+                        element.childNodes[0].nodeName === '#text') {
+                        _this.highlightElement(element);
+                    }
+                    observer.disconnect();
+                });
+                observer.observe(element, { childList: true });
+            });
+        });
+    };
+    HighlightChildren.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"], args: [{
+                    selector: '[highlightChildren]'
+                },] }
+    ];
+    /** @nocollapse */
+    HighlightChildren.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"] },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"] },
+        { type: HighlightJS },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Renderer2"] }
+    ]; };
+    HighlightChildren.propDecorators = {
+        selector: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"], args: ['highlightChildren',] }]
+    };
+    return HighlightChildren;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ */
+var HighlightModule = /** @class */ (function () {
+    function HighlightModule() {
+    }
+    /**
+     * @param {?} options
+     * @return {?}
+     */
+    HighlightModule.forRoot = /**
+     * @param {?} options
+     * @return {?}
+     */
+    function (options) {
+        return {
+            ngModule: HighlightModule,
+            providers: [
+                { provide: HIGHLIGHT_OPTIONS, useValue: options }
+            ]
+        };
+    };
+    HighlightModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"], args: [{
+                    declarations: [Highlight, HighlightChildren],
+                    exports: [Highlight, HighlightChildren]
+                },] }
+    ];
+    return HighlightModule;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ */
+
+
+
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibmd4LWhpZ2hsaWdodGpzLmpzLm1hcCIsInNvdXJjZXMiOlsibmc6Ly9uZ3gtaGlnaGxpZ2h0anMvbGliL2hpZ2hsaWdodC5tb2RlbC50cyIsIm5nOi8vbmd4LWhpZ2hsaWdodGpzL2xpYi9oaWdobGlnaHQuc2VydmljZS50cyIsIm5nOi8vbmd4LWhpZ2hsaWdodGpzL2xpYi9oaWdobGlnaHQudHMiLCJuZzovL25neC1oaWdobGlnaHRqcy9saWIvaGlnaGxpZ2h0LWNoaWxkcmVuLnRzIiwibmc6Ly9uZ3gtaGlnaGxpZ2h0anMvbGliL2hpZ2hsaWdodC5tb2R1bGUudHMiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgSW5qZWN0aW9uVG9rZW4gfSBmcm9tICdAYW5ndWxhci9jb3JlJztcclxuXHJcbmV4cG9ydCBjb25zdCBISUdITElHSFRfT1BUSU9OUyA9IG5ldyBJbmplY3Rpb25Ub2tlbjxIaWdobGlnaHRPcHRpb25zPignSElHSExJR0hUX09QVElPTlMnKTtcclxuXHJcbmV4cG9ydCBpbnRlcmZhY2UgSGlnaGxpZ2h0T3B0aW9ucyB7XHJcbiAgbGFuZ3VhZ2VzPzogRnVuY3Rpb247XHJcbiAgY29uZmlnPzogSGlnaGxpZ2h0Q29uZmlnO1xyXG59XHJcblxyXG5leHBvcnQgaW50ZXJmYWNlIEhpZ2hsaWdodExhbmd1YWdlIHtcclxuICBuYW1lOiBzdHJpbmc7XHJcbiAgZnVuYzogRnVuY3Rpb247XHJcbn1cclxuXHJcbmV4cG9ydCBpbnRlcmZhY2UgSGlnaGxpZ2h0Q29uZmlnIHtcclxuICAvKiogdGFiUmVwbGFjZTogYSBzdHJpbmcgdXNlZCB0byByZXBsYWNlIFRBQiBjaGFyYWN0ZXJzIGluIGluZGVudGF0aW9uLiAqL1xyXG4gIHRhYlJlcGxhY2U/OiBzdHJpbmc7XHJcbiAgLyoqIHVzZUJSOiBhIGZsYWcgdG8gZ2VuZXJhdGUgPGJyPiB0YWdzIGluc3RlYWQgb2YgbmV3LWxpbmUgY2hhcmFjdGVycyBpbiB0aGUgb3V0cHV0LCB1c2VmdWwgd2hlbiBjb2RlIGlzIG1hcmtlZCB1cCB1c2luZyBhIG5vbi08cHJlPiBjb250YWluZXIuICovXHJcbiAgdXNlQlI/OiBib29sZWFuO1xyXG4gIC8qKiBjbGFzc1ByZWZpeDogYSBzdHJpbmcgcHJlZml4IGFkZGVkIGJlZm9yZSBjbGFzcyBuYW1lcyBpbiB0aGUgZ2VuZXJhdGVkIG1hcmt1cCwgdXNlZCBmb3IgYmFja3dhcmRzIGNvbXBhdGliaWxpdHkgd2l0aCBzdHlsZXNoZWV0cy4gKi9cclxuICBjbGFzc1ByZWZpeD86IHN0cmluZztcclxuICAvKiogbGFuZ3VhZ2VzOiBhbiBhcnJheSBvZiBsYW5ndWFnZSBuYW1lcyBhbmQgYWxpYXNlcyByZXN0cmljdGluZyBhdXRvIGRldGVjdGlvbiB0byBvbmx5IHRoZXNlIGxhbmd1YWdlcy4gKi9cclxuICBsYW5ndWFnZXM/OiBzdHJpbmdbXTtcclxufVxyXG5cclxuZXhwb3J0IGludGVyZmFjZSBIaWdobGlnaHRSZXN1bHQge1xyXG4gIGxhbmd1YWdlPzogc3RyaW5nO1xyXG4gIHI/OiBudW1iZXI7XHJcbiAgc2Vjb25kX2Jlc3Q/OiBhbnk7XHJcbiAgdG9wPzogYW55O1xyXG4gIHZhbHVlPzogc3RyaW5nO1xyXG59XHJcbiIsImltcG9ydCB7IEluamVjdGFibGUsIEluamVjdCwgT3B0aW9uYWwgfSBmcm9tICdAYW5ndWxhci9jb3JlJztcclxuaW1wb3J0IHsgSGlnaGxpZ2h0Q29uZmlnLCBIaWdobGlnaHRSZXN1bHQsIEhpZ2hsaWdodExhbmd1YWdlLCBIaWdobGlnaHRPcHRpb25zLCBISUdITElHSFRfT1BUSU9OUyB9IGZyb20gJy4vaGlnaGxpZ2h0Lm1vZGVsJztcclxuaW1wb3J0IGhsanMgZnJvbSAnaGlnaGxpZ2h0LmpzL2xpYi9oaWdobGlnaHQuanMnO1xyXG5cclxuQEluamVjdGFibGUoe1xyXG4gIHByb3ZpZGVkSW46ICdyb290J1xyXG59KVxyXG5leHBvcnQgY2xhc3MgSGlnaGxpZ2h0SlMge1xyXG4gIGNvbnN0cnVjdG9yKEBPcHRpb25hbCgpIEBJbmplY3QoSElHSExJR0hUX09QVElPTlMpIG9wdGlvbnM6IEhpZ2hsaWdodE9wdGlvbnMpIHtcclxuICAgIGlmIChvcHRpb25zKSB7XHJcbiAgICAgIC8vIFJlZ2lzdGVyIEhpZ2hsaWdodEpTIGxhbmd1YWdlc1xyXG4gICAgICBvcHRpb25zLmxhbmd1YWdlcygpLm1hcCgobGFuZ3VhZ2U6IEhpZ2hsaWdodExhbmd1YWdlKSA9PlxyXG4gICAgICAgIHRoaXMucmVnaXN0ZXJMYW5ndWFnZShsYW5ndWFnZS5uYW1lLCBsYW5ndWFnZS5mdW5jKVxyXG4gICAgICApO1xyXG4gICAgICBpZiAob3B0aW9ucy5jb25maWcpIHtcclxuICAgICAgICAvLyBTZXQgZ2xvYmFsIGNvbmZpZyBpZiBwcmVzZW50XHJcbiAgICAgICAgdGhpcy5jb25maWd1cmUob3B0aW9ucy5jb25maWcpO1xyXG4gICAgICB9XHJcbiAgICB9XHJcbiAgICAvLyBUaHJvdyBhbiBlcnJvciBpZiBubyBsYW5ndWFnZXMgd2VyZSByZWdpc3RlcmVkLlxyXG4gICAgaWYgKHRoaXMubGlzdExhbmd1YWdlcygpLmxlbmd0aCA8IDEpIHtcclxuICAgICAgdGhyb3cgbmV3IEVycm9yKCdbSGlnaGxpZ2h0SlNdOiBObyBsYW5ndWFnZXMgd2VyZSByZWdpc3RlcmVkIScpO1xyXG4gICAgfVxyXG4gIH1cclxuXHJcbiAgLyoqXHJcbiAgICogQ29yZSBoaWdobGlnaHRpbmcgZnVuY3Rpb24uXHJcbiAgICogQHBhcmFtIG5hbWUgQWNjZXB0cyBhIGxhbmd1YWdlIG5hbWUsIG9yIGFuIGFsaWFzXHJcbiAgICogQHBhcmFtIHZhbHVlIEEgc3RyaW5nIHdpdGggdGhlIGNvZGUgdG8gaGlnaGxpZ2h0LlxyXG4gICAqIEBwYXJhbSBpZ25vcmVfaWxsZWdhbHMgV2hlbiBwcmVzZW50IGFuZCBldmFsdWF0ZXMgdG8gYSB0cnVlIHZhbHVlLCBmb3JjZXMgaGlnaGxpZ2h0aW5nIHRvIGZpbmlzaFxyXG4gICAqIGV2ZW4gaW4gY2FzZSBvZiBkZXRlY3RpbmcgaWxsZWdhbCBzeW50YXggZm9yIHRoZSBsYW5ndWFnZSBpbnN0ZWFkIG9mIHRocm93aW5nIGFuIGV4Y2VwdGlvbi5cclxuICAgKiBAcGFyYW0gY29udGludWF0aW9uIEFuIG9wdGlvbmFsIG1vZGUgc3RhY2sgcmVwcmVzZW50aW5nIHVuZmluaXNoZWQgcGFyc2luZy5cclxuICAgKiBXaGVuIHByZXNlbnQsIHRoZSBmdW5jdGlvbiB3aWxsIHJlc3RhcnQgcGFyc2luZyBmcm9tIHRoaXMgc3RhdGUgaW5zdGVhZCBvZiBpbml0aWFsaXppbmcgYSBuZXcgb25lXHJcbiAgICovXHJcbiAgaGlnaGxpZ2h0KG5hbWU6IHN0cmluZywgdmFsdWU6IHN0cmluZywgaWdub3JlX2lsbGVnYWxzOiBib29sZWFuLCBjb250aW51YXRpb24/OiBhbnkpOiBIaWdobGlnaHRSZXN1bHQge1xyXG4gICAgcmV0dXJuIGhsanMuaGlnaGxpZ2h0KG5hbWUsIHZhbHVlLCBpZ25vcmVfaWxsZWdhbHMsIGNvbnRpbnVhdGlvbik7XHJcbiAgfVxyXG5cclxuICAvKipcclxuICAgKiBIaWdobGlnaHRpbmcgd2l0aCBsYW5ndWFnZSBkZXRlY3Rpb24uXHJcbiAgICogQHBhcmFtIHZhbHVlIEFjY2VwdHMgYSBzdHJpbmcgd2l0aCB0aGUgY29kZSB0byBoaWdobGlnaHRcclxuICAgKiBAcGFyYW0gbGFuZ3VhZ2VTdWJzZXQgQW4gb3B0aW9uYWwgYXJyYXkgb2YgbGFuZ3VhZ2UgbmFtZXMgYW5kIGFsaWFzZXMgcmVzdHJpY3RpbmcgZGV0ZWN0aW9uIHRvIG9ubHkgdGhvc2UgbGFuZ3VhZ2VzLlxyXG4gICAqIFRoZSBzdWJzZXQgY2FuIGFsc28gYmUgc2V0IHdpdGggY29uZmlndXJlLCBidXQgdGhlIGxvY2FsIHBhcmFtZXRlciBvdmVycmlkZXMgdGhlIG9wdGlvbiBpZiBzZXQuXHJcbiAgICovXHJcbiAgaGlnaGxpZ2h0QXV0byh2YWx1ZTogc3RyaW5nLCBsYW5ndWFnZVN1YnNldDogc3RyaW5nW10pOiBIaWdobGlnaHRSZXN1bHQge1xyXG4gICAgcmV0dXJuIGhsanMuaGlnaGxpZ2h0QXV0byh2YWx1ZSwgbGFuZ3VhZ2VTdWJzZXQpO1xyXG4gIH1cclxuXHJcbiAgLyoqXHJcbiAgICogUG9zdC1wcm9jZXNzaW5nIG9mIHRoZSBoaWdobGlnaHRlZCBtYXJrdXAuXHJcbiAgICogQ3VycmVudGx5IGNvbnNpc3RzIG9mIHJlcGxhY2luZyBpbmRlbnRhdGlvbiBUQUIgY2hhcmFjdGVycyBhbmQgdXNpbmcgPGJyPiB0YWdzIGluc3RlYWQgb2YgbmV3LWxpbmUgY2hhcmFjdGVycy5cclxuICAgKiBPcHRpb25zIGFyZSBzZXQgZ2xvYmFsbHkgd2l0aCBjb25maWd1cmUuXHJcbiAgICogQHBhcmFtIHZhbHVlIEFjY2VwdHMgYSBzdHJpbmcgd2l0aCB0aGUgaGlnaGxpZ2h0ZWQgbWFya3VwXHJcbiAgICovXHJcbiAgZml4TWFya3VwKHZhbHVlOiBzdHJpbmcpOiBzdHJpbmcge1xyXG4gICAgcmV0dXJuIGhsanMuZml4TWFya3VwKHZhbHVlKTtcclxuICB9XHJcblxyXG4gIC8qKlxyXG4gICAqIEFwcGxpZXMgaGlnaGxpZ2h0aW5nIHRvIGEgRE9NIG5vZGUgY29udGFpbmluZyBjb2RlLlxyXG4gICAqIFRoZSBmdW5jdGlvbiB1c2VzIGxhbmd1YWdlIGRldGVjdGlvbiBieSBkZWZhdWx0IGJ1dCB5b3UgY2FuIHNwZWNpZnkgdGhlIGxhbmd1YWdlIGluIHRoZSBjbGFzcyBhdHRyaWJ1dGUgb2YgdGhlIERPTSBub2RlLlxyXG4gICAqIFNlZSB0aGUgY2xhc3MgcmVmZXJlbmNlIGZvciBhbGwgYXZhaWxhYmxlIGxhbmd1YWdlIG5hbWVzIGFuZCBhbGlhc2VzLlxyXG4gICAqIEBwYXJhbSBibG9jayBUaGUgZWxlbWVudCB0byBhcHBseSBoaWdobGlnaHQgb24uXHJcbiAgICovXHJcbiAgaGlnaGxpZ2h0QmxvY2soYmxvY2s6IEhUTUxFbGVtZW50KSB7XHJcbiAgICBobGpzLmhpZ2hsaWdodEJsb2NrKGJsb2NrKTtcclxuICB9XHJcblxyXG4gIC8qKlxyXG4gICAqIENvbmZpZ3VyZXMgZ2xvYmFsIG9wdGlvbnM6XHJcbiAgICogQHBhcmFtIGNvbmZpZ1xyXG4gICAqL1xyXG4gIGNvbmZpZ3VyZShjb25maWc6IEhpZ2hsaWdodENvbmZpZykge1xyXG4gICAgaGxqcy5jb25maWd1cmUoY29uZmlnKTtcclxuICB9XHJcblxyXG4gIC8qKlxyXG4gICAqIEFwcGxpZXMgaGlnaGxpZ2h0aW5nIHRvIGFsbCA8cHJlPjxjb2RlPi4uPC9jb2RlPjwvcHJlPiBibG9ja3Mgb24gYSBwYWdlLlxyXG4gICAqL1xyXG4gIGluaXRIaWdobGlnaHRpbmcoKSB7XHJcbiAgICBobGpzLmluaXRIaWdobGlnaHRpbmcoKTtcclxuICB9XHJcblxyXG4gIC8qKlxyXG4gICAqIEFkZHMgbmV3IGxhbmd1YWdlIHRvIHRoZSBsaWJyYXJ5IHVuZGVyIHRoZSBzcGVjaWZpZWQgbmFtZS4gVXNlZCBtb3N0bHkgaW50ZXJuYWxseS5cclxuICAgKiBAcGFyYW0gbmFtZSBBIHN0cmluZyB3aXRoIHRoZSBuYW1lIG9mIHRoZSBsYW5ndWFnZSBiZWluZyByZWdpc3RlcmVkXHJcbiAgICogQHBhcmFtIGxhbmd1YWdlIEEgZnVuY3Rpb24gdGhhdCByZXR1cm5zIGFuIG9iamVjdCB3aGljaCByZXByZXNlbnRzIHRoZSBsYW5ndWFnZSBkZWZpbml0aW9uLlxyXG4gICAqIFRoZSBmdW5jdGlvbiBpcyBwYXNzZWQgdGhlIGhsanMgb2JqZWN0IHRvIGJlIGFibGUgdG8gdXNlIGNvbW1vbiByZWd1bGFyIGV4cHJlc3Npb25zIGRlZmluZWQgd2l0aGluIGl0LlxyXG4gICAqL1xyXG4gIHJlZ2lzdGVyTGFuZ3VhZ2UobmFtZTogc3RyaW5nLCBsYW5ndWFnZTogRnVuY3Rpb24pIHtcclxuICAgIGhsanMucmVnaXN0ZXJMYW5ndWFnZShuYW1lLCBsYW5ndWFnZSk7XHJcbiAgfVxyXG5cclxuICAvKipcclxuICAgKiBAcmV0dXJuIFRoZSBsYW5ndWFnZXMgbmFtZXMgbGlzdC5cclxuICAgKi9cclxuICBsaXN0TGFuZ3VhZ2VzKCk6IHN0cmluZ1tdIHtcclxuICAgIHJldHVybiBobGpzLmxpc3RMYW5ndWFnZXMoKTtcclxuICB9XHJcblxyXG4gIC8qKlxyXG4gICAqIExvb2tzIHVwIGEgbGFuZ3VhZ2UgYnkgbmFtZSBvciBhbGlhcy5cclxuICAgKiBAcGFyYW0gbmFtZSBMYW5ndWFnZSBuYW1lXHJcbiAgICogQHJldHVybiBUaGUgbGFuZ3VhZ2Ugb2JqZWN0IGlmIGZvdW5kLCB1bmRlZmluZWQgb3RoZXJ3aXNlLlxyXG4gICAqL1xyXG4gIGdldExhbmd1YWdlKG5hbWU6IHN0cmluZyk6IGFueSB7XHJcbiAgICByZXR1cm4gaGxqcy5nZXRMYW5ndWFnZShuYW1lKTtcclxuICB9XHJcbn1cclxuIiwiaW1wb3J0IHsgRGlyZWN0aXZlLCBJbnB1dCwgT3V0cHV0LCBPbkNoYW5nZXMsIFNpbXBsZUNoYW5nZXMsIEV2ZW50RW1pdHRlciwgTmdab25lIH0gZnJvbSAnQGFuZ3VsYXIvY29yZSc7XHJcbmltcG9ydCB7IEhpZ2hsaWdodEpTIH0gZnJvbSAnLi9oaWdobGlnaHQuc2VydmljZSc7XHJcbmltcG9ydCB7IEhpZ2hsaWdodFJlc3VsdCB9IGZyb20gJy4vaGlnaGxpZ2h0Lm1vZGVsJztcclxuXHJcbkBEaXJlY3RpdmUoe1xyXG4gIGhvc3Q6IHtcclxuICAgICdbY2xhc3MuaGxqc10nOiAndHJ1ZScsXHJcbiAgICAnW2lubmVySFRNTF0nOiAnaGlnaGxpZ2h0ZWRDb2RlJ1xyXG4gIH0sXHJcbiAgc2VsZWN0b3I6ICdbaGlnaGxpZ2h0XSdcclxufSlcclxuZXhwb3J0IGNsYXNzIEhpZ2hsaWdodCBpbXBsZW1lbnRzIE9uQ2hhbmdlcyB7XHJcblxyXG4gIC8qKiBIaWdobGlnaHRlZCBDb2RlICovXHJcbiAgaGlnaGxpZ2h0ZWRDb2RlOiBzdHJpbmc7XHJcblxyXG4gIC8qKiBBbiBvcHRpb25hbCBhcnJheSBvZiBsYW5ndWFnZSBuYW1lcyBhbmQgYWxpYXNlcyByZXN0cmljdGluZyBkZXRlY3Rpb24gdG8gb25seSB0aG9zZSBsYW5ndWFnZXMuXHJcbiAgICogVGhlIHN1YnNldCBjYW4gYWxzbyBiZSBzZXQgd2l0aCBjb25maWd1cmUsIGJ1dCB0aGUgbG9jYWwgcGFyYW1ldGVyIG92ZXJyaWRlcyB0aGUgb3B0aW9uIGlmIHNldC5cclxuICAgKi9cclxuICBASW5wdXQoKSBsYW5ndWFnZXM6IHN0cmluZ1tdO1xyXG5cclxuICAvKiogSGlnaGxpZ2h0IGNvZGUgaW5wdXQgKi9cclxuICBASW5wdXQoJ2hpZ2hsaWdodCcpIGNvZGU7XHJcblxyXG4gIC8qKiBTdHJlYW0gdGhhdCBlbWl0cyB3aGVuIGNvZGUgc3RyaW5nIGlzIGhpZ2hsaWdodGVkICovXHJcbiAgQE91dHB1dCgpIGhpZ2hsaWdodGVkID0gbmV3IEV2ZW50RW1pdHRlcjxIaWdobGlnaHRSZXN1bHQ+KCk7XHJcblxyXG4gIGNvbnN0cnVjdG9yKHByaXZhdGUgX2hsanM6IEhpZ2hsaWdodEpTLCBwcml2YXRlIF96b25lOiBOZ1pvbmUpIHtcclxuICB9XHJcblxyXG4gIG5nT25DaGFuZ2VzKGNoYW5nZXM6IFNpbXBsZUNoYW5nZXMpIHtcclxuICAgIGlmIChcclxuICAgICAgY2hhbmdlc1snY29kZSddICYmXHJcbiAgICAgIGNoYW5nZXNbJ2NvZGUnXS5jdXJyZW50VmFsdWUgIT09IGNoYW5nZXNbJ2NvZGUnXS5wcmV2aW91c1ZhbHVlXHJcbiAgICApIHtcclxuICAgICAgdGhpcy5oaWdobGlnaHRFbGVtZW50KHRoaXMuY29kZSwgdGhpcy5sYW5ndWFnZXMpO1xyXG4gICAgfVxyXG4gIH1cclxuXHJcbiAgLyoqXHJcbiAgICogSGlnaGxpZ2h0aW5nIHdpdGggbGFuZ3VhZ2UgZGV0ZWN0aW9uIGFuZCBmaXggbWFya3VwLlxyXG4gICAqIEBwYXJhbSB2YWx1ZSBBY2NlcHRzIGEgc3RyaW5nIHdpdGggdGhlIGNvZGUgdG8gaGlnaGxpZ2h0XHJcbiAgICogQHBhcmFtIGxhbmd1YWdlU3Vic2V0IEFuIG9wdGlvbmFsIGFycmF5IG9mIGxhbmd1YWdlIG5hbWVzIGFuZCBhbGlhc2VzIHJlc3RyaWN0aW5nIGRldGVjdGlvbiB0byBvbmx5IHRob3NlIGxhbmd1YWdlcy5cclxuICAgKiBUaGUgc3Vic2V0IGNhbiBhbHNvIGJlIHNldCB3aXRoIGNvbmZpZ3VyZSwgYnV0IHRoZSBsb2NhbCBwYXJhbWV0ZXIgb3ZlcnJpZGVzIHRoZSBvcHRpb24gaWYgc2V0LlxyXG4gICAqL1xyXG4gIGhpZ2hsaWdodEVsZW1lbnQoY29kZTogc3RyaW5nLCBsYW5ndWFnZXM/OiBzdHJpbmdbXSkge1xyXG4gICAgdGhpcy5fem9uZS5ydW5PdXRzaWRlQW5ndWxhcigoKSA9PiB7XHJcbiAgICAgIGNvbnN0IHJlcyA9IHRoaXMuX2hsanMuaGlnaGxpZ2h0QXV0byhjb2RlLCBsYW5ndWFnZXMpO1xyXG4gICAgICB0aGlzLmhpZ2hsaWdodGVkQ29kZSA9IHJlcy52YWx1ZTtcclxuICAgICAgdGhpcy5oaWdobGlnaHRlZC5lbWl0KHJlcyk7XHJcbiAgICB9KTtcclxuICB9XHJcbn1cclxuIiwiaW1wb3J0IHsgRGlyZWN0aXZlLCBBZnRlckNvbnRlbnRJbml0LCBJbnB1dCwgUmVuZGVyZXIyLCBFbGVtZW50UmVmLCBOZ1pvbmUgfSBmcm9tICdAYW5ndWxhci9jb3JlJztcclxuaW1wb3J0IHsgSGlnaGxpZ2h0SlMgfSBmcm9tICcuL2hpZ2hsaWdodC5zZXJ2aWNlJztcclxuXHJcbkBEaXJlY3RpdmUoe1xyXG4gIHNlbGVjdG9yOiAnW2hpZ2hsaWdodENoaWxkcmVuXSdcclxufSlcclxuZXhwb3J0IGNsYXNzIEhpZ2hsaWdodENoaWxkcmVuIGltcGxlbWVudHMgQWZ0ZXJDb250ZW50SW5pdCB7XHJcblxyXG4gIEBJbnB1dCgnaGlnaGxpZ2h0Q2hpbGRyZW4nKSBzZWxlY3Rvcjogc3RyaW5nO1xyXG5cclxuICBjb25zdHJ1Y3Rvcihwcml2YXRlIF96b25lOiBOZ1pvbmUsIHByaXZhdGUgX2VsOiBFbGVtZW50UmVmLCBwcml2YXRlIF9obGpzOiBIaWdobGlnaHRKUywgcHJpdmF0ZSBfcmVuZGVyZXI6IFJlbmRlcmVyMikge1xyXG4gIH1cclxuXHJcbiAgbmdBZnRlckNvbnRlbnRJbml0KCkge1xyXG4gICAgdGhpcy5oaWdobGlnaHRDaGlsZHJlbih0aGlzLnNlbGVjdG9yKTtcclxuICB9XHJcblxyXG4gIC8qKlxyXG4gICAqIEhpZ2hsaWdodCBhIGNvZGUgYmxvY2tcclxuICAgKiBAcGFyYW0gZWwgQ29kZSBibG9jayBlbGVtZW50XHJcbiAgICovXHJcbiAgaGlnaGxpZ2h0RWxlbWVudChlbDogSFRNTEVsZW1lbnQpIHtcclxuICAgIHRoaXMuX2hsanMuaGlnaGxpZ2h0QmxvY2soZWwpO1xyXG4gICAgdGhpcy5fcmVuZGVyZXIuYWRkQ2xhc3MoZWwsICdobGpzJyk7XHJcbiAgfVxyXG5cclxuICAvKipcclxuICAgKiBIaWdobGlnaHQgbXVsdGlwbGUgY29kZSBibG9ja3NcclxuICAgKiBAcGFyYW0gc2VsZWN0b3IgZWxlbWVudHMgc2VsZWN0b3JcclxuICAgKi9cclxuICBoaWdobGlnaHRDaGlsZHJlbihzZWxlY3Rvcjogc3RyaW5nKSB7XHJcbiAgICB0aGlzLl96b25lLnJ1bk91dHNpZGVBbmd1bGFyKCgpID0+IHtcclxuICAgICAgY29uc3QgZWxlbWVudHNUb0hpZ2hsaWdodCA9IHRoaXMuX2VsLm5hdGl2ZUVsZW1lbnQucXVlcnlTZWxlY3RvckFsbChzZWxlY3RvciB8fCAnY29kZScpO1xyXG5cclxuICAgICAgZWxlbWVudHNUb0hpZ2hsaWdodC5mb3JFYWNoKChlbGVtZW50OiBIVE1MRWxlbWVudCkgPT4ge1xyXG4gICAgICAgIC8vIEhpZ2hsaWdodCBlbGVtZW50IHdoZW4gdGV4dCBpcyBwcmVzZW50XHJcbiAgICAgICAgY29uc3Qgb2JzZXJ2ZXIgPSBuZXcgTXV0YXRpb25PYnNlcnZlcigoKSA9PiB7XHJcbiAgICAgICAgICBpZiAoXHJcbiAgICAgICAgICAgIGVsZW1lbnQuY2hpbGROb2Rlcy5sZW5ndGggPT09IDEgJiZcclxuICAgICAgICAgICAgZWxlbWVudC5jaGlsZE5vZGVzWzBdLm5vZGVOYW1lID09PSAnI3RleHQnXHJcbiAgICAgICAgICApIHtcclxuICAgICAgICAgICAgdGhpcy5oaWdobGlnaHRFbGVtZW50KGVsZW1lbnQpO1xyXG4gICAgICAgICAgfVxyXG4gICAgICAgICAgb2JzZXJ2ZXIuZGlzY29ubmVjdCgpO1xyXG4gICAgICAgIH0pO1xyXG4gICAgICAgIG9ic2VydmVyLm9ic2VydmUoZWxlbWVudCwge2NoaWxkTGlzdDogdHJ1ZX0pO1xyXG4gICAgICB9KTtcclxuICAgIH0pO1xyXG4gIH1cclxufVxyXG4iLCJpbXBvcnQgeyBNb2R1bGVXaXRoUHJvdmlkZXJzLCBOZ01vZHVsZSB9IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xyXG5pbXBvcnQgeyBIaWdobGlnaHQgfSBmcm9tICcuL2hpZ2hsaWdodCc7XHJcbmltcG9ydCB7IEhpZ2hsaWdodENoaWxkcmVuIH0gZnJvbSAnLi9oaWdobGlnaHQtY2hpbGRyZW4nO1xyXG5pbXBvcnQgeyBIaWdobGlnaHRPcHRpb25zLCBISUdITElHSFRfT1BUSU9OUyB9IGZyb20gJy4vaGlnaGxpZ2h0Lm1vZGVsJztcclxuXHJcbkBOZ01vZHVsZSh7XHJcbiAgZGVjbGFyYXRpb25zOiBbSGlnaGxpZ2h0LCBIaWdobGlnaHRDaGlsZHJlbl0sXHJcbiAgZXhwb3J0czogW0hpZ2hsaWdodCwgSGlnaGxpZ2h0Q2hpbGRyZW5dXHJcbn0pXHJcbmV4cG9ydCBjbGFzcyBIaWdobGlnaHRNb2R1bGUge1xyXG4gIHN0YXRpYyBmb3JSb290KG9wdGlvbnM6IEhpZ2hsaWdodE9wdGlvbnMpOiBNb2R1bGVXaXRoUHJvdmlkZXJzIHtcclxuICAgIHJldHVybiB7XHJcbiAgICAgIG5nTW9kdWxlOiBIaWdobGlnaHRNb2R1bGUsXHJcbiAgICAgIHByb3ZpZGVyczogW1xyXG4gICAgICAgIHtwcm92aWRlOiBISUdITElHSFRfT1BUSU9OUywgdXNlVmFsdWU6IG9wdGlvbnN9XHJcbiAgICAgIF1cclxuICAgIH07XHJcbiAgfVxyXG59XHJcbiJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7O0FBQUE7QUFF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
+
+/***/ }),
+
 /***/ "./node_modules/rxjs/_esm5/index.js":
 /*!******************************************!*\
   !*** ./node_modules/rxjs/_esm5/index.js ***!
