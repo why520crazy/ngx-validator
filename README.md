@@ -1,8 +1,6 @@
 # ngx-validator
-
-## Introduction
-
-Angular7+ form validator, make error tips easy and automatic. don't need to manually write error tips templates.
+Angular7+ form validator
+>make error tips easy and automatic. don't need to manually write error tips templates.
 
 ## Demo
 

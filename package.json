@@ -1,5 +1,5 @@
 {
-    "name": "@why520crazy/ngx-validator",
+    "name": "ngx-validator",
     "version": "0.0.1",
     "description": "Angular7+ form validator, make error tips easy and automatic. don't need to manually write error tips templates.",
     "scripts": {
