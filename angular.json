@@ -138,7 +138,7 @@
       "root": "packages/core",
       "sourceRoot": "packages/core/src",
       "projectType": "library",
-      "prefix": "lib",
+      "prefix": "ngx",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",

@@ -4,7 +4,8 @@
     "directive-selector": [
       true,
       "attribute",
-      "lib",
+      "w5c",
+      "ngx",
       "camelCase"
     ],
     "component-selector": [

@@ -2,7 +2,7 @@
 
 ## Installation
 
-`npm install ngx-validator --save`
+`npm install @why520crazy/ngx-validator --save`
 
 ## Usage
 

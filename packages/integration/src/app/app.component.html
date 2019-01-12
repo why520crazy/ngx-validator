@@ -1,20 +1,58 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+<div class="container">
+    <h2 class="title">@why520crazy/ngx-validator Example</h2>
+    <div class="row">
+        <div class="col-sm">
+            <form name="exampleForm" novalidate ngx-form-validator [ngxFormValidatorConfig]="validatorConfig">
+                <div class="form-group">
+                    <label for="email1">Email address</label>
+                    <input
+                        type="email"
+                        class="form-control"
+                        name="email"
+                        id="email1"
+                        [(ngModel)]="model.email"
+                        required
+                        aria-describedby="emailHelp"
+                        placeholder="Enter email"
+                    />
+                </div>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="username"
+                        required
+                        pattern="^[A-Za-z]{1}[0-9A-Za-z_]{1,19}"
+                        name="username"
+                        [(ngModel)]="model.username"
+                        placeholder="Enter username"
+                    />
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Password</label>
+                    <input
+                        type="password"
+                        class="form-control"
+                        [(ngModel)]="model.password"
+                        name="password"
+                        required
+                        id="exampleInputPassword1"
+                        placeholder="Password"
+                    />
+                </div>
+                <div class="form-group" *ngIf="message">
+                    <div class="alert alert-success">{{ message }}</div>
+                </div>
+                <button
+                    type="button"
+                    (ngxFormSubmit)="submit()"
+                    class="btn btn-primary"
+                >
+                    Submit
+                </button>
+            </form>
+        </div>
+        <div class="col-sm">Code</div>
+    </div>
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
-
