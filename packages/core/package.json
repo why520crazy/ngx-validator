@@ -1,8 +1,13 @@
 {
-  "name": "@why520crazy/ngx-validator",
-  "version": "0.0.1",
-  "peerDependencies": {
-    "@angular/common": "^7.0.0",
-    "@angular/core": "^7.0.0"
-  }
+    "name": "@why520crazy/ngx-validator",
+    "version": "0.0.1",
+    "description": "Angular7+ form validator, make error tips easy and automatic. don't need to manually write error tips templates.",
+    "private": false,
+    "repository": "https://github.com/why520crazy/ngx-validator",
+    "author": "why520crazy <mail@why520crazy@163.com>",
+    "license": "MIT",
+    "peerDependencies": {
+        "@angular/common": "^7.0.0",
+        "@angular/core": "^7.0.0"
+    }
 }

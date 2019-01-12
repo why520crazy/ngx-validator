@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Angular2+ form validator, make error tips easy and automatic. don't need to manually write error tips templates.
+Angular7+ form validator, make error tips easy and automatic. don't need to manually write error tips templates.
 
 ## Demo
 
@@ -42,4 +42,12 @@ $ npm run build
 $ npm run publish
 ```
 
+## Links
+
+[Angular.io](https://angular.io)
+[Angular.cn](https://angular.cn)
+
+## License
+
+[MIT License](https://github.com/why520crazy/ngx-validator/blob/master/LICENSE)
 

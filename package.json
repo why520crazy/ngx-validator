@@ -1,17 +1,21 @@
 {
-    "name": "ngx-validator",
+    "name": "@why520crazy/ngx-validator",
     "version": "0.0.1",
+    "description": "Angular7+ form validator, make error tips easy and automatic. don't need to manually write error tips templates.",
     "scripts": {
         "ng": "ng",
         "start": "ng serve",
         "build": "ng build core",
-        "publish": "npm run build && cd ./dist/core && npm run publish",
+        "publish": "cd ./dist/core && npm publish",
         "test": "ng test core",
         "test:demo": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e"
     },
-    "private": true,
+    "private": false,
+    "repository": "https://github.com/why520crazy/ngx-validator",
+    "author": "why520crazy <mail@why520crazy@163.com>",
+    "license": "MIT",
     "dependencies": {
         "@angular/animations": "~7.0.0",
         "@angular/common": "~7.0.0",
