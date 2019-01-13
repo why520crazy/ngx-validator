@@ -1,6 +1,6 @@
 # ngx-validator
 An Angular7+ form validator library
->handle validation messages easy and automatic, don't need to manually write error tips templates, support extensive feedback strategy easy.
+>handle validation messages easy and automatic, don't need to manually write error tips templates, just configure validation rules, and support extensive custom feedback strategy.
 
 ## Demo
 [Live Demo](https://why520crazy.github.io/ngx-validator/index.html)

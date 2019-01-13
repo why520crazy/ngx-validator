@@ -1,29 +1,17 @@
-import { InjectionToken, Inject, Injectable, Optional } from '@angular/core';
-import { NgxValidatorGlobalConfig, NgxValidationMessages, Dictionary, NGX_VALIDATOR_CONFIG } from './validator.class';
+import { Inject, Injectable, Optional } from '@angular/core';
+import {
+    NgxValidatorGlobalConfig,
+    NgxValidationMessages,
+    Dictionary,
+    NGX_VALIDATOR_CONFIG,
+    DEFAULT_GLOBAL_VALIDATION_MESSAGES
+} from './validator.class';
 import { ValidationErrors } from '@angular/forms';
-import * as helpers from './helpers';
 import { IValidationFeedbackStrategy, ValidationFeedbackStrategyBuilder } from './strategies';
-
-const INVALID_CLASS = 'is-invalid';
-const INVALID_FEEDBACK_CLASS = 'invalid-feedback';
 
 const defaultValidatorConfig: NgxValidatorGlobalConfig = {
     validationFeedbackStrategy: ValidationFeedbackStrategyBuilder.bootstrap(),
     validationMessages: {}
-};
-
-const globalValidationMessages = {
-    required: '该选项不能为空',
-    maxlength: '该选项输入值长度不能大于{maxlength}',
-    minlength: '该选项输入值长度不能小于{minlength}',
-    thyUniqueCheck: '输入值已经存在，请重新输入',
-    email: '输入邮件的格式不正确',
-    repeat: '两次输入不一致',
-    pattern: '该选项输入格式不正确',
-    number: '必须输入数字',
-    url: '输入URL格式不正确',
-    max: '该选项输入值不能大于{max}',
-    min: '该选项输入值不能小于{min}'
 };
 
 @Injectable({
@@ -36,7 +24,7 @@ export class NgxValidatorLoader {
         if (this.config.globalValidationMessages && this.config.globalValidationMessages[key]) {
             return this.config.globalValidationMessages[key];
         } else {
-            return globalValidationMessages[key];
+            return DEFAULT_GLOBAL_VALIDATION_MESSAGES[key];
         }
     }
 
@@ -59,6 +47,11 @@ export class NgxValidatorLoader {
         this.config = Object.assign({}, defaultValidatorConfig, config);
     }
 
+    /**
+     * get validation error messages
+     * @param name formControl name, e.g. username or email
+     * @param key validator name, e.g. required or pattern
+     */
     getErrorMessage(name: string, key: string) {
         if (this.validationMessages[name] && this.validationMessages[name][key]) {
             return this.validationMessages[name][key];
