@@ -1,3 +1,6 @@
+## 0.0.4
+Break changes: rename `*DisplayStrategy` to `*FeedbackStrategy`.
+
 ## 0.0.3
 
 Add validation display strategy.

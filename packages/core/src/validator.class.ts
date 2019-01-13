@@ -1,5 +1,5 @@
 import { InjectionToken } from '@angular/core';
-import { IValidationDisplayStrategy } from './strategies';
+import { IValidationFeedbackStrategy } from './strategies';
 
 export interface Dictionary<T> {
     [key: string]: T;
@@ -8,7 +8,7 @@ export interface Dictionary<T> {
 export declare type NgxValidationMessages = Dictionary<Dictionary<string>>;
 
 export interface NgxValidatorConfig {
-    validationDisplayStrategy?: IValidationDisplayStrategy;
+    validationFeedbackStrategy?: IValidationFeedbackStrategy;
     validationMessages?: NgxValidationMessages;
 }
 export interface NgxValidatorGlobalConfig extends NgxValidatorConfig {

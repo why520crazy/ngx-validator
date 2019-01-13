@@ -1,19 +1,14 @@
 import { InjectionToken, Inject, Injectable, Optional } from '@angular/core';
-import {
-    NgxValidatorGlobalConfig,
-    NgxValidationMessages,
-    Dictionary,
-    NGX_VALIDATOR_CONFIG
-} from './validator.class';
+import { NgxValidatorGlobalConfig, NgxValidationMessages, Dictionary, NGX_VALIDATOR_CONFIG } from './validator.class';
 import { ValidationErrors } from '@angular/forms';
 import * as helpers from './helpers';
-import { IValidationDisplayStrategy, ValidationDisplayStrategyBuilder } from './strategies';
+import { IValidationFeedbackStrategy, ValidationFeedbackStrategyBuilder } from './strategies';
 
 const INVALID_CLASS = 'is-invalid';
 const INVALID_FEEDBACK_CLASS = 'invalid-feedback';
 
 const defaultValidatorConfig: NgxValidatorGlobalConfig = {
-    validationDisplayStrategy: ValidationDisplayStrategyBuilder.bootstrap(),
+    validationFeedbackStrategy: ValidationFeedbackStrategyBuilder.bootstrap(),
     validationMessages: {}
 };
 
@@ -37,12 +32,23 @@ const globalValidationMessages = {
 export class NgxValidatorLoader {
     private config: NgxValidatorGlobalConfig;
 
-    private _getDefaultValidationMessage(key: string) {
+    private getDefaultValidationMessage(key: string) {
         if (this.config.globalValidationMessages && this.config.globalValidationMessages[key]) {
             return this.config.globalValidationMessages[key];
         } else {
             return globalValidationMessages[key];
         }
+    }
+
+    get validationMessages() {
+        return this.config.validationMessages;
+    }
+
+    get validationFeedbackStrategy(): IValidationFeedbackStrategy {
+        if (!this.config.validationFeedbackStrategy) {
+            this.config.validationFeedbackStrategy = ValidationFeedbackStrategyBuilder.bootstrap();
+        }
+        return this.config.validationFeedbackStrategy;
     }
 
     constructor(
@@ -53,22 +59,11 @@ export class NgxValidatorLoader {
         this.config = Object.assign({}, defaultValidatorConfig, config);
     }
 
-    get validationMessages() {
-        return this.config.validationMessages;
-    }
-
-    get validationStrategy(): IValidationDisplayStrategy {
-        if (!this.config.validationDisplayStrategy) {
-            this.config.validationDisplayStrategy = ValidationDisplayStrategyBuilder.bootstrap();
-        }
-        return this.config.validationDisplayStrategy;
-    }
-
     getErrorMessage(name: string, key: string) {
         if (this.validationMessages[name] && this.validationMessages[name][key]) {
             return this.validationMessages[name][key];
         } else {
-            return this._getDefaultValidationMessage(key);
+            return this.getDefaultValidationMessage(key);
         }
     }
 

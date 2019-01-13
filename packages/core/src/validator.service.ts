@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { NgForm, AbstractControl, ValidationErrors } from '@angular/forms';
 import { NgxValidatorLoader } from './validator-loader.service';
 import { NgxValidatorConfig, Dictionary } from './validator.class';
-import { ValidationDisplayStrategyBuilder } from './strategies';
 
 @Injectable()
 export class NgxFormValidatorService {
@@ -20,13 +19,14 @@ export class NgxFormValidatorService {
         errorMessages?: string[];
     }> = {};
 
-    private _getValidationDisplayStrategy() {
-        const validationDisplayStrategy =
-            this._config.validationDisplayStrategy || this.thyFormValidateLoader.validationStrategy;
-        if (!validationDisplayStrategy) {
+    private _getValidationFeedbackStrategy() {
+        const strategy =
+            (this._config && this._config.validationFeedbackStrategy) ||
+            this.thyFormValidateLoader.validationFeedbackStrategy;
+        if (!strategy) {
             throw new Error(`validation display strategy is null`);
         }
-        return validationDisplayStrategy;
+        return strategy;
     }
 
     private _getElement(name: string) {
@@ -42,7 +42,7 @@ export class NgxFormValidatorService {
         if (this.validations[name] && this.validations[name].hasError) {
             this.validations[name].hasError = false;
             this.validations[name].errorMessages = [];
-            this._getValidationDisplayStrategy().removeError(this._getElement(name));
+            this._getValidationFeedbackStrategy().removeError(this._getElement(name));
         }
     }
 
@@ -97,7 +97,7 @@ export class NgxFormValidatorService {
         const validation = this._tryGetValidation(name);
         validation.errorMessages = errorMessages;
         validation.hasError = true;
-        this._getValidationDisplayStrategy().showError(this._getElement(name), errorMessages);
+        this._getValidationFeedbackStrategy().showError(this._getElement(name), errorMessages);
     }
 
     constructor(private thyFormValidateLoader: NgxValidatorLoader) {}

@@ -1,6 +1,6 @@
-import { IValidationDisplayStrategy } from './validation-display-strategy';
+import { IValidationFeedbackStrategy } from './validation-feedback-strategy';
 
-export class NoopValidationDisplayStrategy implements IValidationDisplayStrategy {
+export class NoopValidationFeedbackStrategy implements IValidationFeedbackStrategy {
     /** Does nothing, as this validation message display strategy is a no-op. */
     showError(element: HTMLElement, errorMessages: string[]): void {}
 

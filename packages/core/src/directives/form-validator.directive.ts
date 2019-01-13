@@ -17,7 +17,8 @@ export enum NgxEnterKeyMode {
 
 @Directive({
     selector: 'form[ngxFormValidator],form[ngx-form-validator]',
-    providers: [NgxFormValidatorService]
+    providers: [NgxFormValidatorService],
+    exportAs: 'ngxFormValidator'
 })
 export class NgxFormValidatorDirective implements OnInit, OnDestroy {
     private unsubscribe: () => void;
@@ -28,6 +29,11 @@ export class NgxFormValidatorDirective implements OnInit, OnDestroy {
 
     @Input()
     set ngxFormValidatorConfig(config: NgxValidatorConfig) {
+        this.validator.setValidatorConfig(config);
+    }
+
+    @Input()
+    set ngxFormValidator(config: NgxValidatorConfig) {
         this.validator.setValidatorConfig(config);
     }
 

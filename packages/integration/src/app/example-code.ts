@@ -2,7 +2,7 @@ export const exampleCode = `
 @Component({
     selector: 'app-example',
     template: \`
-<form name="exampleForm" novalidate ngx-form-validator [ngxFormValidatorConfig]="validatorConfig">
+<form name="exampleForm" novalidate [ngxFormValidator]="validatorConfig">
    <div class="form-group">
        <label for="email1">Email address</label>
         <input type="email" class="form-control" name="email" id="email1"
