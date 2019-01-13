@@ -20,14 +20,13 @@ yarn add @why520crazy/ngx-validator
 #### Loading the module in the app module
 
 ```
-import { NgxValidatorModule } from '@why520crazy/ngx-validator';
+import { NgxValidatorModule, ValidationDisplayStrategyBuilder } from '@why520crazy/ngx-validator';
 
 @NgModule({
   imports: [
     CommonModule,
     NgxValidatorModule.forRoot({
-        showElementError: boolean | ((element: HTMLElement, errorMessages: string[]) => void),
-        removeElementError: boolean | ((element: HTMLElement, errorMessages: string[]) => void),
+        validationDisplayStrategy: ValidationDisplayStrategyBuilder.bootstrap(), // default is bootstrap
         validationMessages: {
             username: {
                 required: 'Username is required.',
@@ -63,6 +62,7 @@ $ git clone git@github.com:why520crazy/ngx-validator.git
 $ cd ngx-validator
 $ npm install
 $ npm run start
+$ npm run test
 ```
 
 ## Building & Publish

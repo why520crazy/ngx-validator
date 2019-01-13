@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgxFormValidatorConfig } from '../../../core/src/public_api';
+import { NgxValidatorConfig } from '../../../core/src/public_api';
 import { exampleCode } from './example-code';
 
 @Component({
@@ -18,7 +18,7 @@ export class AppComponent {
         password: ''
     };
 
-    validatorConfig: NgxFormValidatorConfig = {
+    validatorConfig: NgxValidatorConfig = {
         validationMessages: {
             username: {
                 required: '用户名不能为空',

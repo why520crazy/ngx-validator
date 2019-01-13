@@ -1,19 +1,19 @@
 import { InjectionToken, Inject, Injectable, Optional } from '@angular/core';
 import {
-    NgxFormValidatorGlobalConfig,
-    NgxFormValidationMessages,
+    NgxValidatorGlobalConfig,
+    NgxValidationMessages,
     Dictionary,
     NGX_VALIDATOR_CONFIG
 } from './validator.class';
 import { ValidationErrors } from '@angular/forms';
 import * as helpers from './helpers';
+import { IValidationDisplayStrategy, ValidationDisplayStrategyBuilder } from './strategies';
 
 const INVALID_CLASS = 'is-invalid';
 const INVALID_FEEDBACK_CLASS = 'invalid-feedback';
 
-const defaultValidatorConfig: NgxFormValidatorGlobalConfig = {
-    showElementError: true,
-    removeElementError: true,
+const defaultValidatorConfig: NgxValidatorGlobalConfig = {
+    validationDisplayStrategy: ValidationDisplayStrategyBuilder.bootstrap(),
     validationMessages: {}
 };
 
@@ -35,13 +35,10 @@ const globalValidationMessages = {
     providedIn: 'root'
 })
 export class NgxValidatorLoader {
-    private config: NgxFormValidatorGlobalConfig;
+    private config: NgxValidatorGlobalConfig;
 
     private _getDefaultValidationMessage(key: string) {
-        if (
-            this.config.globalValidationMessages &&
-            this.config.globalValidationMessages[key]
-        ) {
+        if (this.config.globalValidationMessages && this.config.globalValidationMessages[key]) {
             return this.config.globalValidationMessages[key];
         } else {
             return globalValidationMessages[key];
@@ -51,7 +48,7 @@ export class NgxValidatorLoader {
     constructor(
         @Optional()
         @Inject(NGX_VALIDATOR_CONFIG)
-        config: NgxFormValidatorGlobalConfig
+        config: NgxValidatorGlobalConfig
     ) {
         this.config = Object.assign({}, defaultValidatorConfig, config);
     }
@@ -60,11 +57,15 @@ export class NgxValidatorLoader {
         return this.config.validationMessages;
     }
 
+    get validationStrategy(): IValidationDisplayStrategy {
+        if (!this.config.validationDisplayStrategy) {
+            this.config.validationDisplayStrategy = ValidationDisplayStrategyBuilder.bootstrap();
+        }
+        return this.config.validationDisplayStrategy;
+    }
+
     getErrorMessage(name: string, key: string) {
-        if (
-            this.validationMessages[name] &&
-            this.validationMessages[name][key]
-        ) {
+        if (this.validationMessages[name] && this.validationMessages[name][key]) {
             return this.validationMessages[name][key];
         } else {
             return this._getDefaultValidationMessage(key);
@@ -81,50 +82,7 @@ export class NgxValidatorLoader {
         return messages;
     }
 
-    defaultShowError(element: any, errorMessages: string[]) {
-        if (element && element.parentElement) {
-            const documentFrag = document.createDocumentFragment();
-            const divNode = document.createElement('DIV');
-            const textNode = document.createTextNode(errorMessages[0]);
-            divNode.appendChild(textNode);
-            divNode.setAttribute('class', INVALID_FEEDBACK_CLASS);
-            documentFrag.appendChild(divNode);
-            element.parentElement.append(documentFrag);
-        }
-    }
-
-    defaultRemoveError(element: HTMLElement) {
-        if (element && element.parentElement) {
-            const invalidFeedback = element.parentElement.querySelector(
-                '.invalid-feedback'
-            );
-            element.parentElement.removeChild(invalidFeedback);
-        }
-    }
-
-    removeError(element: HTMLElement) {
-        element.classList.remove(INVALID_CLASS);
-        if (helpers.isFunction(this.config.removeElementError)) {
-            (this.config.showElementError as any)(element);
-        } else if (this.config.showElementError) {
-            this.defaultRemoveError(element);
-        } else {
-            // do nothings
-        }
-    }
-
-    showError(element: HTMLElement, errorMessages: string[]) {
-        element.classList.add(INVALID_CLASS);
-        if (helpers.isFunction(this.config.showElementError)) {
-            (this.config.showElementError as any)(element, errorMessages);
-        } else if (this.config.showElementError) {
-            this.defaultShowError(element, errorMessages);
-        } else {
-            // do nothings
-        }
-    }
-
-    addValidationMessages(messages: NgxFormValidationMessages) {
+    addValidationMessages(messages: NgxValidationMessages) {
         Object.assign(this.config.validationMessages, messages);
     }
 

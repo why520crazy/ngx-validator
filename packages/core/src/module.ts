@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { NgxFormValidatorDirective } from './directives/form-validator.directive';
 import { NgxFormSubmitDirective } from './directives/form-submit.directive';
 import {
-    NgxFormValidatorGlobalConfig,
+    NgxValidatorGlobalConfig,
     NGX_VALIDATOR_CONFIG
 } from './validator.class';
 
@@ -13,7 +13,7 @@ import {
     exports: [NgxFormValidatorDirective, NgxFormSubmitDirective, FormsModule]
 })
 export class NgxValidatorModule {
-    static forRoot(config: NgxFormValidatorGlobalConfig): ModuleWithProviders {
+    static forRoot(config: NgxValidatorGlobalConfig): ModuleWithProviders {
         return {
             ngModule: NgxValidatorModule,
             providers: [

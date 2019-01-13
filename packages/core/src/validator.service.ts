@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { NgForm, AbstractControl, ValidationErrors } from '@angular/forms';
 import { NgxValidatorLoader } from './validator-loader.service';
-import { NgxFormValidatorConfig, Dictionary } from './validator.class';
+import { NgxValidatorConfig, Dictionary } from './validator.class';
+import { ValidationDisplayStrategyBuilder } from './strategies';
 
 @Injectable()
 export class NgxFormValidatorService {
@@ -9,7 +10,7 @@ export class NgxFormValidatorService {
 
     private _formElement: HTMLElement;
 
-    private _config: NgxFormValidatorConfig;
+    private _config: NgxValidatorConfig;
 
     // public errors: string[];
 
@@ -18,6 +19,15 @@ export class NgxFormValidatorService {
         hasError?: boolean;
         errorMessages?: string[];
     }> = {};
+
+    private _getValidationDisplayStrategy() {
+        const validationDisplayStrategy =
+            this._config.validationDisplayStrategy || this.thyFormValidateLoader.validationStrategy;
+        if (!validationDisplayStrategy) {
+            throw new Error(`validation display strategy is null`);
+        }
+        return validationDisplayStrategy;
+    }
 
     private _getElement(name: string) {
         const element = this._formElement[name];
@@ -32,24 +42,18 @@ export class NgxFormValidatorService {
         if (this.validations[name] && this.validations[name].hasError) {
             this.validations[name].hasError = false;
             this.validations[name].errorMessages = [];
-            this.thyFormValidateLoader.removeError(this._getElement(name));
+            this._getValidationDisplayStrategy().removeError(this._getElement(name));
         }
     }
 
     private _tryGetValidation(name: string) {
         if (!this.validations[name]) {
-            this._initializeFormControlValidation(
-                name,
-                this._ngForm.controls[name]
-            );
+            this._initializeFormControlValidation(name, this._ngForm.controls[name]);
         }
         return this.validations[name];
     }
 
-    private _initializeFormControlValidation(
-        name: string,
-        control: AbstractControl
-    ) {
+    private _initializeFormControlValidation(name: string, control: AbstractControl) {
         this.validations[name] = {
             hasError: false,
             errorMessages: []
@@ -76,22 +80,14 @@ export class NgxFormValidatorService {
         ) {
             return this._config.validationMessages[name][validationError];
         }
-        return this.thyFormValidateLoader.getErrorMessage(
-            name,
-            validationError
-        );
+        return this.thyFormValidateLoader.getErrorMessage(name, validationError);
     }
 
-    private _getValidationMessages(
-        name: string,
-        validationErrors: ValidationErrors
-    ) {
+    private _getValidationMessages(name: string, validationErrors: ValidationErrors) {
         const messages = [];
         for (const validationError in validationErrors) {
             if (validationErrors.hasOwnProperty(validationError)) {
-                messages.push(
-                    this._getValidationMessage(name, validationError)
-                );
+                messages.push(this._getValidationMessage(name, validationError));
             }
         }
         return messages;
@@ -101,10 +97,7 @@ export class NgxFormValidatorService {
         const validation = this._tryGetValidation(name);
         validation.errorMessages = errorMessages;
         validation.hasError = true;
-        this.thyFormValidateLoader.showError(
-            this._getElement(name),
-            errorMessages
-        );
+        this._getValidationDisplayStrategy().showError(this._getElement(name), errorMessages);
     }
 
     constructor(private thyFormValidateLoader: NgxValidatorLoader) {}
@@ -114,7 +107,7 @@ export class NgxFormValidatorService {
         this._formElement = formElement;
     }
 
-    setValidatorConfig(config: NgxFormValidatorConfig) {
+    setValidatorConfig(config: NgxValidatorConfig) {
         this._config = config;
     }
 
@@ -122,10 +115,7 @@ export class NgxFormValidatorService {
         this._clearElementError(name);
         const control = this._ngForm.controls[name];
         if (control && control.invalid) {
-            const errorMessages = this._getValidationMessages(
-                name,
-                control.errors
-            );
+            const errorMessages = this._getValidationMessages(name, control.errors);
             this._setControlValidationError(name, errorMessages);
         }
     }

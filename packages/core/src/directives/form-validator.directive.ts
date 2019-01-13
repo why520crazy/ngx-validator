@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { NgxFormValidatorService } from '../validator.service';
 import { NgForm } from '@angular/forms';
-import { NgxFormValidatorConfig } from '../validator.class';
+import { NgxValidatorConfig } from '../validator.class';
 
 const KEY_CODES_ENTER = 13;
 
@@ -34,7 +34,7 @@ export class NgxFormValidatorDirective implements OnInit {
     @Input() enterKeyMode: NgxEnterKeyMode;
 
     @Input()
-    set ngxFormValidatorConfig(config: NgxFormValidatorConfig) {
+    set ngxFormValidatorConfig(config: NgxValidatorConfig) {
         this.validator.setValidatorConfig(config);
     }
 
