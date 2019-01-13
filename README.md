@@ -46,7 +46,7 @@ add `ngxFormValidator` directive to form element and add `ngxFormSubmit` directi
  <form name="exampleForm" novalidate [ngxFormValidator]="validatorConfig">
    <div class="form-group">
        <label for="email1">Email address</label>
-        <input type="email" class="form-control" name="email" id="email1"
+        <input type="email" email class="form-control" name="email" id="email1"
                 [(ngModel)]="model.email" required placeholder="Enter email" />
     </div>
     <button type="button" (ngxFormSubmit)="submit()" class="btn btn-primary">Submit</button>
