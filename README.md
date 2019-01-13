@@ -1,6 +1,6 @@
 # ngx-validator
 An Angular7+ form validator library
->handle validation messages easy and automatic. don't need to manually write error tips templates.
+>handle validation messages easy and automatic, don't need to manually write error tips templates, support extensive feedback strategy easy.
 
 ## Demo
 [Live Demo](https://why520crazy.github.io/ngx-validator/index.html)
@@ -26,7 +26,7 @@ import { NgxValidatorModule, ValidationFeedbackStrategyBuilder } from '@why520cr
   imports: [
     CommonModule,
     NgxValidatorModule.forRoot({
-        validationFeedbackStrategy: ValidationFeedbackStrategyBuilder.bootstrap(), // default is bootstrap
+        validationFeedbackStrategy: ValidationFeedbackStrategyBuilder.bootstrap(), // default is bootstrap 4 style
         validationMessages: {
             username: {
                 required: 'Username is required.',
