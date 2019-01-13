@@ -1,6 +1,6 @@
 # ngx-validator
-Angular7+ form validator
->make error tips easy and automatic. don't need to manually write error tips templates.
+An Angular7+ form validator library
+>handle validation messages easy and automatic. don't need to manually write error tips templates.
 
 ## Demo
 [Live Demo](https://why520crazy.github.io/ngx-validator/index.html)
@@ -77,7 +77,7 @@ $ npm run publish
 
 [Angular.cn](https://angular.cn)
 
-[Worktile](https://worktile.com?utm_source=w5c-ngx-validator)
+[Worktile.com](https://worktile.com?utm_source=w5c-ngx-validator)
 
 ## License
 

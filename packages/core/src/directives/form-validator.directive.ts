@@ -1,11 +1,4 @@
-import {
-    Directive,
-    OnInit,
-    NgZone,
-    Renderer2,
-    ElementRef,
-    Input
-} from '@angular/core';
+import { Directive, OnInit, NgZone, Renderer2, ElementRef, Input, OnDestroy } from '@angular/core';
 import { NgxFormValidatorService } from '../validator.service';
 import { NgForm } from '@angular/forms';
 import { NgxValidatorConfig } from '../validator.class';
@@ -26,7 +19,7 @@ export enum NgxEnterKeyMode {
     selector: 'form[ngxFormValidator],form[ngx-form-validator]',
     providers: [NgxFormValidatorService]
 })
-export class NgxFormValidatorDirective implements OnInit {
+export class NgxFormValidatorDirective implements OnInit, OnDestroy {
     private unsubscribe: () => void;
 
     onSubmitSuccess: ($event: any) => void;
@@ -74,10 +67,7 @@ export class NgxFormValidatorDirective implements OnInit {
         const currentInput = document.activeElement;
         const key = $event.which || $event.keyCode;
         if (key === KEY_CODES_ENTER && currentInput.tagName) {
-            if (
-                !this.enterKeyMode ||
-                this.enterKeyMode === NgxEnterKeyMode.submit
-            ) {
+            if (!this.enterKeyMode || this.enterKeyMode === NgxEnterKeyMode.submit) {
                 // TEXTAREA Ctrl + Enter 或者 Command + Enter 阻止默认行为并提交
                 if (currentInput.tagName === 'TEXTAREA') {
                     if ($event.ctrlKey || $event.metaKey) {
@@ -95,6 +85,12 @@ export class NgxFormValidatorDirective implements OnInit {
             } else {
                 // do nothing
             }
+        }
+    }
+
+    ngOnDestroy(): void {
+        if (this.unsubscribe) {
+            this.unsubscribe();
         }
     }
 }
