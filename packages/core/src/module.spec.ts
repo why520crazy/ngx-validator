@@ -4,6 +4,17 @@ import { NgxValidatorModule } from './module';
 import { NgModule } from '@angular/core';
 import { NgxValidatorLoader } from './public_api';
 
+
+@NgModule({
+    imports: [NgxValidatorModule]
+})
+class AppModuleDirectly {}
+
+@NgModule({
+    imports: [NgxValidatorModule.forRoot({})]
+})
+class AppModuleWithConfig {}
+
 describe('NgxValidatorModule', () => {
     it('should be created directly import module', () => {
         TestBed.configureTestingModule({
@@ -22,12 +33,3 @@ describe('NgxValidatorModule', () => {
     });
 });
 
-@NgModule({
-    imports: [NgxValidatorModule]
-})
-class AppModuleDirectly {}
-
-@NgModule({
-    imports: [NgxValidatorModule.forRoot({})]
-})
-class AppModuleWithConfig {}

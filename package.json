@@ -9,8 +9,9 @@
         "build:docs": "ng build integration --baseHref /ngx-validator/ --prod",
         "publish": "cd ./dist/core && npm publish",
         "test": "ng test core",
-        "test:demo": "ng test",
-        "lint": "ng lint",
+        "test:demo": "ng test integration",
+        "lint": "ng lint core",
+        "lint:demo": "ng lint integration",
         "e2e": "ng e2e"
     },
     "private": false,
