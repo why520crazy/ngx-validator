@@ -1,4 +1,4 @@
-# ngx-validator
+# ngx-validator [![Build Status](https://api.travis-ci.org/why520crazy/ngx-validator.svg?branch=master)](https://travis-ci.org/why520crazy/ngx-validator)
 An Angular7+ form validator library
 >handle validation messages easy and automatic, don't need to manually write error tips templates, just configure validation rules, and support extensive custom feedback strategy.
 
