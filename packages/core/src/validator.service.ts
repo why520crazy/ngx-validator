@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { NgForm, AbstractControl, ValidationErrors } from '@angular/forms';
 import { NgxValidatorLoader } from './validator-loader.service';
 import { NgxValidatorConfig, Dictionary } from './validator.class';
+import { transformMessage } from './message-transformers';
 
 @Injectable()
 export class NgxFormValidatorService {
@@ -71,23 +72,27 @@ export class NgxFormValidatorService {
         }
     }
 
-    private _getValidationMessage(name: string, validationError: string) {
+    private _getValidationMessage(name: string, validationErrorName: string, validationErrorValues?: any) {
+        let message = '';
         if (
             this._config &&
             this._config.validationMessages &&
             this._config.validationMessages[name] &&
-            this._config.validationMessages[name][validationError]
+            this._config.validationMessages[name][validationErrorName]
         ) {
-            return this._config.validationMessages[name][validationError];
+            message = this._config.validationMessages[name][validationErrorName];
+        } else {
+            message = this.thyFormValidateLoader.getErrorMessage(name, validationErrorName, validationErrorValues);
         }
-        return this.thyFormValidateLoader.getErrorMessage(name, validationError);
+
+        return transformMessage(validationErrorName, message, validationErrorValues);
     }
 
     private _getValidationMessages(name: string, validationErrors: ValidationErrors) {
         const messages = [];
         for (const validationError in validationErrors) {
             if (validationErrors.hasOwnProperty(validationError)) {
-                messages.push(this._getValidationMessage(name, validationError));
+                messages.push(this._getValidationMessage(name, validationError, validationErrors[validationError]));
             }
         }
         return messages;
@@ -155,7 +160,7 @@ export class NgxFormValidatorService {
         }
     }
 
-    setElementErrorMessage(name: string, message: string) {
+    markControlAsError(name: string, message: string) {
         this._clearElementError(name);
         this._setControlValidationError(name, [message]);
     }

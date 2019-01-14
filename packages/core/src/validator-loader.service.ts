@@ -52,23 +52,25 @@ export class NgxValidatorLoader {
      * @param name formControl name, e.g. username or email
      * @param key validator name, e.g. required or pattern
      */
-    getErrorMessage(name: string, key: string) {
+    getErrorMessage(name: string, key: string, validationErrorValues?: any) {
+        let message = '';
         if (this.validationMessages[name] && this.validationMessages[name][key]) {
-            return this.validationMessages[name][key];
+            message = this.validationMessages[name][key];
         } else {
-            return this.getDefaultValidationMessage(key);
+            message = this.getDefaultValidationMessage(key);
         }
+        return message;
     }
 
-    getErrorMessages(name: string, validationErrors: ValidationErrors) {
-        const messages = [];
-        for (const validationError in validationErrors) {
-            if (validationErrors.hasOwnProperty(validationError)) {
-                messages.push(this.getErrorMessage(name, validationError));
-            }
-        }
-        return messages;
-    }
+    // getErrorMessages(name: string, validationErrors: ValidationErrors) {
+    //     const messages = [];
+    //     for (const validationError in validationErrors) {
+    //         if (validationErrors.hasOwnProperty(validationError)) {
+    //             messages.push(this.getErrorMessage(name, validationError, validationErrors[validationError]));
+    //         }
+    //     }
+    //     return messages;
+    // }
 
     addValidationMessages(messages: NgxValidationMessages) {
         Object.assign(this.config.validationMessages, messages);
