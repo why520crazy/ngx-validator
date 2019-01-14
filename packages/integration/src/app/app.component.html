@@ -2,11 +2,7 @@
     <h2 class="title">@why520crazy/ngx-validator Example</h2>
     <div class="row">
         <div class="col-sm col-sm-6">
-            <form
-                name="exampleForm"
-                novalidate
-                [ngxFormValidator]="validatorConfig"
-            >
+            <form name="exampleForm" novalidate [ngxFormValidator]="validatorConfig">
                 <div class="form-group">
                     <label for="email1">Email address</label>
                     <input
@@ -16,8 +12,9 @@
                         id="email1"
                         [(ngModel)]="model.email"
                         required
+                        email
                         aria-describedby="emailHelp"
-                        placeholder="Enter email"
+                        placeholder="Enter email (validators: required & email)"
                     />
                 </div>
                 <div class="form-group">
@@ -30,7 +27,7 @@
                         pattern="^[A-Za-z]{1}[0-9A-Za-z_]{1,19}"
                         name="username"
                         [(ngModel)]="model.username"
-                        placeholder="Enter username"
+                        placeholder="Enter username (validators: required & pattern)"
                     />
                 </div>
                 <div class="form-group">
@@ -41,20 +38,32 @@
                         [(ngModel)]="model.password"
                         name="password"
                         required
+                        [maxlength]="'10'"
+                        minlength="6"
                         id="exampleInputPassword1"
-                        placeholder="Password"
+                        placeholder="Enter password (validators: required, minlength:6, maxlength:10)"
                     />
                 </div>
+
+                <div class="form-group">
+                    <label for="exampleInputNumber1">Number</label>
+                    <input
+                        type="number"
+                        class="form-control"
+                        [(ngModel)]="model.number"
+                        name="number"
+                        required
+                        min="10"
+                        max="100"
+                        id="exampleInputNumber1"
+                        placeholder="Enter password (validators: required, minlength:6, maxlength:10)"
+                    />
+                </div>
+
                 <div class="form-group" *ngIf="message">
                     <div class="alert alert-success">{{ message }}</div>
                 </div>
-                <button
-                    type="button"
-                    (ngxFormSubmit)="submit()"
-                    class="btn btn-primary"
-                >
-                    Submit
-                </button>
+                <button type="button" (ngxFormSubmit)="submit()" class="btn btn-primary">Submit</button>
             </form>
         </div>
         <div class="col-sm col-sm-6">

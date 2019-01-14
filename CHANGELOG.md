@@ -1,16 +1,21 @@
 ## 0.0.4
-Break changes: rename `*DisplayStrategy` to `*FeedbackStrategy`.
+### Bug Fixes
+- fix maxlength and minlength display incorrect error messages
+
+### Break changes: 
+- rename `*DisplayStrategy` to `*FeedbackStrategy`
 
 ## 0.0.3
 
-Add validation display strategy.
+- add validation display strategy.
 
-Break changes:
-1. rename `NgxFormValidatorConfig` -> `NgxValidatorConfig`;
-1. rename `NgxFormValidatorGlobalConfig` -> `NgxValidatorGlobalConfig`;
-1. remove `NgxValidatorConfig` config 's `showError` and `removeError` options, add `validationDisplayStrategy` option replace it, support bootstrap strategy and noop strategy, default is bootstrap, you can add your own strategy through implement `IValidationDisplayStrategy`.
+Breaking Changes:
+- rename `NgxFormValidatorConfig` -> `NgxValidatorConfig`
+- rename `NgxFormValidatorGlobalConfig` -> `NgxValidatorGlobalConfig`
+- remove `NgxValidatorConfig` config 's `showError` and `removeError` options, add `validationDisplayStrategy` option replace it, support bootstrap strategy and noop strategy, default is bootstrap, you can add your own strategy through implement `IValidationDisplayStrategy`
 
 ## 0.0.2
-1. 初始化 `NgxValidatorModule` 模块；
-1. 添加 `ngx-form-validator`（`ngxFormValidator`） 指令，主要在 ngForm 上追加一些验证相关的行为；
-1. 添加 `ngxFormSubmit` 提交表单，验证通过后会回调相关事件。
+### Features
+- initialize `NgxValidatorModule` module
+- add `ngx-form-validator`（`ngxFormValidator`）directive, extend some validation behaviors for ngForm
+- add `ngxFormSubmit` directive to submit form cooperate with `ngxFormValidator`

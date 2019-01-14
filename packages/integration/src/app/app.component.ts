@@ -15,15 +15,15 @@ export class AppComponent {
     model = {
         username: '',
         email: '',
-        password: ''
+        password: '',
+        number: 0
     };
 
     validatorConfig: NgxValidatorConfig = {
         validationMessages: {
             username: {
                 required: '用户名不能为空',
-                pattern:
-                    '用户名格式不正确，以字母，数字，下划线组成，首字母不能为数字，必须是2-20个字符'
+                pattern: '用户名格式不正确，以字母，数字，下划线组成，首字母不能为数字，必须是2-20个字符'
             }
         }
     };

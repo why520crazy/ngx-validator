@@ -2,15 +2,16 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgxFormValidatorDirective } from './directives/form-validator.directive';
 import { NgxFormSubmitDirective } from './directives/form-submit.directive';
-import {
-    NgxValidatorGlobalConfig,
-    NGX_VALIDATOR_CONFIG
-} from './validator.class';
+// import { MaxValidatorDirective, MinValidatorDirective } from './directives/validators';
+
+import { NgxValidatorGlobalConfig, NGX_VALIDATOR_CONFIG } from './validator.class';
+
+const declarations = [NgxFormValidatorDirective, NgxFormSubmitDirective];
 
 @NgModule({
-    declarations: [NgxFormValidatorDirective, NgxFormSubmitDirective],
+    declarations: declarations,
     imports: [FormsModule],
-    exports: [NgxFormValidatorDirective, NgxFormSubmitDirective, FormsModule]
+    exports: [...declarations, FormsModule]
 })
 export class NgxValidatorModule {
     static forRoot(config: NgxValidatorGlobalConfig): ModuleWithProviders {

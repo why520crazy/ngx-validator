@@ -37,11 +37,15 @@ export class NgxFormValidatorDirective implements OnInit, OnDestroy {
         this.validator.setValidatorConfig(config);
     }
 
+    get validator() {
+        return this.validator;
+    }
+
     constructor(
         private ngZone: NgZone,
         private renderer: Renderer2,
         private elementRef: ElementRef,
-        private validator: NgxFormValidatorService,
+        private _validator: NgxFormValidatorService,
         private ngForm: NgForm
     ) {}
 
