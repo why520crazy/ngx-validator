@@ -38,7 +38,7 @@ export class NgxFormValidatorDirective implements OnInit, OnDestroy {
     }
 
     get validator() {
-        return this.validator;
+        return this._validator;
     }
 
     constructor(
