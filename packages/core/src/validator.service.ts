@@ -105,6 +105,10 @@ export class NgxFormValidatorService {
         this._getValidationFeedbackStrategy().showError(this._getElement(name), errorMessages);
     }
 
+    get validatorConfig() {
+        return this._config;
+    }
+
     constructor(private thyFormValidateLoader: NgxValidatorLoader) {}
 
     initialize(ngForm: NgForm, formElement: HTMLElement) {
