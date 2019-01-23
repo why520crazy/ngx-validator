@@ -10,3 +10,9 @@
         margin-bottom: 30px;
     }
 }
+
+@media (max-width: 768px) {
+    .example-container {
+        margin: 30px 20px;
+    }
+}

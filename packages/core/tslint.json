@@ -11,7 +11,8 @@
     "component-selector": [
       true,
       "element",
-      "lib",
+      "ngx",
+      "test",
       "kebab-case"
     ]
   }

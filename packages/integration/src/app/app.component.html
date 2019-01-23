@@ -46,7 +46,7 @@
                     />
                 </div>
 
-                <!-- <div class="form-group">
+                <div class="form-group">
                     <label for="exampleInputNumber1">Number</label>
                     <input
                         type="number"
@@ -54,12 +54,12 @@
                         [(ngModel)]="model.number"
                         name="number"
                         required
-                        min="10"
-                        max="100"
+                        ngxMin="10"
+                        ngxMax="100"
                         id="exampleInputNumber1"
-                        placeholder="Enter number (validators: required, minlength:6, maxlength:10)"
+                        placeholder="Enter number (validators: required, ngxMin: 10, ngxMax: 100)"
                     />
-                </div> -->
+                </div>
 
                 <div class="form-group" *ngIf="message">
                     <div class="alert alert-success">{{ message }}</div>
