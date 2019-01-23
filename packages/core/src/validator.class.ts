@@ -21,7 +21,7 @@ export const DEFAULT_GLOBAL_VALIDATION_MESSAGES = {
     required: '该选项不能为空',
     maxlength: '该选项输入值长度不能大于{requiredLength}',
     minlength: '该选项输入值长度不能小于{requiredLength}',
-    thyUniqueCheck: '输入值已经存在，请重新输入',
+    ngxUniqueCheck: '输入值已经存在，请重新输入',
     email: '输入邮件的格式不正确',
     repeat: '两次输入不一致',
     pattern: '该选项输入格式不正确',

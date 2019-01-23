@@ -14,7 +14,8 @@
                         required
                         email
                         aria-describedby="emailHelp"
-                        placeholder="Enter email (validators: required & email)"
+                        placeholder="Enter email (validators: required & email),'example@xx' is had"
+                        [ngxUniqueCheck]="uniqueCheck"
                     />
                 </div>
                 <div class="form-group">
