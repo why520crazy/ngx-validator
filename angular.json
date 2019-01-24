@@ -152,7 +152,8 @@
           "options": {
             "main": "packages/core/src/test.ts",
             "tsConfig": "packages/core/tsconfig.spec.json",
-            "karmaConfig": "packages/core/karma.conf.js"
+            "karmaConfig": "packages/core/karma.conf.js",
+            "codeCoverage": true
           }
         },
         "lint": {
