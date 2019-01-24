@@ -1,6 +1,6 @@
 import { Directive, OnInit, NgZone, Renderer2, ElementRef, Input, OnDestroy } from '@angular/core';
 import { NgxFormValidatorService } from '../validator.service';
-import { NgForm } from '@angular/forms';
+import { NgForm, ControlContainer } from '@angular/forms';
 import { NgxValidatorConfig } from '../validator.class';
 
 const KEY_CODES_ENTER = 13;
@@ -46,7 +46,7 @@ export class NgxFormValidatorDirective implements OnInit, OnDestroy {
         private renderer: Renderer2,
         private elementRef: ElementRef,
         private _validator: NgxFormValidatorService,
-        private ngForm: NgForm
+        private ngForm: ControlContainer
     ) {}
 
     ngOnInit() {
@@ -58,7 +58,7 @@ export class NgxFormValidatorDirective implements OnInit, OnDestroy {
             );
         });
 
-        this.validator.initialize(this.ngForm, this.elementRef.nativeElement);
+        this.validator.initialize(this.ngForm as NgForm, this.elementRef.nativeElement);
     }
 
     submit($event: Event) {

@@ -1,0 +1,68 @@
+<div class="col-sm col-sm-6">
+    <form name="exampleForm" novalidate [ngxFormValidator]="validatorConfig">
+        <div class="form-group">
+            <label for="email1">Email address</label>
+            <input
+                type="email"
+                class="form-control"
+                name="email"
+                id="email1"
+                [(ngModel)]="model.email"
+                required
+                email
+                placeholder="Enter email (validators: required & email)"
+            />
+        </div>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input
+                type="text"
+                class="form-control"
+                id="username"
+                required
+                pattern="^[A-Za-z]{1}[0-9A-Za-z_]{1,19}"
+                name="username"
+                [(ngModel)]="model.username"
+                [ngxUniqueCheck]="checkUsername"
+                placeholder="Enter username (validators: required & pattern & ngxUniqueCheck: peter)"
+            />
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input
+                type="password"
+                class="form-control"
+                [(ngModel)]="model.password"
+                name="password"
+                required
+                [maxlength]="'10'"
+                minlength="6"
+                id="exampleInputPassword1"
+                placeholder="Enter password (validators: required, minlength:6, maxlength:10)"
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="exampleInputNumber1">Number</label>
+            <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="model.number"
+                name="number"
+                required
+                ngxMin="10"
+                ngxMax="100"
+                id="exampleInputNumber1"
+                placeholder="Enter number (validators: required, ngxMin: 10, ngxMax: 100)"
+            />
+        </div>
+
+        <div class="form-group" *ngIf="message">
+            <div class="alert alert-success">{{ message }}</div>
+        </div>
+        <button type="button" (ngxFormSubmit)="submit()" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+<div class="col-sm col-sm-6">
+    <pre><code [highlight]="exampleCode"></code></pre>
+</div>

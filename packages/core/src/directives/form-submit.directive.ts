@@ -10,7 +10,6 @@ export class NgxFormSubmitDirective implements OnInit {
     @Output() ngxFormSubmit = new EventEmitter();
 
     constructor(
-        private ngForm: NgForm,
         private validatorDirective: NgxFormValidatorDirective
     ) {
     }
