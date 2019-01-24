@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NgxValidatorConfig } from '../../../core/src/public_api';
 import { exampleCode } from './example-code';
+import { of } from 'rxjs';
 
 @Component({
     selector: 'app-root',
@@ -27,6 +28,10 @@ export class AppComponent {
             }
         }
     };
+
+    uniqueCheck = (value) => {
+        return value === 'example@xx' ? of(true) : of(false);
+    }
 
     setMessage(message: string) {
         this.message = message;
