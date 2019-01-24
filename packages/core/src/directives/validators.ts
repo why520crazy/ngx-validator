@@ -27,7 +27,7 @@ export class MinValidatorDirective implements Validator {
     private validator: ValidatorFn;
 
     @Input() public set ngxMin(value: string) {
-        this.validator = Validators.min(parseInt(value, 10));
+        this.validator = Validators.min(parseFloat(value));
     }
 
     constructor() {}
@@ -52,7 +52,7 @@ export class MaxValidatorDirective implements Validator {
     private validator: ValidatorFn;
 
     @Input() public set ngxMax(value: string) {
-        this.validator = Validators.max(parseInt(value, 10));
+        this.validator = Validators.max(parseFloat(value));
     }
 
     constructor() {}
@@ -63,7 +63,7 @@ export class MaxValidatorDirective implements Validator {
 }
 
 @Directive({
-    selector: '[ngxUniqueCheck]',
+    selector: '[ngxUniqueCheck][formControlName],[ngxUniqueCheck][formControl],[ngxUniqueCheck][ngModel]',
     providers: [
         {
             provide: NG_ASYNC_VALIDATORS,
