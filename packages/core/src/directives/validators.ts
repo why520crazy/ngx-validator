@@ -14,7 +14,7 @@ import { NgxValidators } from '../validators';
 
 @Directive({
     selector:
-        'input[type=number][ngxMin][formControlName],input[type=number][ngxMin][formControl],input[type=number][ngxMin][ngModel],',
+        '[ngxMin][formControlName],[ngxMin][formControl],[ngxMin][ngModel],',
     providers: [
         {
             provide: NG_VALIDATORS,
@@ -39,7 +39,7 @@ export class MinValidatorDirective implements Validator {
 
 @Directive({
     selector:
-        'input[type=number][ngxMax][formControlName],input[type=number][ngxMax][formControl],input[type=number][ngxMax][ngModel]',
+        '[ngxMax][formControlName],[ngxMax][formControl],[ngxMax][ngModel]',
     providers: [
         {
             provide: NG_VALIDATORS,
