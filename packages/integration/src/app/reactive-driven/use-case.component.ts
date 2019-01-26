@@ -38,15 +38,15 @@ export class AppReactiveDrivenUseCaseComponent {
 
     constructor(private formBuilder: FormBuilder) {
         this.formGroup = this.formBuilder.group({
-            email: ['', Validators.required, Validators.email],
+            email: ['', [Validators.required, Validators.email]],
             username: [
                 '',
-                Validators.required,
-                Validators.pattern('^[A-Za-z]{1}[0-9A-Za-z_]{1,19}'),
+                [Validators.required,
+                Validators.pattern('^[A-Za-z]{1}[0-9A-Za-z_]{1,19}')],
                 NgxValidators.uniqueCheckValidator(this.checkUsername)
             ],
-            password: ['', Validators.required, Validators.maxLength(10), Validators.minLength(6)],
-            number: ['', Validators.required, Validators.max(100), Validators.min(10)]
+            password: ['', [Validators.required, Validators.maxLength(10), Validators.minLength(6)]],
+            number: ['', [Validators.required, Validators.max(100), Validators.min(10)]]
         });
     }
 
