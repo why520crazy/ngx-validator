@@ -1,5 +1,5 @@
 <div class="col-sm col-sm-6">
-    <form name="exampleForm" novalidate [ngxFormValidator]="validatorConfig">
+    <form name="exampleForm" novalidate #ngxFormValidator="ngxFormValidator" [ngxFormValidator]="validatorConfig">
         <div class="form-group">
             <label for="email1">Email address</label>
             <input
@@ -56,11 +56,31 @@
                 placeholder="Enter number (validators: required, ngxMin: 10, ngxMax: 100)"
             />
         </div>
-
+        <div class="mb-2"><a href="javascript:;" (click)="showSex = !showSex">{{showSex ? 'Hide' : 'Show'}} Sex</a></div>
+        <div class="form-group" *ngIf="showSex">
+            <label for="exampleSelectSex1">Sex</label>
+            <select
+                name="sex"
+                name="sex"
+                class="form-control"
+                required
+                [(ngModel)]="model.sex"
+                id="exampleSelectSex1"
+                placeholder="please select sex"
+            >
+                <option value="">Please select</option>
+                <option value="men">Men</option>
+                <option value="women">Women</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
         <div class="form-group" *ngIf="message">
             <div class="alert alert-success">{{ message }}</div>
         </div>
-        <button type="button" (ngxFormSubmit)="submit()" class="btn btn-primary">Submit</button>
+        <div class="btn-groups">
+            <button type="button" (ngxFormSubmit)="submit()" class="btn btn-primary">Submit</button>
+            <button type="button" (click)="ngxFormValidator.validator.reset()" class="btn btn-info">Reset</button>
+        </div>
     </form>
 </div>
 <div class="col-sm col-sm-6">

@@ -16,11 +16,14 @@ export class AppTemplateDrivenUseCaseComponent {
 
     exampleCode = exampleCode;
 
+    showSex = false;
+
     model = {
         username: '',
         email: '',
         password: '',
-        number: ''
+        number: '',
+        sex: ''
     };
 
     validatorConfig: NgxValidatorConfig = {
@@ -35,7 +38,7 @@ export class AppTemplateDrivenUseCaseComponent {
 
     checkUsername = (value: string) => {
         return value === 'peter' ? of(true).pipe(delay(200)) : of(false).pipe(delay(200));
-    }
+    };
 
     setMessage(message: string) {
         this.message = message;
