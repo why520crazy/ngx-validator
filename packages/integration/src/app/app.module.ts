@@ -12,13 +12,14 @@ import scss from 'highlight.js/lib/languages/scss';
 import typescript from 'highlight.js/lib/languages/typescript';
 import { AppTemplateDrivenUseCaseComponent } from './template-driven/use-case.component';
 import { AppReactiveDrivenUseCaseComponent } from './reactive-driven/use-case.component';
+import { CustomSelectComponent } from './custom-select/custom-select.component';
 
 export function hljsLanguages() {
     return [{ name: 'typescript', func: typescript }, { name: 'scss', func: scss }, { name: 'xml', func: xml }];
 }
 
 @NgModule({
-    declarations: [AppComponent, AppTemplateDrivenUseCaseComponent, AppReactiveDrivenUseCaseComponent],
+    declarations: [AppComponent, AppTemplateDrivenUseCaseComponent, AppReactiveDrivenUseCaseComponent, CustomSelectComponent],
     imports: [
         BrowserModule,
         FormsModule,

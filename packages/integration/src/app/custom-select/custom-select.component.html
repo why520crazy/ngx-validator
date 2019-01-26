@@ -1,0 +1,6 @@
+<ng-template> <ng-content></ng-content> </ng-template>
+
+<div *ngFor="let option of options">
+    <span class="item" [ngClass]="{'active': selectedValue === option.nativeElement.value}" (click)="selectOption(option)">{{ option.nativeElement.text }}</span>
+</div>
+

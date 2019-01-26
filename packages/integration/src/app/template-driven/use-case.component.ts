@@ -23,7 +23,8 @@ export class AppTemplateDrivenUseCaseComponent {
         email: '',
         password: '',
         number: '',
-        sex: ''
+        sex: '',
+        customSelectValue: ''
     };
 
     validatorConfig: NgxValidatorConfig = {
