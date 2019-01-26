@@ -49,7 +49,7 @@ export class NgxFormValidatorService {
 
     private _tryGetValidation(name: string) {
         if (!this.validations[name]) {
-            this._initializeFormControlValidation(name, this._ngForm.controls[name]);
+            this._initializeFormControlValidation(name, this._getControls()[name]);
         }
         return this.validations[name];
     }
@@ -120,9 +120,13 @@ export class NgxFormValidatorService {
         this._config = config;
     }
 
+    private _getControls() {
+        return this._ngForm.controls || (this._ngForm.control && this._ngForm.control.controls);
+    }
+
     validateControl(name: string) {
         this._clearElementError(name);
-        const control = this._ngForm.controls[name];
+        const control = this._getControls()[name];
         if (control && control.invalid) {
             const errorMessages = this._getValidationMessages(name, control.errors);
             this._setControlValidationError(name, errorMessages);
@@ -133,8 +137,9 @@ export class NgxFormValidatorService {
         // 主要是 无法检测到 ngForm 的 controls 的变化，或者是我没有找到
         // 验证的时候循环 ngForm 的 controls 验证
         // 发现没有 validation 初始化一个，已经存在不会重新初始化，保存缓存数据
-        for (const name in this._ngForm.controls) {
-            if (this._ngForm.controls.hasOwnProperty(name)) {
+        const controls = this._getControls();
+        for (const name in controls) {
+            if (controls.hasOwnProperty(name)) {
                 this._tryGetValidation(name);
                 this.validateControl(name);
             }
@@ -142,7 +147,7 @@ export class NgxFormValidatorService {
         // 移除已经不存在的 validation
         const names = Object.keys(this.validations);
         names.forEach(name => {
-            if (!this._ngForm.controls[name]) {
+            if (!controls[name]) {
                 delete this.validations[name];
             }
         });
