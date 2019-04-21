@@ -32,6 +32,9 @@ export class AppReactiveDrivenUseCaseComponent {
                 required: '用户名不能为空',
                 pattern: '用户名格式不正确，以字母，数字，下划线组成，首字母不能为数字，必须是2-20个字符',
                 ngxUniqueCheck: '输入的用户名已经存在，请重新输入'
+            },
+            street: {
+                required: 'street不能为空',
             }
         }
     };
@@ -41,12 +44,17 @@ export class AppReactiveDrivenUseCaseComponent {
             email: ['', [Validators.required, Validators.email]],
             username: [
                 '',
-                [Validators.required,
-                Validators.pattern('^[A-Za-z]{1}[0-9A-Za-z_]{1,19}')],
+                [Validators.required, Validators.pattern('^[A-Za-z]{1}[0-9A-Za-z_]{1,19}')],
                 NgxValidators.uniqueCheckValidator(this.checkUsername)
             ],
             password: ['', [Validators.required, Validators.maxLength(10), Validators.minLength(6)]],
-            number: ['', [Validators.required, Validators.max(100), Validators.min(10)]]
+            number: ['', [Validators.required, Validators.max(100), Validators.min(10)]],
+            address: this.formBuilder.group({
+                street: ['', Validators.required],
+                city: this.formBuilder.group({
+                    country: ['', Validators.required]
+                })
+            })
         });
     }
 

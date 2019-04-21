@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { NgForm, AbstractControl, ValidationErrors } from '@angular/forms';
+import { NgForm, AbstractControl, ValidationErrors, FormGroupDirective, FormControlName } from '@angular/forms';
 import { NgxValidatorLoader } from './validator-loader.service';
 import { NgxValidatorConfig, Dictionary } from './validator.class';
 import { transformMessage } from './message-transformers';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class NgxFormValidatorService {
-    private _ngForm: NgForm;
+    private _ngForm: NgForm | FormGroupDirective;
 
     private _formElement: HTMLElement;
 
@@ -49,12 +50,12 @@ export class NgxFormValidatorService {
 
     private _tryGetValidation(name: string) {
         if (!this.validations[name]) {
-            this._initializeFormControlValidation(name, this._getControls()[name]);
+            this._initializeFormControlValidation(name, this._getControlByName(name)); // this._getControls()[name]
         }
         return this.validations[name];
     }
 
-    private _initializeFormControlValidation(name: string, control: AbstractControl) {
+    private _initializeFormControlValidation(name: string, control: AbstractControl | FormControlName) {
         this.validations[name] = {
             hasError: false,
             errorMessages: []
@@ -111,7 +112,7 @@ export class NgxFormValidatorService {
 
     constructor(private thyFormValidateLoader: NgxValidatorLoader) {}
 
-    initialize(ngForm: NgForm, formElement: HTMLElement) {
+    initialize(ngForm: NgForm | FormGroupDirective, formElement: HTMLElement) {
         this._ngForm = ngForm;
         this._formElement = formElement;
     }
@@ -121,12 +122,30 @@ export class NgxFormValidatorService {
     }
 
     private _getControls() {
-        return this._ngForm.controls || (this._ngForm.control && this._ngForm.control.controls);
+        if ((this._ngForm as NgForm).controls) {
+            return (this._ngForm as NgForm).controls;
+        } else {
+            const controls = {};
+            (this._ngForm as FormGroupDirective).directives.forEach(directive => {
+                controls[directive.name] = directive;
+            });
+            return controls;
+        }
+    }
+
+    private _getControlsNames(): string[] {
+        const controls = this._getControls();
+        return Object.keys(controls);
+    }
+
+    private _getControlByName(name: string): AbstractControl | FormControlName {
+        const controls = this._getControls();
+        return controls[name];
     }
 
     validateControl(name: string) {
         this._clearElementError(name);
-        const control = this._getControls()[name];
+        const control = this._getControlByName(name); // this._getControls()[name];
         if (control && control.invalid) {
             const errorMessages = this._getValidationMessages(name, control.errors);
             this._setControlValidationError(name, errorMessages);
