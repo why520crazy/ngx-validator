@@ -1,5 +1,12 @@
 import { Injectable } from '@angular/core';
-import { NgForm, AbstractControl, ValidationErrors, FormGroupDirective, FormControlName } from '@angular/forms';
+import {
+    NgForm,
+    AbstractControl,
+    ValidationErrors,
+    FormGroupDirective,
+    FormControlName,
+    NgControl
+} from '@angular/forms';
 import { NgxValidatorLoader } from './validator-loader.service';
 import { NgxValidatorConfig, Dictionary } from './validator.class';
 import { transformMessage } from './message-transformers';
@@ -12,6 +19,8 @@ export class NgxFormValidatorService {
     private _formElement: HTMLElement;
 
     private _config: NgxValidatorConfig;
+
+    private _controls: NgControl[] = [];
 
     // public errors: string[];
 
@@ -48,14 +57,14 @@ export class NgxFormValidatorService {
         }
     }
 
-    private _tryGetValidation(name: string) {
+    _tryGetValidation(name: string) {
         if (!this.validations[name]) {
-            this._initializeFormControlValidation(name, this._getControlByName(name)); // this._getControls()[name]
+            this._initializeFormControlValidation(name, this._getControlByName(name));
         }
         return this.validations[name];
     }
 
-    private _initializeFormControlValidation(name: string, control: AbstractControl | FormControlName) {
+    private _initializeFormControlValidation(name: string, control: AbstractControl | FormControlName | NgControl) {
         this.validations[name] = {
             hasError: false,
             errorMessages: []
@@ -117,25 +126,40 @@ export class NgxFormValidatorService {
         this._formElement = formElement;
     }
 
+    subscriptFormControlValidation(controls: NgControl[]) {
+        if ((this._config && this._config.validateOn === 'blur') || this.thyFormValidateLoader.validateOn === 'blur') {
+            (controls || []).forEach((control: NgControl) => {
+                if (!this._controls.find(item => item.name === control.name)) {
+                    this._initializeFormControlValidation(control.name, control);
+                    const element: HTMLElement = this._getElement(control.name);
+                    if (element) {
+                        element.onblur = (event: FocusEvent) => {
+                            this.validateControl(control.name);
+                        };
+                        // control.valueAccessor.registerOnTouched(() => {
+                        //     this.validateControl(control.name);
+                        // });
+                    }
+                }
+            });
+            this._controls = controls;
+        }
+    }
+
     setValidatorConfig(config: NgxValidatorConfig) {
         this._config = config;
     }
 
     private _getControls() {
-        if ((this._ngForm as NgForm).controls) {
+        if (this._ngForm instanceof NgForm) {
             return (this._ngForm as NgForm).controls;
-        } else {
+        } else if (this._ngForm instanceof FormGroupDirective) {
             const controls = {};
             (this._ngForm as FormGroupDirective).directives.forEach(directive => {
                 controls[directive.name] = directive;
             });
             return controls;
         }
-    }
-
-    private _getControlsNames(): string[] {
-        const controls = this._getControls();
-        return Object.keys(controls);
     }
 
     private _getControlByName(name: string): AbstractControl | FormControlName {
@@ -145,7 +169,7 @@ export class NgxFormValidatorService {
 
     validateControl(name: string) {
         this._clearElementError(name);
-        const control = this._getControlByName(name); // this._getControls()[name];
+        const control = this._getControlByName(name);
         if (control && control.invalid) {
             const errorMessages = this._getValidationMessages(name, control.errors);
             this._setControlValidationError(name, errorMessages);

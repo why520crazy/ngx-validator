@@ -39,6 +39,13 @@ export class NgxValidatorLoader {
         return this.config.validationFeedbackStrategy;
     }
 
+    get validateOn () {
+        if (!this.config.validateOn) {
+            this.config.validateOn = 'submit';
+        }
+        return this.config.validateOn;
+    }
+
     constructor(
         @Optional()
         @Inject(NGX_VALIDATOR_CONFIG)

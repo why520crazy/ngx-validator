@@ -1,4 +1,14 @@
 <div class="col-sm col-sm-6">
+    <div class="form-group form-check">
+        <input
+            type="checkbox"
+            class="form-check-input"
+            id="exampleCheck1"
+            [(ngModel)]="validateOn"
+            (change)="changeValidateOn()"
+        />
+        <label class="form-check-label" for="exampleCheck1">validate on blur</label>
+    </div>
     <form name="exampleForm" [formGroup]="formGroup" novalidate [ngxFormValidator]="validatorConfig">
         <div class="form-group">
             <label for="email1">Email address</label>
@@ -47,32 +57,32 @@
         </div>
 
         <div class="form-group" formGroupName="address">
-                <h3>Address</h3>
+            <h3>Address</h3>
             <div class="form-group">
-                    <label for="street1">Street</label>
-                    <input
-                type="text"
-                class="form-control"
-                name="street"
-                id="street1"
-                formControlName="street"
-                placeholder="Enter street (validators: required)"
-            />
+                <label for="street1">Street</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    name="street"
+                    id="street1"
+                    formControlName="street"
+                    placeholder="Enter street (validators: required)"
+                />
             </div>
             <div class="form-group" formGroupName="city">
                 <div class="form-group">
                     <label for="country1">Country</label>
                     <input
-                type="text"
-                class="form-control"
-                name="country"
-                id="country1"
-                formControlName="country"
-                placeholder="Enter country (validators: required)"
-            />
+                        type="text"
+                        class="form-control"
+                        name="country"
+                        id="country1"
+                        formControlName="country"
+                        placeholder="Enter country (validators: required)"
+                    />
+                </div>
             </div>
-            </div>
-          </div>
+        </div>
 
         <div class="form-group" *ngIf="message">
             <div class="alert alert-success">{{ message }}</div>

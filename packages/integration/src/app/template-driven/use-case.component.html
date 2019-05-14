@@ -1,5 +1,9 @@
 <div class="col-sm col-sm-6">
-    <form name="exampleForm" novalidate #ngxFormValidator="ngxFormValidator" [ngxFormValidator]="validatorConfig">
+    <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" id="exampleCheck1" [(ngModel)]="validateOn" (change)="changeValidateOn()" />
+        <label class="form-check-label" for="exampleCheck1">validate on blur</label>
+    </div>
+    <form name="exampleForm" *ngIf="loadingDone" novalidate #ngxFormValidator="ngxFormValidator" [ngxFormValidator]="validatorConfig">
         <div class="form-group">
             <label for="email1">Email address</label>
             <input
@@ -58,7 +62,13 @@
         </div>
         <div class="form-group">
             <label for="exampleCustomSelect1">Custom Select</label>
-            <app-custom-select name="customSelect" class="ngx-custom-select" required="" [(ngModel)]="model.customSelectValue" id="exampleCustomSelect1">
+            <app-custom-select
+                name="customSelect"
+                class="ngx-custom-select"
+                required=""
+                [(ngModel)]="model.customSelectValue"
+                id="exampleCustomSelect1"
+            >
                 <option value="1" #option>One</option>
                 <option value="2" #option>Two</option>
             </app-custom-select>

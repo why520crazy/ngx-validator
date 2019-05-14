@@ -1,6 +1,17 @@
-import { Directive, OnInit, NgZone, Renderer2, ElementRef, Input, OnDestroy } from '@angular/core';
+import {
+    Directive,
+    OnInit,
+    NgZone,
+    Renderer2,
+    ElementRef,
+    Input,
+    OnDestroy,
+    ContentChildren,
+    AfterContentInit,
+    QueryList
+} from '@angular/core';
 import { NgxFormValidatorService } from '../validator.service';
-import { NgForm, ControlContainer } from '@angular/forms';
+import { NgForm, ControlContainer, NgControl } from '@angular/forms';
 import { NgxValidatorConfig } from '../validator.class';
 
 const KEY_CODES_ENTER = 13;
@@ -20,7 +31,12 @@ export enum NgxEnterKeyMode {
     providers: [NgxFormValidatorService],
     exportAs: 'ngxFormValidator'
 })
-export class NgxFormValidatorDirective implements OnInit, OnDestroy {
+export class NgxFormValidatorDirective implements OnInit, AfterContentInit, OnDestroy {
+    @ContentChildren(NgControl, {
+        descendants: true
+    })
+    public controls: QueryList<NgControl>;
+
     private unsubscribe: () => void;
 
     onSubmitSuccess: ($event: any) => void;
@@ -59,6 +75,13 @@ export class NgxFormValidatorDirective implements OnInit, OnDestroy {
         });
 
         this.validator.initialize(this.ngForm as NgForm, this.elementRef.nativeElement);
+    }
+
+    ngAfterContentInit() {
+        this.validator.subscriptFormControlValidation(this.controls.toArray());
+        this.controls.changes.subscribe(controls => {
+            this.validator.subscriptFormControlValidation(this.controls.toArray());
+        });
     }
 
     submit($event: Event) {

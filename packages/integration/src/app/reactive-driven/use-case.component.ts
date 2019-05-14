@@ -26,6 +26,10 @@ export class AppReactiveDrivenUseCaseComponent {
         number: ''
     };
 
+    validateOn = false;
+
+    loadingDone = true;
+
     validatorConfig: NgxValidatorConfig = {
         validationMessages: {
             username: {
@@ -36,7 +40,8 @@ export class AppReactiveDrivenUseCaseComponent {
             street: {
                 required: 'street不能为空',
             }
-        }
+        },
+        validateOn: this.validateOn ? 'blur' : 'submit'
     };
 
     constructor(private formBuilder: FormBuilder) {
@@ -55,6 +60,14 @@ export class AppReactiveDrivenUseCaseComponent {
                     country: ['', Validators.required]
                 })
             })
+        });
+    }
+
+    changeValidateOn() {
+        this.loadingDone = false;
+        this.validatorConfig.validateOn = this.validateOn ? 'blur' : 'submit';
+        setTimeout(() => {
+            this.loadingDone = true;
         });
     }
 

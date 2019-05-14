@@ -7,9 +7,12 @@ export interface Dictionary<T> {
 
 export declare type NgxValidationMessages = Dictionary<Dictionary<string>>;
 
+export declare type NgxValidateOnTypes = 'submit' | 'blur';
+
 export interface NgxValidatorConfig {
     validationFeedbackStrategy?: IValidationFeedbackStrategy;
     validationMessages?: NgxValidationMessages;
+    validateOn?: NgxValidateOnTypes;
 }
 export interface NgxValidatorGlobalConfig extends NgxValidatorConfig {
     globalValidationMessages?: Dictionary<string>;
