@@ -7,7 +7,7 @@
         "start": "ng serve",
         "build": "ng build core",
         "build:docs": "ng build integration --baseHref /ngx-validator/ --prod",
-        "publish": "cd ./dist/core && npm publish",
+        "pub": "cd ./dist/core && npm publish",
         "test": "ng test core",
         "test:demo": "ng test integration",
         "lint": "ng lint core",

@@ -68,7 +68,7 @@ $ npm run test
 ## Building & Publish
 ```
 $ npm run build
-$ npm run publish
+$ npm run pub
 ```
 
 ## Links
