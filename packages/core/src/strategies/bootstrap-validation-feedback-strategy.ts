@@ -1,9 +1,9 @@
-import { IValidationFeedbackStrategy } from './validation-feedback-strategy';
+import { ValidationFeedbackStrategy } from './validation-feedback-strategy';
 
 const INVALID_CLASS = 'is-invalid';
 const INVALID_FEEDBACK_CLASS = 'invalid-feedback';
 
-export class BootstrapValidationFeedbackStrategy implements IValidationFeedbackStrategy {
+export class BootstrapValidationFeedbackStrategy implements ValidationFeedbackStrategy {
     constructor() {}
 
     showError(element: HTMLElement, errorMessages: string[]): void {

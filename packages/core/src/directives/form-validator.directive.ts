@@ -78,9 +78,9 @@ export class NgxFormValidatorDirective implements OnInit, AfterContentInit, OnDe
     }
 
     ngAfterContentInit() {
-        this.validator.subscriptFormControlValidation(this.controls.toArray());
+        this.validator.initializeFormControlsValidation(this.controls.toArray());
         this.controls.changes.subscribe(controls => {
-            this.validator.subscriptFormControlValidation(this.controls.toArray());
+            this.validator.initializeFormControlsValidation(this.controls.toArray());
         });
     }
 

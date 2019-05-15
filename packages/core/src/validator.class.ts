@@ -1,5 +1,5 @@
 import { InjectionToken } from '@angular/core';
-import { IValidationFeedbackStrategy } from './strategies';
+import { ValidationFeedbackStrategy } from './strategies';
 
 export interface Dictionary<T> {
     [key: string]: T;
@@ -7,12 +7,12 @@ export interface Dictionary<T> {
 
 export declare type NgxValidationMessages = Dictionary<Dictionary<string>>;
 
-export declare type NgxValidateOnTypes = 'submit' | 'blur';
+export declare type NgxValidateOn = 'submit' | 'blur';
 
 export interface NgxValidatorConfig {
-    validationFeedbackStrategy?: IValidationFeedbackStrategy;
+    validationFeedbackStrategy?: ValidationFeedbackStrategy;
     validationMessages?: NgxValidationMessages;
-    validateOn?: NgxValidateOnTypes;
+    validateOn?: NgxValidateOn;
 }
 export interface NgxValidatorGlobalConfig extends NgxValidatorConfig {
     globalValidationMessages?: Dictionary<string>;

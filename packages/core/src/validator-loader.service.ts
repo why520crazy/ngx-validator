@@ -7,7 +7,7 @@ import {
     DEFAULT_GLOBAL_VALIDATION_MESSAGES
 } from './validator.class';
 import { ValidationErrors } from '@angular/forms';
-import { IValidationFeedbackStrategy, ValidationFeedbackStrategyBuilder } from './strategies';
+import { ValidationFeedbackStrategy, ValidationFeedbackStrategyBuilder } from './strategies';
 
 const defaultValidatorConfig: NgxValidatorGlobalConfig = {
     validationFeedbackStrategy: ValidationFeedbackStrategyBuilder.bootstrap(),
@@ -32,7 +32,7 @@ export class NgxValidatorLoader {
         return this.config.validationMessages;
     }
 
-    get validationFeedbackStrategy(): IValidationFeedbackStrategy {
+    get validationFeedbackStrategy(): ValidationFeedbackStrategy {
         if (!this.config.validationFeedbackStrategy) {
             this.config.validationFeedbackStrategy = ValidationFeedbackStrategyBuilder.bootstrap();
         }

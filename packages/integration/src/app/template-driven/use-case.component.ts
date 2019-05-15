@@ -1,5 +1,5 @@
 import { Component, HostBinding } from '@angular/core';
-import { NgxValidatorConfig, NgxValidateOnTypes } from '../../../../core/src/public_api';
+import { NgxValidatorConfig } from '../../../../core/src/public_api';
 import { exampleCode } from './example-code';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';

@@ -1,15 +1,15 @@
 import { NoopValidationFeedbackStrategy } from './noop-validation-feedback-strategy';
 import { BootstrapValidationFeedbackStrategy } from './bootstrap-validation-feedback-strategy';
-import { IValidationFeedbackStrategy } from './validation-feedback-strategy';
+import { ValidationFeedbackStrategy } from './validation-feedback-strategy';
 
 export class ValidationFeedbackStrategyBuilder {
-    static noop(): IValidationFeedbackStrategy {
+    static noop(): ValidationFeedbackStrategy {
         return new NoopValidationFeedbackStrategy();
     }
 
-    static bootstrap(): IValidationFeedbackStrategy {
+    static bootstrap(): ValidationFeedbackStrategy {
         return new BootstrapValidationFeedbackStrategy();
     }
 }
 
-export { IValidationFeedbackStrategy, NoopValidationFeedbackStrategy, BootstrapValidationFeedbackStrategy };
+export { ValidationFeedbackStrategy, NoopValidationFeedbackStrategy, BootstrapValidationFeedbackStrategy };

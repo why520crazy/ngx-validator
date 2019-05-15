@@ -126,7 +126,7 @@ export class NgxFormValidatorService {
         this._formElement = formElement;
     }
 
-    subscriptFormControlValidation(controls: NgControl[]) {
+    initializeFormControlsValidation(controls: NgControl[]) {
         if ((this._config && this._config.validateOn === 'blur') || this.thyFormValidateLoader.validateOn === 'blur') {
             (controls || []).forEach((control: NgControl) => {
                 if (!this._controls.find(item => item.name === control.name)) {
@@ -136,9 +136,6 @@ export class NgxFormValidatorService {
                         element.onblur = (event: FocusEvent) => {
                             this.validateControl(control.name);
                         };
-                        // control.valueAccessor.registerOnTouched(() => {
-                        //     this.validateControl(control.name);
-                        // });
                     }
                 }
             });
