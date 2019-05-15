@@ -7,7 +7,7 @@ import { createFakeEvent, createKeyboardEvent, dispatchEvent } from '../testing'
 import { By } from '@angular/platform-browser';
 import { FormsModule, NgForm, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { IValidationFeedbackStrategy } from '../strategies';
+import { ValidationFeedbackStrategy } from '../strategies';
 import { NgxValidators } from '../validators';
 
 const INVALID_CLASS = 'is-invalid';
@@ -454,7 +454,7 @@ class SimpleReactiveFormDemoComponent {
     submit() {}
 }
 
-class CustomValidationFeedbackStrategy implements IValidationFeedbackStrategy {
+class CustomValidationFeedbackStrategy implements ValidationFeedbackStrategy {
     showError(element: HTMLElement, errorMessages: string[]): void {
         element.classList.add(CUSTOM_INVALID_CLASS);
         if (element && element.parentElement) {
