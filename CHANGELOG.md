@@ -21,7 +21,7 @@ All notable changes to this project will be documented in this file. See [standa
 -   add validator loader service some test cases ([6722cce](https://github.com/why520crazy/ngx-validator/commit/6722cce))
 -   change node version 8.11.3 ([9c031e3](https://github.com/why520crazy/ngx-validator/commit/9c031e3))
 -   change travis.yml config ([8fa1d0c](https://github.com/why520crazy/ngx-validator/commit/8fa1d0c))
--   fix error beacuse renamee ValidationFeedbackStrategy ([906a735](https://github.com/why520crazy/ngx-validator/commit/906a735))
+-   fix error because rename ValidationFeedbackStrategy ([906a735](https://github.com/why520crazy/ngx-validator/commit/906a735))
 
 ## 0.0.4
 

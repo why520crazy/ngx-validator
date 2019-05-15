@@ -4,7 +4,9 @@ import { map } from 'rxjs/operators';
 
 export class NgxValidators {
     static uniqueCheckValidator(uniqueCheckFn: (value: any) => Observable<boolean>) {
-        return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
+        const result = (
+            control: AbstractControl
+        ): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
             if (control.value) {
                 return uniqueCheckFn(control.value).pipe(
                     map(isUnique => {
@@ -15,5 +17,6 @@ export class NgxValidators {
                 return of(null);
             }
         };
+        return result;
     }
 }
