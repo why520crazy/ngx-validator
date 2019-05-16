@@ -6,7 +6,7 @@ An Angular7+ form validator library
 
 ## Demo
 
-![](https://github.com/why520crazy/ngx-validator/tree/master/packages/integration/src/assets/images/ngx-validator-live-demo.gif)
+![ngx-validator-live-demo.gif](https://github.com/why520crazy/ngx-validator/blob/master/packages/integration/src/assets/images/ngx-validator-live-demo.gif?raw=true)
 
 [Live Demo](https://why520crazy.github.io/ngx-validator/index.html)
 
