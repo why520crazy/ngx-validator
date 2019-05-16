@@ -75,6 +75,8 @@ validatorConfig: NgxValidatorConfig = {
 
 [如何优雅的使用 Angular 表单验证](https://zhuanlan.zhihu.com/p/51467181)
 
+[Angular 表单验证类库 ngx-validator 1.0 正式发布](https://github.com/why520crazy/ngx-validator/blob/master/1.0.0-publish.md)
+
 ## Development
 
 ```
