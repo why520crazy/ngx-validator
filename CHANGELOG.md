@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0](https://github.com/why520crazy/ngx-validator/compare/v0.0.5...v1.0.0) (2019-05-16)
+
+### Build System
+
+-   fix build error arrow lambda not supported in static function ([e4c5e66](https://github.com/why520crazy/ngx-validator/commit/e4c5e66))
+-   fix pub-only 0.0.5 ([a9541dc](https://github.com/why520crazy/ngx-validator/commit/a9541dc))
+
 ### 0.0.5 (2019-05-15)
 
 ### Bug Fixes
