@@ -31,7 +31,9 @@ export function hljsLanguages() {
         BrowserModule,
         FormsModule,
         ReactiveFormsModule,
-        NgxValidatorModule,
+        NgxValidatorModule.forRoot({
+            validateOn: 'submit'
+        }),
         HighlightModule.forRoot({
             languages: hljsLanguages
         }),
