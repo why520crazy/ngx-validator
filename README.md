@@ -78,7 +78,7 @@ validatorConfig: NgxValidatorConfig = {
 | Name                       | Type                                                           | Description                                                                                                 |
 | -------------------------- | -------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
 | validationMessages         | {[controlName: string]: {[validatorErrorKey: string]: string}} | validation rules                                                                                            |
-| validationFeedbackStrategy | IValidationFeedbackStrategy                                    | validation feedback strategy which contains error show and hide, it will be global configuration if not set |
+| validationFeedbackStrategy | ValidationFeedbackStrategy                                     | validation feedback strategy which contains error show and hide, it will be global configuration if not set |
 | validateOn                 | 'submit' \| 'blur'                                             | it will be global configuration's validateOn if not set                                                     |
 
 ```
@@ -101,7 +101,7 @@ Global configuration can be set by `NgxValidatorModule.forRoot(config)`, or by i
 | Name                       | Type                                                           | Description                                                     |
 | -------------------------- | -------------------------------------------------------------- | --------------------------------------------------------------- |
 | validationMessages         | {[controlName: string]: {[validatorErrorKey: string]: string}} | validation Rules                                                |
-| validationFeedbackStrategy | IValidationFeedbackStrategy                                    | validation feedback strategy which contains error show and hide |
+| validationFeedbackStrategy | ValidationFeedbackStrategy                                     | validation feedback strategy which contains error show and hide |
 | globalValidationMessages   | {[validatorErrorKey: string]: string}                          | validator default validation rules                              |
 | validateOn                 | 'submit' \| 'blur'                                             | validate trigger                                                |
 
@@ -136,7 +136,7 @@ Global configuration can be set by `NgxValidatorModule.forRoot(config)`, or by i
 const CUSTOM_INVALID_CLASS = 'custom-invalid';
 const CUSTOM_INVALID_FEEDBACK_CLASS = 'custom-invalid-feedback';
 
-export class CustomValidationFeedbackStrategy implements IValidationFeedbackStrategy {
+export class CustomValidationFeedbackStrategy implements ValidationFeedbackStrategy {
     showError(element: HTMLElement, errorMessages: string[]): void {
         element.classList.add(CUSTOM_INVALID_CLASS);
         // add element show error message
