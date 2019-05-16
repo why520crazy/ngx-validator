@@ -1,6 +1,5 @@
 import { Component, HostBinding } from '@angular/core';
-import { NgxValidatorConfig, NgxValidators } from '../../../../core/src/public_api';
-import { exampleCode } from './example-code';
+import { NgxValidatorConfig, NgxValidators } from '@why520crazy/ngx-validator';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
@@ -13,9 +12,18 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 export class AppReactiveDrivenUseCaseComponent {
     @HostBinding('class.row') _isRow = true;
 
-    message = '';
+    codeExamples = [
+        {
+            file: './use-case.component.ts',
+            content: require('!!raw-loader!./use-case.component.ts')
+        },
+        {
+            file: './use-case.component.html',
+            content: require('!!raw-loader!./use-case.component.html')
+        }
+    ];
 
-    exampleCode = exampleCode;
+    message = '';
 
     formGroup: FormGroup;
 
@@ -38,7 +46,7 @@ export class AppReactiveDrivenUseCaseComponent {
                 ngxUniqueCheck: '输入的用户名已经存在，请重新输入'
             },
             street: {
-                required: 'street不能为空',
+                required: 'street不能为空'
             }
         },
         validateOn: this.validateOn ? 'blur' : 'submit'
@@ -73,7 +81,7 @@ export class AppReactiveDrivenUseCaseComponent {
 
     checkUsername = (value: string) => {
         return value === 'peter' ? of(true).pipe(delay(200)) : of(false).pipe(delay(200));
-    }
+    };
 
     setMessage(message: string) {
         this.message = message;

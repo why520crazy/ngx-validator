@@ -1,6 +1,5 @@
 import { Component, HostBinding } from '@angular/core';
-import { NgxValidatorConfig } from '../../../../core/src/public_api';
-import { exampleCode } from './example-code';
+import { NgxValidatorConfig } from '@why520crazy/ngx-validator';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
@@ -10,11 +9,20 @@ import { delay } from 'rxjs/operators';
     styleUrls: ['./use-case.component.scss']
 })
 export class AppTemplateDrivenUseCaseComponent {
+    codeExamples = [
+        {
+            file: './use-case.component.ts',
+            content: require('!!raw-loader!./use-case.component.ts')
+        },
+        {
+            file: './use-case.component.html',
+            content: require('!!raw-loader!./use-case.component.html')
+        }
+    ];
+
     @HostBinding('class.row') _isRow = true;
 
     message = '';
-
-    exampleCode = exampleCode;
 
     showSex = false;
 

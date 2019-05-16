@@ -17,7 +17,7 @@
             &.active {
                 color: #22d7bb;
             }
-            &:first-child {
+            &:not(:last-child) {
                 &::after {
                     content: ' | ';
                     color: #ddd;

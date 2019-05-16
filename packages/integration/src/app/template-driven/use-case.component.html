@@ -1,9 +1,21 @@
 <div class="col-sm col-sm-6">
     <div class="form-group form-check">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1" [(ngModel)]="validateOn" (change)="changeValidateOn()" />
+        <input
+            type="checkbox"
+            class="form-check-input"
+            id="exampleCheck1"
+            [(ngModel)]="validateOn"
+            (change)="changeValidateOn()"
+        />
         <label class="form-check-label" for="exampleCheck1">validate on blur</label>
     </div>
-    <form name="exampleForm" *ngIf="loadingDone" novalidate #ngxFormValidator="ngxFormValidator" [ngxFormValidator]="validatorConfig">
+    <form
+        name="exampleForm"
+        *ngIf="loadingDone"
+        novalidate
+        #ngxFormValidator="ngxFormValidator"
+        [ngxFormValidator]="validatorConfig"
+    >
         <div class="form-group">
             <label for="email1">Email address</label>
             <input
@@ -103,5 +115,5 @@
     </form>
 </div>
 <div class="col-sm col-sm-6">
-    <pre><code [highlight]="exampleCode"></code></pre>
+    <app-code-example [examples]="codeExamples"></app-code-example>
 </div>

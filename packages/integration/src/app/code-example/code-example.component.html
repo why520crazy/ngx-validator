@@ -1,0 +1,6 @@
+<ul class="nav nav-tabs">
+    <li class="nav-item" *ngFor="let example of examples" (click)="currentExample = example">
+        <a class="nav-link" [ngClass]="{ active: currentExample === example }" href="#">{{ example.file }}</a>
+    </li>
+</ul>
+<pre *ngIf="currentExample"><code [highlight]="currentExample?.content"></code></pre>
