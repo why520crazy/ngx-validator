@@ -1,0 +1,42 @@
+{
+  "projectName": "@why520crazy/ngx-validator",
+  "projectOwner": "why520carzy",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "commitConvention": "none",
+  "contributors": [
+    {
+      "login": "why520crazy",
+      "name": "why520crazy",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/3959960?v=4",
+      "profile": "https://www.zhihu.com/people/why520crazy/activities",
+      "contributions": [
+        "question"
+      ]
+    },
+    {
+      "login": "luxiaobei",
+      "name": "luxiaobei",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/13583957?v=4",
+      "profile": "https://github.com/luxiaobei",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "walkerkay",
+      "name": "Walker",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/15701592?v=4",
+      "profile": "https://github.com/walkerkay",
+      "contributions": [
+        "design"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}

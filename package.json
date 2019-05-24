@@ -18,7 +18,9 @@
         "test:demo": "ng test integration",
         "lint": "ng lint core",
         "lint:demo": "ng lint integration",
-        "e2e": "ng e2e"
+        "e2e": "ng e2e",
+        "contributors:add": "all-contributors add",
+        "contributors:generate": "all-contributors generate"
     },
     "private": false,
     "repository": "https://github.com/why520crazy/ngx-validator",
@@ -51,6 +53,7 @@
         "@types/jasmine": "~2.8.8",
         "@types/jasminewd2": "~2.0.3",
         "@types/node": "^8.10.48",
+        "all-contributors-cli": "^6.6.0",
         "codelyzer": "~4.5.0",
         "highlight.js": "^9.13.1",
         "husky": "^2.3.0",

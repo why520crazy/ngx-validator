@@ -1,4 +1,4 @@
-# ngx-validator [![Build Status](https://api.travis-ci.org/why520crazy/ngx-validator.svg?branch=master)](https://travis-ci.org/why520crazy/ngx-validator) [![npm version](https://badge.fury.io/js/%40why520crazy%2Fngx-validator.svg)](https://www.npmjs.com/@why520crazy/ngx-validator)
+# ngx-validator [![Build Status](https://api.travis-ci.org/why520crazy/ngx-validator.svg?branch=master)](https://travis-ci.org/why520crazy/ngx-validator) [![npm version](https://badge.fury.io/js/%40why520crazy%2Fngx-validator.svg)](https://www.npmjs.com/@why520crazy/ngx-validator) [![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors)
 
 An Angular7+ form validator library, may be the best angular validator library in the world.
 
@@ -183,3 +183,15 @@ $ npm run pub
 ## License
 
 [MIT License](https://github.com/why520crazy/ngx-validator/blob/master/LICENSE)
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore -->
+<table><tr><td align="center"><a href="https://www.zhihu.com/people/why520crazy/activities"><img src="https://avatars2.githubusercontent.com/u/3959960?v=4" width="100px;" alt="why520crazy"/><br /><sub><b>why520crazy</b></sub></a><br /><a href="#question-why520crazy" title="Answering Questions">💬</a></td><td align="center"><a href="https://github.com/luxiaobei"><img src="https://avatars1.githubusercontent.com/u/13583957?v=4" width="100px;" alt="luxiaobei"/><br /><sub><b>luxiaobei</b></sub></a><br /><a href="https://github.com/why520carzy/@why520crazy/ngx-validator/commits?author=luxiaobei" title="Code">💻</a></td><td align="center"><a href="https://github.com/walkerkay"><img src="https://avatars1.githubusercontent.com/u/15701592?v=4" width="100px;" alt="Walker"/><br /><sub><b>Walker</b></sub></a><br /><a href="#design-walkerkay" title="Design">🎨</a></td></tr></table>
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
