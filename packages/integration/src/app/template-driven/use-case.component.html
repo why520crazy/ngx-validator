@@ -1,13 +1,18 @@
 <div class="col-sm col-sm-6">
-    <div class="form-group form-check">
-        <input
-            type="checkbox"
-            class="form-check-input"
-            id="exampleCheck1"
+    <div class="form-group">
+        <label for="validateOn">validateOn</label>
+        <select
+            name="validateOn"
+            class="form-control"
+            required
             [(ngModel)]="validateOn"
+            id="validateOn"
             (change)="changeValidateOn()"
-        />
-        <label class="form-check-label" for="exampleCheck1">validate on blur</label>
+        >
+            <option value="change">change</option>
+            <option value="blur">blur</option>
+            <option value="submit">submit</option>
+        </select>
     </div>
     <form
         name="exampleForm"

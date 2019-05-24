@@ -26,7 +26,7 @@ export class AppTemplateDrivenUseCaseComponent {
 
     showSex = false;
 
-    validateOn = false;
+    validateOn = 'change';
 
     loadingDone = true;
 
@@ -47,12 +47,12 @@ export class AppTemplateDrivenUseCaseComponent {
                 ngxUniqueCheck: '输入的用户名已经存在，请重新输入'
             }
         },
-        validateOn: this.validateOn ? 'blur' : 'submit'
+        validateOn: this.validateOn
     };
 
     changeValidateOn() {
         this.loadingDone = false;
-        this.validatorConfig.validateOn = this.validateOn ? 'blur' : 'submit';
+        this.validatorConfig.validateOn = this.validateOn;
         setTimeout(() => {
             this.loadingDone = true;
         });
@@ -60,7 +60,7 @@ export class AppTemplateDrivenUseCaseComponent {
 
     checkUsername = (value: string) => {
         return value === 'peter' ? of(true).pipe(delay(200)) : of(false).pipe(delay(200));
-    };
+    }
 
     setMessage(message: string) {
         this.message = message;

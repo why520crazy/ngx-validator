@@ -8,9 +8,10 @@ import {
     NgControl
 } from '@angular/forms';
 import { NgxValidatorLoader } from './validator-loader.service';
-import { NgxValidatorConfig, Dictionary } from './validator.class';
+import { NgxValidatorConfig, Dictionary, NgxValidateOn } from './validator.class';
 import { transformMessage } from './message-transformers';
-import { tap } from 'rxjs/operators';
+import { tap, debounceTime, map, distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Injectable()
 export class NgxFormValidatorService {
@@ -69,7 +70,7 @@ export class NgxFormValidatorService {
             hasError: false,
             errorMessages: []
         };
-        control.valueChanges.subscribe(() => {
+        control.valueChanges.subscribe(item => {
             this._clearElementError(name);
         });
     }
@@ -115,6 +116,35 @@ export class NgxFormValidatorService {
         this._getValidationFeedbackStrategy().showError(this._getElement(name), errorMessages);
     }
 
+    private _setControlValidateByBlur(control: NgControl) {
+        const element: HTMLElement = this._getElement(control.name);
+        if (element) {
+            element.onblur = (event: FocusEvent) => {
+                this.validateControl(control.name);
+            };
+        }
+    }
+
+    private _setControlValidateByChange(control: NgControl) {
+        control.valueChanges
+            .pipe(
+                debounceTime(100),
+                distinctUntilChanged(),
+                filter(item => {
+                    return item;
+                }),
+                switchMap(item => {
+                    this.validateControl(control.name);
+                    return of([]);
+                })
+            )
+            .subscribe();
+    }
+
+    private _getValidateOn(): NgxValidateOn {
+        return (this._config && this._config.validateOn) || this.thyFormValidateLoader.validateOn;
+    }
+
     get validatorConfig() {
         return this._config;
     }
@@ -127,15 +157,14 @@ export class NgxFormValidatorService {
     }
 
     initializeFormControlsValidation(controls: NgControl[]) {
-        if ((this._config && this._config.validateOn === 'blur') || this.thyFormValidateLoader.validateOn === 'blur') {
+        if (this._getValidateOn() !== 'submit') {
             (controls || []).forEach((control: NgControl) => {
                 if (!this._controls.find(item => item.name === control.name)) {
                     this._initializeFormControlValidation(control.name, control);
-                    const element: HTMLElement = this._getElement(control.name);
-                    if (element) {
-                        element.onblur = (event: FocusEvent) => {
-                            this.validateControl(control.name);
-                        };
+                    if (this._getValidateOn() === 'blur') {
+                        this._setControlValidateByBlur(control);
+                    } else if (this._getValidateOn() === 'change') {
+                        this._setControlValidateByChange(control);
                     }
                 }
             });

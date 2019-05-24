@@ -34,7 +34,7 @@ export class AppReactiveDrivenUseCaseComponent {
         number: ''
     };
 
-    validateOn = false;
+    validateOn = 'change';
 
     loadingDone = true;
 
@@ -49,7 +49,7 @@ export class AppReactiveDrivenUseCaseComponent {
                 required: 'street不能为空'
             }
         },
-        validateOn: this.validateOn ? 'blur' : 'submit'
+        validateOn: this.validateOn
     };
 
     constructor(private formBuilder: FormBuilder) {
@@ -73,7 +73,7 @@ export class AppReactiveDrivenUseCaseComponent {
 
     changeValidateOn() {
         this.loadingDone = false;
-        this.validatorConfig.validateOn = this.validateOn ? 'blur' : 'submit';
+        this.validatorConfig.validateOn = this.validateOn;
         setTimeout(() => {
             this.loadingDone = true;
         });
@@ -81,7 +81,7 @@ export class AppReactiveDrivenUseCaseComponent {
 
     checkUsername = (value: string) => {
         return value === 'peter' ? of(true).pipe(delay(200)) : of(false).pipe(delay(200));
-    };
+    }
 
     setMessage(message: string) {
         this.message = message;
