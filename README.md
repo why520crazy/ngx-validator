@@ -1,6 +1,6 @@
 # ngx-validator [![Build Status](https://api.travis-ci.org/why520crazy/ngx-validator.svg?branch=master)](https://travis-ci.org/why520crazy/ngx-validator) [![npm version](https://badge.fury.io/js/%40why520crazy%2Fngx-validator.svg)](https://www.npmjs.com/@why520crazy/ngx-validator) [![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors)
 
-An Angular7+ form validator library, may be the best angular validator library in the world.
+An Angular 7+ form validator library, may be the best angular validator library in the world.
 
 > handle validation messages easy and automatic, don't need to manually write error tips templates, just configure validation rules, and support extensive custom feedback strategy.
 
