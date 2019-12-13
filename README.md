@@ -1,4 +1,14 @@
-# ngx-validator [![Build Status](https://api.travis-ci.org/why520crazy/ngx-validator.svg?branch=master)](https://travis-ci.org/why520crazy/ngx-validator) [![npm version](https://badge.fury.io/js/%40why520crazy%2Fngx-validator.svg)](https://www.npmjs.com/@why520crazy/ngx-validator) [![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors)
+# ngx-validator
+
+[![Coverage Status][coveralls-image]][coveralls-url]
+[![Build Status][build-status]](https://travis-ci.org/why520crazy/ngx-validator)
+[![npm version](https://badge.fury.io/js/%40why520crazy%2Fngx-validator.svg)](https://www.npmjs.com/@why520crazy/ngx-validator)
+![npm bundle size (scoped)](https://img.shields.io/bundlephobia/min/@why520crazy/ngx-validator)
+[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors)
+
+[coveralls-image]: https://coveralls.io/repos/github/why520crazy/ngx-validator/badge.svg?branch=master
+[coveralls-url]: https://coveralls.io/github/why520crazy/ngx-validator
+[build-status]: https://api.travis-ci.org/why520crazy/ngx-validator.svg?branch=master
 
 An Angular 7+ form validator library, may be the best angular validator library in the world.
 
