@@ -14,6 +14,7 @@ import { AppTemplateDrivenUseCaseComponent } from './template-driven/use-case.co
 import { AppReactiveDrivenUseCaseComponent } from './reactive-driven/use-case.component';
 import { CustomSelectComponent } from './custom-select/custom-select.component';
 import { CodeExampleComponent } from './code-example/code-example.component';
+import { AppInnerControlComponent } from './inner-control/inner-control.component';
 
 export function hljsLanguages() {
     return [{ name: 'typescript', func: typescript }, { name: 'scss', func: scss }, { name: 'xml', func: xml }];
@@ -39,7 +40,8 @@ const GLOBAL_VALIDATION_MESSAGES = {
         CodeExampleComponent,
         AppTemplateDrivenUseCaseComponent,
         AppReactiveDrivenUseCaseComponent,
-        CustomSelectComponent
+        CustomSelectComponent,
+        AppInnerControlComponent
     ],
     imports: [
         BrowserModule,

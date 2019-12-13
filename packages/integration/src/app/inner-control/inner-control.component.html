@@ -1,0 +1,11 @@
+<label for="email1">Address</label>
+<input
+  type="text"
+  class="form-control"
+  #addressControl="ngModel"
+  name="address"
+  id="address"
+  [(ngModel)]="address"
+  required
+  placeholder="Enter address (validators: required), form control inside component"
+/>

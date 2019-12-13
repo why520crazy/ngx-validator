@@ -55,7 +55,7 @@ export class AppTemplateDrivenUseCaseComponent {
         this.validatorConfig.validateOn = this.validateOn ? 'blur' : 'submit';
         setTimeout(() => {
             this.loadingDone = true;
-        });
+        }, 0);
     }
 
     checkUsername = (value: string) => {
