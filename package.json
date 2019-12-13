@@ -20,7 +20,8 @@
     "lint:demo": "ng lint integration",
     "e2e": "ng e2e",
     "contributors:add": "all-contributors add",
-    "contributors:generate": "all-contributors generate"
+    "contributors:generate": "all-contributors generate",
+    "report-coverage": "cat ./coverage/lcov.info | coveralls"
   },
   "private": false,
   "repository": "https://github.com/why520crazy/ngx-validator",
@@ -54,6 +55,7 @@
     "@types/node": "^8.10.48",
     "all-contributors-cli": "^6.6.0",
     "codelyzer": "^5.0.1",
+    "coveralls": "^3.0.9",
     "highlight.js": "^9.13.1",
     "husky": "^2.3.0",
     "jasmine-core": "~2.99.1",
