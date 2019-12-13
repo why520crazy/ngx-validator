@@ -14,7 +14,7 @@
         },
         J8RR: function(e, t) {
             e.exports =
-                "import { Component, HostBinding } from '@angular/core';\nimport { NgxValidatorConfig } from '@why520crazy/ngx-validator';\nimport { of } from 'rxjs';\nimport { delay } from 'rxjs/operators';\n\n@Component({\n    selector: 'app-template-driven-use-case',\n    templateUrl: './use-case.component.html',\n    styleUrls: ['./use-case.component.scss']\n})\nexport class AppTemplateDrivenUseCaseComponent {\n    codeExamples = [\n        {\n            file: './use-case.component.ts',\n            content: require('!!raw-loader!./use-case.component.ts')\n        },\n        {\n            file: './use-case.component.html',\n            content: require('!!raw-loader!./use-case.component.html')\n        }\n    ];\n\n    @HostBinding('class.row') _isRow = true;\n\n    message = '';\n\n    showSex = false;\n\n    validateOn = false;\n\n    loadingDone = true;\n\n    model = {\n        username: '',\n        email: '',\n        password: '',\n        number: '',\n        sex: '',\n        customSelectValue: ''\n    };\n\n    validatorConfig: NgxValidatorConfig = {\n        validationMessages: {\n            username: {\n                required: '\u7528\u6237\u540d\u4e0d\u80fd\u4e3a\u7a7a',\n                pattern: '\u7528\u6237\u540d\u683c\u5f0f\u4e0d\u6b63\u786e\uff0c\u4ee5\u5b57\u6bcd\uff0c\u6570\u5b57\uff0c\u4e0b\u5212\u7ebf\u7ec4\u6210\uff0c\u9996\u5b57\u6bcd\u4e0d\u80fd\u4e3a\u6570\u5b57\uff0c\u5fc5\u987b\u662f2-20\u4e2a\u5b57\u7b26',\n                ngxUniqueCheck: '\u8f93\u5165\u7684\u7528\u6237\u540d\u5df2\u7ecf\u5b58\u5728\uff0c\u8bf7\u91cd\u65b0\u8f93\u5165'\n            }\n        },\n        validateOn: this.validateOn ? 'blur' : 'submit'\n    };\n\n    changeValidateOn() {\n        this.loadingDone = false;\n        this.validatorConfig.validateOn = this.validateOn ? 'blur' : 'submit';\n        setTimeout(() => {\n            this.loadingDone = true;\n        });\n    }\n\n    checkUsername = (value: string) => {\n        return value === 'peter' ? of(true).pipe(delay(200)) : of(false).pipe(delay(200));\n    };\n\n    setMessage(message: string) {\n        this.message = message;\n    }\n\n    submit() {\n        this.setMessage('This form has submit');\n    }\n}\n";
+                "import { Component, HostBinding } from '@angular/core';\nimport { NgxValidatorConfig } from '@why520crazy/ngx-validator';\nimport { of } from 'rxjs';\nimport { delay } from 'rxjs/operators';\n\n@Component({\n    selector: 'app-template-driven-use-case',\n    templateUrl: './use-case.component.html',\n    styleUrls: ['./use-case.component.scss']\n})\nexport class AppTemplateDrivenUseCaseComponent {\n    codeExamples = [\n        {\n            file: './use-case.component.ts',\n            content: require('!!raw-loader!./use-case.component.ts')\n        },\n        {\n            file: './use-case.component.html',\n            content: require('!!raw-loader!./use-case.component.html')\n        }\n    ];\n\n    @HostBinding('class.row') _isRow = true;\n\n    message = '';\n\n    showSex = false;\n\n    validateOn = false;\n\n    loadingDone = true;\n\n    model = {\n        username: '',\n        email: '',\n        password: '',\n        number: '',\n        sex: '',\n        customSelectValue: ''\n    };\n\n    validatorConfig: NgxValidatorConfig = {\n        validationMessages: {\n            username: {\n                required: '\u7528\u6237\u540d\u4e0d\u80fd\u4e3a\u7a7a',\n                pattern: '\u7528\u6237\u540d\u683c\u5f0f\u4e0d\u6b63\u786e\uff0c\u4ee5\u5b57\u6bcd\uff0c\u6570\u5b57\uff0c\u4e0b\u5212\u7ebf\u7ec4\u6210\uff0c\u9996\u5b57\u6bcd\u4e0d\u80fd\u4e3a\u6570\u5b57\uff0c\u5fc5\u987b\u662f2-20\u4e2a\u5b57\u7b26',\n                ngxUniqueCheck: '\u8f93\u5165\u7684\u7528\u6237\u540d\u5df2\u7ecf\u5b58\u5728\uff0c\u8bf7\u91cd\u65b0\u8f93\u5165'\n            }\n        },\n        validateOn: this.validateOn ? 'blur' : 'submit'\n    };\n\n    changeValidateOn() {\n        this.loadingDone = false;\n        this.validatorConfig.validateOn = this.validateOn ? 'blur' : 'submit';\n        setTimeout(() => {\n            this.loadingDone = true;\n        }, 0);\n    }\n\n    checkUsername = (value: string) => {\n        return value === 'peter' ? of(true).pipe(delay(200)) : of(false).pipe(delay(200));\n    };\n\n    setMessage(message: string) {\n        this.message = message;\n    }\n\n    submit() {\n        this.setMessage('This form has submit');\n    }\n}\n";
         },
         KwcP: function(e, t, n) {
             'use strict';
@@ -16864,13 +16864,135 @@
                         e
                     );
                 })(),
-                Zf = (Te(function() {
-                    return Wf;
-                }),
-                function() {}),
-                Wf = (function() {
+                Zf = (function() {
+                    function e(e) {
+                        (this.ngForm = e), (this.isFormGroup = !0), (this.isDBlock = !0);
+                    }
+                    return (
+                        (e.prototype.ngOnInit = function() {
+                            this.ngForm.addControl(this.addressControl);
+                        }),
+                        e
+                    );
+                })(),
+                Wf = or({ encapsulation: 2, styles: [], data: {} });
+            function Qf(e) {
+                return ha(
+                    0,
+                    [
+                        ta(402653184, 1, { addressControl: 0 }),
+                        (e()(), $i(1, 0, null, null, 1, 'label', [['for', 'email1']], null, null, null, null, null)),
+                        (e()(), ca(-1, null, ['Address'])),
+                        (e()(),
+                        $i(
+                            3,
+                            0,
+                            null,
+                            null,
+                            7,
+                            'input',
+                            [
+                                ['class', 'form-control'],
+                                ['id', 'address'],
+                                ['name', 'address'],
+                                ['placeholder', 'Enter address (validators: required), form control inside component'],
+                                ['required', ''],
+                                ['type', 'text']
+                            ],
+                            [
+                                [1, 'required', 0],
+                                [2, 'ng-untouched', null],
+                                [2, 'ng-touched', null],
+                                [2, 'ng-pristine', null],
+                                [2, 'ng-dirty', null],
+                                [2, 'ng-valid', null],
+                                [2, 'ng-invalid', null],
+                                [2, 'ng-pending', null]
+                            ],
+                            [
+                                [null, 'ngModelChange'],
+                                [null, 'input'],
+                                [null, 'blur'],
+                                [null, 'compositionstart'],
+                                [null, 'compositionend']
+                            ],
+                            function(e, t, n) {
+                                var r = !0,
+                                    o = e.component;
+                                return (
+                                    'input' === t && (r = !1 !== to(e, 4)._handleInput(n.target.value) && r),
+                                    'blur' === t && (r = !1 !== to(e, 4).onTouched() && r),
+                                    'compositionstart' === t && (r = !1 !== to(e, 4)._compositionStart() && r),
+                                    'compositionend' === t &&
+                                        (r = !1 !== to(e, 4)._compositionEnd(n.target.value) && r),
+                                    'ngModelChange' === t && (r = !1 !== (o.address = n) && r),
+                                    r
+                                );
+                            },
+                            null,
+                            null
+                        )),
+                        go(4, 16384, null, 0, uh, [yn, hn, [2, ah]], null, null),
+                        go(5, 16384, null, 0, wf, [], { required: [0, 'required'] }, null),
+                        mo(
+                            1024,
+                            null,
+                            mh,
+                            function(e) {
+                                return [e];
+                            },
+                            [wf]
+                        ),
+                        mo(
+                            1024,
+                            null,
+                            oh,
+                            function(e) {
+                                return [e];
+                            },
+                            [uh]
+                        ),
+                        go(
+                            8,
+                            671744,
+                            [[1, 4], ['addressControl', 4]],
+                            0,
+                            hf,
+                            [[8, null], [6, mh], [8, null], [6, oh]],
+                            { name: [0, 'name'], model: [1, 'model'] },
+                            { update: 'ngModelChange' }
+                        ),
+                        mo(2048, null, ph, null, [hf]),
+                        go(10, 16384, null, 0, hh, [[4, ph]], null, null)
+                    ],
+                    function(e, t) {
+                        var n = t.component;
+                        e(t, 5, 0, ''), e(t, 8, 0, 'address', n.address);
+                    },
+                    function(e, t) {
+                        e(
+                            t,
+                            3,
+                            0,
+                            to(t, 5).required ? '' : null,
+                            to(t, 10).ngClassUntouched,
+                            to(t, 10).ngClassTouched,
+                            to(t, 10).ngClassPristine,
+                            to(t, 10).ngClassDirty,
+                            to(t, 10).ngClassValid,
+                            to(t, 10).ngClassInvalid,
+                            to(t, 10).ngClassPending
+                        );
+                    }
+                );
+            }
+            Te(function() {
+                return $f;
+            });
+            var Kf = function() {},
+                $f = (function() {
                     function e() {
-                        (this.onTouchedCallback = Zf), (this.onChangeCallback = Zf);
+                        (this.onTouchedCallback = Kf), (this.onChangeCallback = Kf);
                     }
                     return (
                         (e.prototype.ngOnInit = function() {}),
@@ -16890,7 +17012,7 @@
                         e
                     );
                 })(),
-                Qf = or({
+                Yf = or({
                     encapsulation: 0,
                     styles: [
                         [
@@ -16899,7 +17021,7 @@
                     ],
                     data: {}
                 });
-            function Kf(e) {
+            function Jf(e) {
                 return ha(
                     0,
                     [
@@ -16934,7 +17056,7 @@
                     null
                 );
             }
-            function $f(e) {
+            function Xf(e) {
                 return ha(
                     0,
                     [
@@ -16973,12 +17095,12 @@
                     }
                 );
             }
-            function Yf(e) {
+            function eg(e) {
                 return ha(
                     0,
                     [
-                        (e()(), Ki(0, null, null, 0, null, Kf)),
-                        (e()(), Ki(16777216, null, null, 1, null, $f)),
+                        (e()(), Ki(0, null, null, 0, null, Jf)),
+                        (e()(), Ki(16777216, null, null, 1, null, Xf)),
                         go(2, 278528, null, 0, Zu, [Ln, Un, Nn], { ngForOf: [0, 'ngForOf'] }, null)
                     ],
                     function(e, t) {
@@ -16987,7 +17109,7 @@
                     null
                 );
             }
-            var Jf = (function() {
+            var tg = (function() {
                     function e(e) {
                         (this.validatorDirective = e), (this.ngxFormSubmit = new Do());
                     }
@@ -17004,10 +17126,10 @@
                         e
                     );
                 })(),
-                Xf = n('pw5m'),
-                eg = n.n(Xf),
-                tg = new De('HIGHLIGHT_OPTIONS'),
-                ng = (function() {
+                ng = n('pw5m'),
+                rg = n.n(ng),
+                og = new De('HIGHLIGHT_OPTIONS'),
+                ig = (function() {
                     function e(e) {
                         var t = this;
                         if (
@@ -17022,35 +17144,35 @@
                     }
                     return (
                         (e.prototype.highlight = function(e, t, n, r) {
-                            return eg.a.highlight(e, t, n, r);
+                            return rg.a.highlight(e, t, n, r);
                         }),
                         (e.prototype.highlightAuto = function(e, t) {
-                            return eg.a.highlightAuto(e, t);
+                            return rg.a.highlightAuto(e, t);
                         }),
                         (e.prototype.fixMarkup = function(e) {
-                            return eg.a.fixMarkup(e);
+                            return rg.a.fixMarkup(e);
                         }),
                         (e.prototype.highlightBlock = function(e) {
-                            eg.a.highlightBlock(e);
+                            rg.a.highlightBlock(e);
                         }),
                         (e.prototype.configure = function(e) {
-                            eg.a.configure(e);
+                            rg.a.configure(e);
                         }),
                         (e.prototype.initHighlighting = function() {
-                            eg.a.initHighlighting();
+                            rg.a.initHighlighting();
                         }),
                         (e.prototype.registerLanguage = function(e, t) {
-                            eg.a.registerLanguage(e, t);
+                            rg.a.registerLanguage(e, t);
                         }),
                         (e.prototype.listLanguages = function() {
-                            return eg.a.listLanguages();
+                            return rg.a.listLanguages();
                         }),
                         (e.prototype.getLanguage = function(e) {
-                            return eg.a.getLanguage(e);
+                            return rg.a.getLanguage(e);
                         }),
                         (e.ngInjectableDef = Ee({
                             factory: function() {
-                                return new e(Ze(tg, 8));
+                                return new e(Ze(og, 8));
                             },
                             token: e,
                             providedIn: 'root'
@@ -17058,7 +17180,7 @@
                         e
                     );
                 })(),
-                rg = (function() {
+                ag = (function() {
                     function e(e, t) {
                         (this._hljs = e), (this._zone = t), (this.highlighted = new Do());
                     }
@@ -17078,16 +17200,16 @@
                         e
                     );
                 })(),
-                og = (function() {
+                ug = (function() {
                     function e() {}
                     return (
                         (e.forRoot = function(t) {
-                            return { ngModule: e, providers: [{ provide: tg, useValue: t }] };
+                            return { ngModule: e, providers: [{ provide: og, useValue: t }] };
                         }),
                         e
                     );
                 })(),
-                ig = (function() {
+                lg = (function() {
                     function e() {}
                     return (
                         (e.prototype.ngOnInit = function() {
@@ -17096,8 +17218,8 @@
                         e
                     );
                 })(),
-                ag = or({ encapsulation: 0, styles: [['']], data: {} });
-            function ug(e) {
+                sg = or({ encapsulation: 0, styles: [['']], data: {} });
+            function cg(e) {
                 return ha(
                     0,
                     [
@@ -17152,7 +17274,7 @@
                     }
                 );
             }
-            function lg(e) {
+            function pg(e) {
                 return ha(
                     0,
                     [
@@ -17172,7 +17294,7 @@
                             null,
                             null
                         )),
-                        go(2, 540672, null, 0, rg, [ng, hi], { code: [0, 'code'] }, null)
+                        go(2, 540672, null, 0, ag, [ig, hi], { code: [0, 'code'] }, null)
                     ],
                     function(e, t) {
                         var n = t.component;
@@ -17183,15 +17305,15 @@
                     }
                 );
             }
-            function sg(e) {
+            function dg(e) {
                 return ha(
                     0,
                     [
                         (e()(),
                         $i(0, 0, null, null, 2, 'ul', [['class', 'nav nav-tabs']], null, null, null, null, null)),
-                        (e()(), Ki(16777216, null, null, 1, null, ug)),
+                        (e()(), Ki(16777216, null, null, 1, null, cg)),
                         go(2, 278528, null, 0, Zu, [Ln, Un, Nn], { ngForOf: [0, 'ngForOf'] }, null),
-                        (e()(), Ki(16777216, null, null, 1, null, lg)),
+                        (e()(), Ki(16777216, null, null, 1, null, pg)),
                         go(4, 16384, null, 0, Qu, [Ln, Un], { ngIf: [0, 'ngIf'] }, null)
                     ],
                     function(e, t) {
@@ -17201,7 +17323,7 @@
                     null
                 );
             }
-            var cg = (function(e) {
+            var hg = (function(e) {
                     function t(t, n) {
                         var r = e.call(this, t, n) || this;
                         return (r.scheduler = t), (r.work = n), (r.pending = !1), r;
@@ -17277,7 +17399,7 @@
                         );
                     })(m)
                 ),
-                pg = (function() {
+                fg = (function() {
                     function e(t, n) {
                         void 0 === n && (n = e.now), (this.SchedulerAction = t), (this.now = n);
                     }
@@ -17291,9 +17413,9 @@
                         e
                     );
                 })(),
-                dg = new ((function(e) {
+                gg = new ((function(e) {
                     function t(n, r) {
-                        void 0 === r && (r = pg.now);
+                        void 0 === r && (r = fg.now);
                         var o =
                             e.call(this, n, function() {
                                 return t.delegate && t.delegate !== o ? t.delegate.now() : r();
@@ -17327,8 +17449,8 @@
                         }),
                         t
                     );
-                })(pg))(cg),
-                hg = (function() {
+                })(fg))(hg),
+                mg = (function() {
                     function e(e, t, n) {
                         (this.kind = e), (this.value = t), (this.error = n), (this.hasValue = 'N' === e);
                     }
@@ -17387,26 +17509,26 @@
                         e
                     );
                 })();
-            function fg(e, t) {
-                void 0 === t && (t = dg);
+            function vg(e, t) {
+                void 0 === t && (t = gg);
                 var n,
                     r = (n = e) instanceof Date && !isNaN(+n) ? +e - t.now() : Math.abs(e);
                 return function(e) {
-                    return e.lift(new gg(r, t));
+                    return e.lift(new yg(r, t));
                 };
             }
-            var gg = (function() {
+            var yg = (function() {
                     function e(e, t) {
                         (this.delay = e), (this.scheduler = t);
                     }
                     return (
                         (e.prototype.call = function(e, t) {
-                            return t.subscribe(new mg(e, this.delay, this.scheduler));
+                            return t.subscribe(new bg(e, this.delay, this.scheduler));
                         }),
                         e
                     );
                 })(),
-                mg = (function(e) {
+                bg = (function(e) {
                     function t(t, n, r) {
                         var o = e.call(this, t) || this;
                         return (o.delay = n), (o.scheduler = r), (o.queue = []), (o.active = !1), (o.errored = !1), o;
@@ -17438,28 +17560,28 @@
                         (t.prototype.scheduleNotification = function(e) {
                             if (!0 !== this.errored) {
                                 var t = this.scheduler,
-                                    n = new vg(t.now() + this.delay, e);
+                                    n = new _g(t.now() + this.delay, e);
                                 this.queue.push(n), !1 === this.active && this._schedule(t);
                             }
                         }),
                         (t.prototype._next = function(e) {
-                            this.scheduleNotification(hg.createNext(e));
+                            this.scheduleNotification(mg.createNext(e));
                         }),
                         (t.prototype._error = function(e) {
                             (this.errored = !0), (this.queue = []), this.destination.error(e), this.unsubscribe();
                         }),
                         (t.prototype._complete = function() {
-                            this.scheduleNotification(hg.createComplete()), this.unsubscribe();
+                            this.scheduleNotification(mg.createComplete()), this.unsubscribe();
                         }),
                         t
                     );
                 })(E),
-                vg = (function() {
+                _g = (function() {
                     return function(e, t) {
                         (this.time = e), (this.notification = t);
                     };
                 })(),
-                yg = (function() {
+                wg = (function() {
                     function e() {
                         (this.codeExamples = [
                             { file: './use-case.component.ts', content: n('J8RR') },
@@ -17491,7 +17613,7 @@
                                 validateOn: this.validateOn ? 'blur' : 'submit'
                             }),
                             (this.checkUsername = function(e) {
-                                return 'peter' === e ? nl(!0).pipe(fg(200)) : nl(!1).pipe(fg(200));
+                                return 'peter' === e ? nl(!0).pipe(vg(200)) : nl(!1).pipe(vg(200));
                             });
                     }
                     return (
@@ -17501,7 +17623,7 @@
                                 (this.validatorConfig.validateOn = this.validateOn ? 'blur' : 'submit'),
                                 setTimeout(function() {
                                     e.loadingDone = !0;
-                                });
+                                }, 0);
                         }),
                         (e.prototype.setMessage = function(e) {
                             this.message = e;
@@ -17512,12 +17634,12 @@
                         e
                     );
                 })(),
-                bg = or({
+                Cg = or({
                     encapsulation: 0,
                     styles: [['.btn-groups[_ngcontent-%COMP%]   .btn[_ngcontent-%COMP%]{margin-right:15px}']],
                     data: {}
                 });
-            function _g(e) {
+            function Eg(e) {
                 return ha(
                     0,
                     [
@@ -17644,7 +17766,7 @@
                     }
                 );
             }
-            function wg(e) {
+            function xg(e) {
                 return ha(
                     0,
                     [
@@ -17673,7 +17795,7 @@
                     }
                 );
             }
-            function Cg(e) {
+            function Sg(e) {
                 return ha(
                     0,
                     [
@@ -17683,7 +17805,7 @@
                             0,
                             null,
                             null,
-                            93,
+                            95,
                             'form',
                             [['name', 'exampleForm'], ['novalidate', '']],
                             [
@@ -17726,7 +17848,7 @@
                         (e()(),
                         $i(8, 0, null, null, 11, 'div', [['class', 'form-group']], null, null, null, null, null)),
                         (e()(), $i(9, 0, null, null, 1, 'label', [['for', 'email1']], null, null, null, null, null)),
-                        (e()(), ca(-1, null, ['Email address'])),
+                        (e()(), ca(-1, null, ['Email'])),
                         (e()(),
                         $i(
                             11,
@@ -18016,10 +18138,26 @@
                         mo(2048, [[1, 4]], ph, null, [hf]),
                         go(46, 16384, null, 0, hh, [[4, ph]], null, null),
                         (e()(),
-                        $i(47, 0, null, null, 13, 'div', [['class', 'form-group']], null, null, null, null, null)),
+                        $i(
+                            47,
+                            0,
+                            null,
+                            null,
+                            1,
+                            'app-inner-control',
+                            [],
+                            [[2, 'form-group', null], [2, 'd-block', null]],
+                            null,
+                            null,
+                            Qf,
+                            Wf
+                        )),
+                        go(48, 114688, null, 0, Zf, [uf], null, null),
+                        (e()(),
+                        $i(49, 0, null, null, 13, 'div', [['class', 'form-group']], null, null, null, null, null)),
                         (e()(),
                         $i(
-                            48,
+                            50,
                             0,
                             null,
                             null,
@@ -18035,7 +18173,7 @@
                         (e()(), ca(-1, null, ['Number'])),
                         (e()(),
                         $i(
-                            50,
+                            52,
                             0,
                             null,
                             null,
@@ -18073,14 +18211,14 @@
                                 var r = !0,
                                     o = e.component;
                                 return (
-                                    'input' === t && (r = !1 !== to(e, 51)._handleInput(n.target.value) && r),
-                                    'blur' === t && (r = !1 !== to(e, 51).onTouched() && r),
-                                    'compositionstart' === t && (r = !1 !== to(e, 51)._compositionStart() && r),
+                                    'input' === t && (r = !1 !== to(e, 53)._handleInput(n.target.value) && r),
+                                    'blur' === t && (r = !1 !== to(e, 53).onTouched() && r),
+                                    'compositionstart' === t && (r = !1 !== to(e, 53)._compositionStart() && r),
                                     'compositionend' === t &&
-                                        (r = !1 !== to(e, 51)._compositionEnd(n.target.value) && r),
-                                    'change' === t && (r = !1 !== to(e, 52).onChange(n.target.value) && r),
-                                    'input' === t && (r = !1 !== to(e, 52).onChange(n.target.value) && r),
-                                    'blur' === t && (r = !1 !== to(e, 52).onTouched() && r),
+                                        (r = !1 !== to(e, 53)._compositionEnd(n.target.value) && r),
+                                    'change' === t && (r = !1 !== to(e, 54).onChange(n.target.value) && r),
+                                    'input' === t && (r = !1 !== to(e, 54).onChange(n.target.value) && r),
+                                    'blur' === t && (r = !1 !== to(e, 54).onTouched() && r),
                                     'ngModelChange' === t && (r = !1 !== (o.model.number = n) && r),
                                     r
                                 );
@@ -18088,11 +18226,11 @@
                             null,
                             null
                         )),
-                        go(51, 16384, null, 0, uh, [yn, hn, [2, ah]], null, null),
-                        go(52, 16384, null, 0, Sh, [yn, hn], null, null),
-                        go(53, 16384, null, 0, wf, [], { required: [0, 'required'] }, null),
-                        go(54, 16384, null, 0, Bf, [], { ngxMax: [0, 'ngxMax'] }, null),
-                        go(55, 16384, null, 0, zf, [], { ngxMin: [0, 'ngxMin'] }, null),
+                        go(53, 16384, null, 0, uh, [yn, hn, [2, ah]], null, null),
+                        go(54, 16384, null, 0, Sh, [yn, hn], null, null),
+                        go(55, 16384, null, 0, wf, [], { required: [0, 'required'] }, null),
+                        go(56, 16384, null, 0, Bf, [], { ngxMax: [0, 'ngxMax'] }, null),
+                        go(57, 16384, null, 0, zf, [], { ngxMin: [0, 'ngxMin'] }, null),
                         mo(
                             1024,
                             null,
@@ -18112,7 +18250,7 @@
                             [uh, Sh]
                         ),
                         go(
-                            58,
+                            60,
                             671744,
                             null,
                             0,
@@ -18122,12 +18260,12 @@
                             { update: 'ngModelChange' }
                         ),
                         mo(2048, [[1, 4]], ph, null, [hf]),
-                        go(60, 16384, null, 0, hh, [[4, ph]], null, null),
+                        go(62, 16384, null, 0, hh, [[4, ph]], null, null),
                         (e()(),
-                        $i(61, 0, null, null, 19, 'div', [['class', 'form-group']], null, null, null, null, null)),
+                        $i(63, 0, null, null, 19, 'div', [['class', 'form-group']], null, null, null, null, null)),
                         (e()(),
                         $i(
-                            62,
+                            64,
                             0,
                             null,
                             null,
@@ -18143,7 +18281,7 @@
                         (e()(), ca(-1, null, ['Custom Select'])),
                         (e()(),
                         $i(
-                            64,
+                            66,
                             0,
                             null,
                             null,
@@ -18174,10 +18312,10 @@
                                     r
                                 );
                             },
-                            Yf,
-                            Qf
+                            eg,
+                            Yf
                         )),
-                        go(65, 16384, null, 0, wf, [], { required: [0, 'required'] }, null),
+                        go(67, 16384, null, 0, wf, [], { required: [0, 'required'] }, null),
                         mo(
                             1024,
                             null,
@@ -18187,7 +18325,7 @@
                             },
                             [wf]
                         ),
-                        go(67, 114688, null, 1, Wf, [], null, null),
+                        go(69, 114688, null, 1, $f, [], null, null),
                         ta(603979776, 2, { options: 1 }),
                         mo(
                             1024,
@@ -18196,10 +18334,10 @@
                             function(e) {
                                 return [e];
                             },
-                            [Wf]
+                            [$f]
                         ),
                         go(
-                            70,
+                            72,
                             671744,
                             null,
                             0,
@@ -18209,10 +18347,10 @@
                             { update: 'ngModelChange' }
                         ),
                         mo(2048, [[1, 4]], ph, null, [hf]),
-                        go(72, 16384, null, 0, hh, [[4, ph]], null, null),
+                        go(74, 16384, null, 0, hh, [[4, ph]], null, null),
                         (e()(),
                         $i(
-                            73,
+                            75,
                             0,
                             [[2, 0], ['option', 1]],
                             0,
@@ -18225,12 +18363,12 @@
                             null,
                             null
                         )),
-                        go(74, 147456, null, 0, Vh, [hn, yn, [8, null]], { value: [0, 'value'] }, null),
-                        go(75, 147456, null, 0, Uh, [hn, yn, [8, null]], { value: [0, 'value'] }, null),
+                        go(76, 147456, null, 0, Vh, [hn, yn, [8, null]], { value: [0, 'value'] }, null),
+                        go(77, 147456, null, 0, Uh, [hn, yn, [8, null]], { value: [0, 'value'] }, null),
                         (e()(), ca(-1, null, ['One'])),
                         (e()(),
                         $i(
-                            77,
+                            79,
                             0,
                             [[2, 0], ['option', 1]],
                             0,
@@ -18243,13 +18381,13 @@
                             null,
                             null
                         )),
-                        go(78, 147456, null, 0, Vh, [hn, yn, [8, null]], { value: [0, 'value'] }, null),
-                        go(79, 147456, null, 0, Uh, [hn, yn, [8, null]], { value: [0, 'value'] }, null),
+                        go(80, 147456, null, 0, Vh, [hn, yn, [8, null]], { value: [0, 'value'] }, null),
+                        go(81, 147456, null, 0, Uh, [hn, yn, [8, null]], { value: [0, 'value'] }, null),
                         (e()(), ca(-1, null, ['Two'])),
-                        (e()(), $i(81, 0, null, null, 2, 'div', [['class', 'mb-2']], null, null, null, null, null)),
+                        (e()(), $i(83, 0, null, null, 2, 'div', [['class', 'mb-2']], null, null, null, null, null)),
                         (e()(),
                         $i(
-                            82,
+                            84,
                             0,
                             null,
                             null,
@@ -18266,16 +18404,16 @@
                             null,
                             null
                         )),
-                        (e()(), ca(83, null, ['', ' Sex'])),
-                        (e()(), Ki(16777216, null, null, 1, null, _g)),
-                        go(85, 16384, null, 0, Qu, [Ln, Un], { ngIf: [0, 'ngIf'] }, null),
-                        (e()(), Ki(16777216, null, null, 1, null, wg)),
+                        (e()(), ca(85, null, ['', ' Sex'])),
+                        (e()(), Ki(16777216, null, null, 1, null, Eg)),
                         go(87, 16384, null, 0, Qu, [Ln, Un], { ngIf: [0, 'ngIf'] }, null),
+                        (e()(), Ki(16777216, null, null, 1, null, xg)),
+                        go(89, 16384, null, 0, Qu, [Ln, Un], { ngIf: [0, 'ngIf'] }, null),
                         (e()(),
-                        $i(88, 0, null, null, 5, 'div', [['class', 'btn-groups']], null, null, null, null, null)),
+                        $i(90, 0, null, null, 5, 'div', [['class', 'btn-groups']], null, null, null, null, null)),
                         (e()(),
                         $i(
-                            89,
+                            91,
                             0,
                             null,
                             null,
@@ -18288,7 +18426,7 @@
                                 var r = !0,
                                     o = e.component;
                                 return (
-                                    'click' === t && (r = !1 !== to(e, 90).onSubmit(n) && r),
+                                    'click' === t && (r = !1 !== to(e, 92).onSubmit(n) && r),
                                     'ngxFormSubmit' === t && (r = !1 !== o.submit() && r),
                                     r
                                 );
@@ -18296,11 +18434,11 @@
                             null,
                             null
                         )),
-                        go(90, 81920, null, 0, Jf, [Hf], null, { ngxFormSubmit: 'ngxFormSubmit' }),
+                        go(92, 81920, null, 0, tg, [Hf], null, { ngxFormSubmit: 'ngxFormSubmit' }),
                         (e()(), ca(-1, null, ['Submit'])),
                         (e()(),
                         $i(
-                            92,
+                            94,
                             0,
                             null,
                             null,
@@ -18332,20 +18470,21 @@
                             e(t, 40, 0, '6'),
                             e(t, 41, 0, '10'),
                             e(t, 44, 0, 'password', n.model.password),
-                            e(t, 53, 0, ''),
-                            e(t, 54, 0, '100'),
-                            e(t, 55, 0, '10'),
-                            e(t, 58, 0, 'number', n.model.number),
-                            e(t, 65, 0, ''),
-                            e(t, 67, 0),
-                            e(t, 70, 0, 'customSelect', n.model.customSelectValue),
-                            e(t, 74, 0, '1'),
-                            e(t, 75, 0, '1'),
-                            e(t, 78, 0, '2'),
-                            e(t, 79, 0, '2'),
-                            e(t, 85, 0, n.showSex),
-                            e(t, 87, 0, n.message),
-                            e(t, 90, 0);
+                            e(t, 48, 0),
+                            e(t, 55, 0, ''),
+                            e(t, 56, 0, '100'),
+                            e(t, 57, 0, '10'),
+                            e(t, 60, 0, 'number', n.model.number),
+                            e(t, 67, 0, ''),
+                            e(t, 69, 0),
+                            e(t, 72, 0, 'customSelect', n.model.customSelectValue),
+                            e(t, 76, 0, '1'),
+                            e(t, 77, 0, '1'),
+                            e(t, 80, 0, '2'),
+                            e(t, 81, 0, '2'),
+                            e(t, 87, 0, n.showSex),
+                            e(t, 89, 0, n.message),
+                            e(t, 92, 0);
                     },
                     function(e, t) {
                         var n = t.component;
@@ -18403,37 +18542,38 @@
                                 to(t, 46).ngClassInvalid,
                                 to(t, 46).ngClassPending
                             ),
+                            e(t, 47, 0, to(t, 48).isFormGroup, to(t, 48).isDBlock),
                             e(
                                 t,
-                                50,
+                                52,
                                 0,
-                                to(t, 53).required ? '' : null,
-                                to(t, 60).ngClassUntouched,
-                                to(t, 60).ngClassTouched,
-                                to(t, 60).ngClassPristine,
-                                to(t, 60).ngClassDirty,
-                                to(t, 60).ngClassValid,
-                                to(t, 60).ngClassInvalid,
-                                to(t, 60).ngClassPending
+                                to(t, 55).required ? '' : null,
+                                to(t, 62).ngClassUntouched,
+                                to(t, 62).ngClassTouched,
+                                to(t, 62).ngClassPristine,
+                                to(t, 62).ngClassDirty,
+                                to(t, 62).ngClassValid,
+                                to(t, 62).ngClassInvalid,
+                                to(t, 62).ngClassPending
                             ),
                             e(
                                 t,
-                                64,
+                                66,
                                 0,
-                                to(t, 65).required ? '' : null,
-                                to(t, 72).ngClassUntouched,
-                                to(t, 72).ngClassTouched,
-                                to(t, 72).ngClassPristine,
-                                to(t, 72).ngClassDirty,
-                                to(t, 72).ngClassValid,
-                                to(t, 72).ngClassInvalid,
-                                to(t, 72).ngClassPending
+                                to(t, 67).required ? '' : null,
+                                to(t, 74).ngClassUntouched,
+                                to(t, 74).ngClassTouched,
+                                to(t, 74).ngClassPristine,
+                                to(t, 74).ngClassDirty,
+                                to(t, 74).ngClassValid,
+                                to(t, 74).ngClassInvalid,
+                                to(t, 74).ngClassPending
                             ),
-                            e(t, 83, 0, n.showSex ? 'Hide' : 'Show');
+                            e(t, 85, 0, n.showSex ? 'Hide' : 'Show');
                     }
                 );
             }
-            function Eg(e) {
+            function Og(e) {
                 return ha(
                     0,
                     [
@@ -18525,12 +18665,12 @@
                             null
                         )),
                         (e()(), ca(-1, null, ['validate on blur'])),
-                        (e()(), Ki(16777216, null, null, 1, null, Cg)),
+                        (e()(), Ki(16777216, null, null, 1, null, Sg)),
                         go(11, 16384, null, 0, Qu, [Ln, Un], { ngIf: [0, 'ngIf'] }, null),
                         (e()(),
                         $i(12, 0, null, null, 2, 'div', [['class', 'col-sm col-sm-6']], null, null, null, null, null)),
-                        (e()(), $i(13, 0, null, null, 1, 'app-code-example', [], null, null, null, sg, ag)),
-                        go(14, 114688, null, 0, ig, [], { examples: [0, 'examples'] }, null)
+                        (e()(), $i(13, 0, null, null, 1, 'app-code-example', [], null, null, null, dg, sg)),
+                        go(14, 114688, null, 0, lg, [], { examples: [0, 'examples'] }, null)
                     ],
                     function(e, t) {
                         var n = t.component;
@@ -18552,7 +18692,7 @@
                     }
                 );
             }
-            function xg(e) {
+            function kg(e) {
                 return ha(
                     0,
                     [
@@ -18568,10 +18708,10 @@
                             [[2, 'row', null]],
                             null,
                             null,
-                            Eg,
-                            bg
+                            Og,
+                            Cg
                         )),
-                        go(1, 49152, null, 0, yg, [], null, null)
+                        go(1, 49152, null, 0, wg, [], null, null)
                     ],
                     null,
                     function(e, t) {
@@ -18579,8 +18719,8 @@
                     }
                 );
             }
-            var Sg = Br('app-template-driven-use-case', yg, xg, {}, {}, []),
-                Og = (function() {
+            var Tg = Br('app-template-driven-use-case', wg, kg, {}, {}, []),
+                Pg = (function() {
                     function e() {}
                     return (
                         (e.forRoot = function(t) {
@@ -18589,7 +18729,7 @@
                         e
                     );
                 })(),
-                kg = (function() {
+                Ag = (function() {
                     function e(e) {
                         (this.formBuilder = e),
                             (this._isRow = !0),
@@ -18615,7 +18755,7 @@
                                 validateOn: this.validateOn ? 'blur' : 'submit'
                             }),
                             (this.checkUsername = function(e) {
-                                return 'peter' === e ? nl(!0).pipe(fg(200)) : nl(!1).pipe(fg(200));
+                                return 'peter' === e ? nl(!0).pipe(vg(200)) : nl(!1).pipe(vg(200));
                             }),
                             (this.formGroup = this.formBuilder.group({
                                 email: ['', [bh.required, bh.email]],
@@ -18650,8 +18790,8 @@
                         e
                     );
                 })(),
-                Tg = or({ encapsulation: 0, styles: [['']], data: {} });
-            function Pg(e) {
+                Ng = or({ encapsulation: 0, styles: [['']], data: {} });
+            function Ig(e) {
                 return ha(
                     0,
                     [
@@ -18680,7 +18820,7 @@
                     }
                 );
             }
-            function Ag(e) {
+            function Rg(e) {
                 return ha(
                     0,
                     [
@@ -19311,7 +19451,7 @@
                         ),
                         mo(2048, [[1, 4]], ph, null, [_f]),
                         go(82, 16384, null, 0, hh, [[4, ph]], null, null),
-                        (e()(), Ki(16777216, null, null, 1, null, Pg)),
+                        (e()(), Ki(16777216, null, null, 1, null, Ig)),
                         go(84, 16384, null, 0, Qu, [Ln, Un], { ngIf: [0, 'ngIf'] }, null),
                         (e()(),
                         $i(
@@ -19336,12 +19476,12 @@
                             null,
                             null
                         )),
-                        go(86, 81920, null, 0, Jf, [Hf], null, { ngxFormSubmit: 'ngxFormSubmit' }),
+                        go(86, 81920, null, 0, tg, [Hf], null, { ngxFormSubmit: 'ngxFormSubmit' }),
                         (e()(), ca(-1, null, ['Submit'])),
                         (e()(),
                         $i(88, 0, null, null, 2, 'div', [['class', 'col-sm col-sm-6']], null, null, null, null, null)),
-                        (e()(), $i(89, 0, null, null, 1, 'app-code-example', [], null, null, null, sg, ag)),
-                        go(90, 114688, null, 0, ig, [], { examples: [0, 'examples'] }, null)
+                        (e()(), $i(89, 0, null, null, 1, 'app-code-example', [], null, null, null, dg, sg)),
+                        go(90, 114688, null, 0, lg, [], { examples: [0, 'examples'] }, null)
                     ],
                     function(e, t) {
                         var n = t.component;
@@ -19484,7 +19624,7 @@
                     }
                 );
             }
-            function Ng(e) {
+            function Mg(e) {
                 return ha(
                     0,
                     [
@@ -19500,10 +19640,10 @@
                             [[2, 'row', null]],
                             null,
                             null,
-                            Ag,
-                            Tg
+                            Rg,
+                            Ng
                         )),
-                        go(1, 49152, null, 0, kg, [kf], null, null)
+                        go(1, 49152, null, 0, Ag, [kf], null, null)
                     ],
                     null,
                     function(e, t) {
@@ -19511,8 +19651,8 @@
                     }
                 );
             }
-            var Ig = Br('app-reactive-driven-use-case', kg, Ng, {}, {}, []),
-                Rg = or({
+            var Vg = Br('app-reactive-driven-use-case', Ag, Mg, {}, {}, []),
+                Dg = or({
                     encapsulation: 0,
                     styles: [
                         [
@@ -19521,7 +19661,7 @@
                     ],
                     data: {}
                 });
-            function Mg(e) {
+            function jg(e) {
                 return ha(
                     0,
                     [
@@ -19648,19 +19788,19 @@
                     }
                 );
             }
-            function Vg(e) {
+            function Ug(e) {
                 return ha(
                     0,
                     [
-                        (e()(), $i(0, 0, null, null, 1, 'app-root', [], null, null, null, Mg, Rg)),
+                        (e()(), $i(0, 0, null, null, 1, 'app-root', [], null, null, null, jg, Dg)),
                         go(1, 49152, null, 0, Pu, [], null, null)
                     ],
                     null,
                     null
                 );
             }
-            var Dg = Br('app-root', Pu, Vg, {}, {}, []),
-                jg = bu(Tu, [Pu], function(e) {
+            var Fg = Br('app-root', Pu, Ug, {}, {}, []),
+                Lg = bu(Tu, [Pu], function(e) {
                     return (function(e) {
                         for (var t = {}, n = [], r = !1, o = 0; o < e.length; o++) {
                             var i = e[o];
@@ -19671,7 +19811,7 @@
                         }
                         return { factory: null, providersByKey: t, providers: e, modules: n, isRoot: r };
                     })([
-                        Vr(512, un, ln, [[8, [nh, Sg, Ig, Dg]], [3, un], cn]),
+                        Vr(512, un, ln, [[8, [nh, Tg, Vg, Fg]], [3, un], cn]),
                         Vr(5120, $o, Zi, [[3, $o]]),
                         Vr(4608, Lu, Hu, [$o, [2, Fu]]),
                         Vr(5120, No, Wi, [hi]),
@@ -19756,8 +19896,8 @@
                         Vr(1073742336, Of, Of, []),
                         Vr(1073742336, Tf, Tf, []),
                         Vr(1073742336, Pf, Pf, []),
-                        Vr(1073742336, Og, Og, []),
-                        Vr(1073742336, og, og, []),
+                        Vr(1073742336, Pg, Pg, []),
+                        Vr(1073742336, ug, ug, []),
                         Vr(1024, Fd, Gd, [[3, xd]]),
                         Vr(512, Zc, Wc, []),
                         Vr(512, Ad, Ad, []),
@@ -19773,8 +19913,8 @@
                                 return [
                                     [
                                         { path: '', redirectTo: 'template', pathMatch: 'full' },
-                                        { path: 'template', component: yg },
-                                        { path: 'reactive', component: kg }
+                                        { path: 'template', component: wg },
+                                        { path: 'reactive', component: Ag }
                                     ]
                                 ];
                             },
@@ -19806,7 +19946,7 @@
                             },
                             []
                         ),
-                        Vr(256, tg, { languages: ku }, [])
+                        Vr(256, og, { languages: ku }, [])
                     ]);
                 });
             (function() {
@@ -19814,7 +19954,7 @@
                 pt = !1;
             })(),
                 rc()
-                    .bootstrapModuleFactory(jg)
+                    .bootstrapModuleFactory(Lg)
                     .catch(function(e) {
                         return console.error(e);
                     });
@@ -19889,7 +20029,7 @@
         },
         YtTY: function(e, t) {
             e.exports =
-                '<div class="col-sm col-sm-6">\n    <div class="form-group form-check">\n        <input\n            type="checkbox"\n            class="form-check-input"\n            id="exampleCheck1"\n            [(ngModel)]="validateOn"\n            (change)="changeValidateOn()"\n        />\n        <label class="form-check-label" for="exampleCheck1">validate on blur</label>\n    </div>\n    <form\n        name="exampleForm"\n        *ngIf="loadingDone"\n        novalidate\n        #ngxFormValidator="ngxFormValidator"\n        [ngxFormValidator]="validatorConfig"\n    >\n        <div class="form-group">\n            <label for="email1">Email address</label>\n            <input\n                type="email"\n                class="form-control"\n                name="email"\n                id="email1"\n                [(ngModel)]="model.email"\n                required\n                email\n                placeholder="Enter email (validators: required & email)"\n            />\n        </div>\n        <div class="form-group">\n            <label for="username">Username</label>\n            <input\n                type="text"\n                class="form-control"\n                id="username"\n                required\n                pattern="^[A-Za-z]{1}[0-9A-Za-z_]{1,19}"\n                name="username"\n                [(ngModel)]="model.username"\n                [ngxUniqueCheck]="checkUsername"\n                placeholder="Enter username (validators: required & pattern & ngxUniqueCheck: peter)"\n            />\n        </div>\n        <div class="form-group">\n            <label for="exampleInputPassword1">Password</label>\n            <input\n                type="password"\n                class="form-control"\n                [(ngModel)]="model.password"\n                name="password"\n                required\n                [maxlength]="\'10\'"\n                minlength="6"\n                id="exampleInputPassword1"\n                placeholder="Enter password (validators: required, minlength:6, maxlength:10)"\n            />\n        </div>\n\n        <div class="form-group">\n            <label for="exampleInputNumber1">Number</label>\n            <input\n                type="number"\n                class="form-control"\n                [(ngModel)]="model.number"\n                name="number"\n                required\n                ngxMin="10"\n                ngxMax="100"\n                id="exampleInputNumber1"\n                placeholder="Enter number (validators: required, ngxMin: 10, ngxMax: 100)"\n            />\n        </div>\n        <div class="form-group">\n            <label for="exampleCustomSelect1">Custom Select</label>\n            <app-custom-select\n                name="customSelect"\n                class="ngx-custom-select"\n                required=""\n                [(ngModel)]="model.customSelectValue"\n                id="exampleCustomSelect1"\n            >\n                <option value="1" #option>One</option>\n                <option value="2" #option>Two</option>\n            </app-custom-select>\n        </div>\n        <div class="mb-2">\n            <a href="javascript:;" (click)="showSex = !showSex">{{ showSex ? \'Hide\' : \'Show\' }} Sex</a>\n        </div>\n        <div class="form-group" *ngIf="showSex">\n            <label for="exampleSelectSex1">Sex</label>\n            <select\n                name="sex"\n                name="sex"\n                class="form-control"\n                required\n                [(ngModel)]="model.sex"\n                id="exampleSelectSex1"\n                placeholder="please select sex"\n            >\n                <option value="">Please select</option>\n                <option value="men">Men</option>\n                <option value="women">Women</option>\n                <option value="other">Other</option>\n            </select>\n        </div>\n        <div class="form-group" *ngIf="message">\n            <div class="alert alert-success">{{ message }}</div>\n        </div>\n        <div class="btn-groups">\n            <button type="button" (ngxFormSubmit)="submit()" class="btn btn-primary">Submit</button>\n            <button type="button" (click)="ngxFormValidator.validator.reset()" class="btn btn-info">Reset</button>\n        </div>\n    </form>\n</div>\n<div class="col-sm col-sm-6">\n    <app-code-example [examples]="codeExamples"></app-code-example>\n</div>\n';
+                '<div class="col-sm col-sm-6">\n  <div class="form-group form-check">\n    <input\n      type="checkbox"\n      class="form-check-input"\n      id="exampleCheck1"\n      [(ngModel)]="validateOn"\n      (change)="changeValidateOn()"\n    />\n    <label class="form-check-label" for="exampleCheck1">validate on blur</label>\n  </div>\n  <form\n    name="exampleForm"\n    *ngIf="loadingDone"\n    novalidate\n    #ngxFormValidator="ngxFormValidator"\n    [ngxFormValidator]="validatorConfig"\n  >\n    <div class="form-group">\n      <label for="email1">Email</label>\n      <input\n        type="email"\n        class="form-control"\n        name="email"\n        id="email1"\n        [(ngModel)]="model.email"\n        required\n        email\n        placeholder="Enter email (validators: required & email)"\n      />\n    </div>\n    <div class="form-group">\n      <label for="username">Username</label>\n      <input\n        type="text"\n        class="form-control"\n        id="username"\n        required\n        pattern="^[A-Za-z]{1}[0-9A-Za-z_]{1,19}"\n        name="username"\n        [(ngModel)]="model.username"\n        [ngxUniqueCheck]="checkUsername"\n        placeholder="Enter username (validators: required & pattern & ngxUniqueCheck: peter)"\n      />\n    </div>\n    <div class="form-group">\n      <label for="exampleInputPassword1">Password</label>\n      <input\n        type="password"\n        class="form-control"\n        [(ngModel)]="model.password"\n        name="password"\n        required\n        [maxlength]="\'10\'"\n        minlength="6"\n        id="exampleInputPassword1"\n        placeholder="Enter password (validators: required, minlength:6, maxlength:10)"\n      />\n    </div>\n    <app-inner-control></app-inner-control>\n    <div class="form-group">\n      <label for="exampleInputNumber1">Number</label>\n      <input\n        type="number"\n        class="form-control"\n        [(ngModel)]="model.number"\n        name="number"\n        required\n        ngxMin="10"\n        ngxMax="100"\n        id="exampleInputNumber1"\n        placeholder="Enter number (validators: required, ngxMin: 10, ngxMax: 100)"\n      />\n    </div>\n    <div class="form-group">\n      <label for="exampleCustomSelect1">Custom Select</label>\n      <app-custom-select\n        name="customSelect"\n        class="ngx-custom-select"\n        required=""\n        [(ngModel)]="model.customSelectValue"\n        id="exampleCustomSelect1"\n      >\n        <option value="1" #option>One</option>\n        <option value="2" #option>Two</option>\n      </app-custom-select>\n    </div>\n    <div class="mb-2">\n      <a href="javascript:;" (click)="showSex = !showSex">{{ showSex ? \'Hide\' : \'Show\' }} Sex</a>\n    </div>\n    <div class="form-group" *ngIf="showSex">\n      <label for="exampleSelectSex1">Sex</label>\n      <select\n        name="sex"\n        name="sex"\n        class="form-control"\n        required\n        [(ngModel)]="model.sex"\n        id="exampleSelectSex1"\n        placeholder="please select sex"\n      >\n        <option value="">Please select</option>\n        <option value="men">Men</option>\n        <option value="women">Women</option>\n        <option value="other">Other</option>\n      </select>\n    </div>\n    <div class="form-group" *ngIf="message">\n      <div class="alert alert-success">{{ message }}</div>\n    </div>\n    <div class="btn-groups">\n      <button type="button" (ngxFormSubmit)="submit()" class="btn btn-primary">Submit</button>\n      <button type="button" (click)="ngxFormValidator.validator.reset()" class="btn btn-info">Reset</button>\n    </div>\n  </form>\n</div>\n<div class="col-sm col-sm-6">\n  <app-code-example [examples]="codeExamples"></app-code-example>\n</div>\n';
         },
         jctj: function(e, t) {
             e.exports = function(e) {
