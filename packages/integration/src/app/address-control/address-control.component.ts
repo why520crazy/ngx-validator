@@ -1,11 +1,11 @@
-import { Component, OnInit, ViewChild, HostBinding } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, HostBinding } from '@angular/core';
 import { NgForm, NgModel } from '@angular/forms';
 
 @Component({
-    selector: 'app-inner-control',
-    templateUrl: './inner-control.component.html'
+    selector: 'app-address-control',
+    templateUrl: './address-control.component.html'
 })
-export class AppInnerControlComponent implements OnInit {
+export class AppAddressControlComponent implements OnInit, OnDestroy {
     @HostBinding(`class.form-group`) isFormGroup = true;
 
     @HostBinding(`class.d-block`) isDBlock = true;
@@ -18,5 +18,9 @@ export class AppInnerControlComponent implements OnInit {
 
     ngOnInit(): void {
         this.ngForm.addControl(this.addressControl);
+    }
+
+    ngOnDestroy() {
+        this.ngForm.removeControl(this.addressControl);
     }
 }
