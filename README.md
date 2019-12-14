@@ -115,7 +115,8 @@ Global configuration can be set by `NgxValidatorModule.forRoot(config)`, or by i
 | globalValidationMessages   | {[validatorErrorKey: string]: string}                          | validator default validation rules                              |
 | validateOn                 | 'submit' \| 'blur'                                             | validate trigger                                                |
 
-`globalValidationMessages` 默认规则如下，当某个表单元素比如 `username` 在表单和全局的 `validationMessages` 都没有被设置，验证不通过会直接显示 `globalValidationMessages 中的 required` 提示信息
+`globalValidationMessages` default rules as below, priority of ngx-form's `validationMessages` config is greater than `validationMessages`,
+it will use `globalValidationMessages` when an element doesn't match form config `validationMessages` or global config validationMessages
 
 ```
 {
@@ -133,14 +134,14 @@ Global configuration can be set by `NgxValidatorModule.forRoot(config)`, or by i
 };
 ```
 
-#### 扩展方法
+#### Extensions
 
-1. 单独验证某一个表单元素, 获取到 `NgxFormValidatorDirective` 实例 `ngxFormValidator: NgxFormValidatorDirective`，通过调用 `ngxFormValidator.validator.validateControl(name: string)` 方法单独验证；
-1. 根据服务端返回的错误，设置某个表单元素错误提示信息，调用 `ngxFormValidator.validator.markControlAsError(name: string, errorMessage: string)`
+get `formValidator` by `<form #formValidator="ngxFormValidator">`
 
-#### 自定义反馈策略
+1. `formValidator.validator.validateControl(name: string)` validate an control individually
+2. `formValidator.validator.markControlAsError(name: string, errorMessage: string)` show error by server's error code for an control
 
-如果你的项目不是使用 bootstrap4，而是其他 UI 库，那么可以通过扩展自己的错误反馈策略，然后在全局设置中配置一次后所有的表单验证都会使用配置之后的策略，以下是一个自定义反馈策略的示例：
+#### Custom Feedback Strategy
 
 ```
 const CUSTOM_INVALID_CLASS = 'custom-invalid';
@@ -159,11 +160,10 @@ export class CustomValidationFeedbackStrategy implements ValidationFeedbackStrat
 }
 ```
 
-## Documents
+## Documentation
 
-[如何优雅的使用 Angular 表单验证](https://zhuanlan.zhihu.com/p/51467181)
-
-[Angular 表单验证类库 ngx-validator 1.0 正式发布](https://github.com/why520crazy/ngx-validator/blob/master/1.0.0-publish.md)
+-   [如何优雅的使用 Angular 表单验证](https://zhuanlan.zhihu.com/p/51467181)
+-   [Angular 表单验证类库 ngx-validator 1.0 正式发布](https://github.com/why520crazy/ngx-validator/blob/master/1.0.0-publish.md)
 
 ## Development
 
@@ -184,11 +184,9 @@ $ npm run pub
 
 ## Links
 
-[Angular.io](https://angular.io)
-
-[Angular.cn](https://angular.cn)
-
-[Worktile.com](https://worktile.com?utm_source=w5c-ngx-validator)
+-   [Angular.io](https://angular.io)
+-   [Angular.cn](https://angular.cn)
+-   [Worktile.com](https://worktile.com?utm_source=w5c-ngx-validator)
 
 ## License
 
