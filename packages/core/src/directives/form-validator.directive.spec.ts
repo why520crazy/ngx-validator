@@ -388,7 +388,7 @@ class SimpleTemplateDrivenDemoComponent {
         description: ''
     };
 
-    @ViewChild(NgxFormValidatorDirective) ngxFormValidator: NgxFormValidatorDirective;
+    @ViewChild(NgxFormValidatorDirective, { static: true }) ngxFormValidator: NgxFormValidatorDirective;
 
     constructor() {}
 
@@ -442,7 +442,8 @@ class SimpleReactiveFormDemoComponent {
         description: ''
     };
 
-    @ViewChild(NgxFormValidatorDirective) ngxFormValidator: NgxFormValidatorDirective;
+    @ViewChild(NgxFormValidatorDirective, { static: true })
+    ngxFormValidator: NgxFormValidatorDirective;
 
     constructor(private formBuilder: FormBuilder) {
         this.formGroup = this.formBuilder.group({

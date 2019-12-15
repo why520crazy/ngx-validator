@@ -22,13 +22,8 @@
             "main": "packages/integration/src/main.ts",
             "polyfills": "packages/integration/src/polyfills.ts",
             "tsConfig": "packages/integration/src/tsconfig.app.json",
-            "assets": [
-              "packages/integration/src/favicon.ico",
-              "packages/integration/src/assets"
-            ],
-            "styles": [
-              "packages/integration/src/styles.scss"
-            ],
+            "assets": ["packages/integration/src/favicon.ico", "packages/integration/src/assets"],
+            "styles": ["packages/integration/src/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -82,26 +77,16 @@
             "polyfills": "packages/integration/src/polyfills.ts",
             "tsConfig": "packages/integration/src/tsconfig.spec.json",
             "karmaConfig": "packages/integration/src/karma.conf.js",
-            "styles": [
-              "packages/integration/src/styles.scss"
-            ],
+            "styles": ["packages/integration/src/styles.scss"],
             "scripts": [],
-            "assets": [
-              "packages/integration/src/favicon.ico",
-              "packages/integration/src/assets"
-            ]
+            "assets": ["packages/integration/src/favicon.ico", "packages/integration/src/assets"]
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "packages/integration/src/tsconfig.app.json",
-              "packages/integration/src/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["packages/integration/src/tsconfig.app.json", "packages/integration/src/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -127,9 +112,7 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": "e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -153,19 +136,15 @@
             "main": "packages/core/src/test.ts",
             "tsConfig": "packages/core/tsconfig.spec.json",
             "karmaConfig": "packages/core/karma.conf.js",
-            "codeCoverage": true
+            "codeCoverage": true,
+            "codeCoverageExclude": ["packages/core/src/testing/**/*"]
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "packages/core/tsconfig.lib.json",
-              "packages/core/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["packages/core/tsconfig.lib.json", "packages/core/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
           }
         }
       }

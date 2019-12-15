@@ -1,6 +1,16 @@
-# ngx-validator [![Build Status](https://api.travis-ci.org/why520crazy/ngx-validator.svg?branch=master)](https://travis-ci.org/why520crazy/ngx-validator)
+# ngx-validator
 
-An Angular7+ form validator library
+[![Coverage Status][coveralls-image]][coveralls-url]
+[![Build Status][build-status]](https://circleci.com/gh/why520crazy/ngx-validator)
+[![npm version](https://badge.fury.io/js/%40why520crazy%2Fngx-validator.svg)](https://www.npmjs.com/@why520crazy/ngx-validator)
+![npm bundle size (scoped)](https://img.shields.io/bundlephobia/min/@why520crazy/ngx-validator)
+[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors)
+
+[coveralls-image]: https://coveralls.io/repos/github/why520crazy/ngx-validator/badge.svg?branch=master
+[coveralls-url]: https://coveralls.io/github/why520crazy/ngx-validator
+[build-status]: https://circleci.com/gh/why520crazy/ngx-validator.svg?style=svg
+
+An Angular 7+ form validator library, may be the best angular validator library in the world.
 
 > handle validation messages easy and automatic, don't need to manually write error tips templates, just configure validation rules, and support extensive custom feedback strategy.
 
@@ -105,7 +115,8 @@ Global configuration can be set by `NgxValidatorModule.forRoot(config)`, or by i
 | globalValidationMessages   | {[validatorErrorKey: string]: string}                          | validator default validation rules                              |
 | validateOn                 | 'submit' \| 'blur'                                             | validate trigger                                                |
 
-`globalValidationMessages` 默认规则如下，当某个表单元素比如 `username` 在表单和全局的 `validationMessages` 都没有被设置，验证不通过会直接显示 `globalValidationMessages 中的 required` 提示信息
+`globalValidationMessages` default rules as below, priority of ngx-form's `validationMessages` config is greater than `validationMessages`,
+it will use `globalValidationMessages` when an element doesn't match form config `validationMessages` or global config validationMessages
 
 ```
 {
@@ -123,14 +134,14 @@ Global configuration can be set by `NgxValidatorModule.forRoot(config)`, or by i
 };
 ```
 
-#### 扩展方法
+#### Extensions
 
-1. 单独验证某一个表单元素, 获取到 `NgxFormValidatorDirective` 实例 `ngxFormValidator: NgxFormValidatorDirective`，通过调用 `ngxFormValidator.validator.validateControl(name: string)` 方法单独验证；
-1. 根据服务端返回的错误，设置某个表单元素错误提示信息，调用 `ngxFormValidator.validator.markControlAsError(name: string, errorMessage: string)`
+get `formValidator` by `<form #formValidator="ngxFormValidator">`
 
-#### 自定义反馈策略
+1. `formValidator.validator.validateControl(name: string)` validate an control individually
+2. `formValidator.validator.markControlAsError(name: string, errorMessage: string)` show error by server's error code for an control
 
-如果你的项目不是使用 bootstrap4，而是其他 UI 库，那么可以通过扩展自己的错误反馈策略，然后在全局设置中配置一次后所有的表单验证都会使用配置之后的策略，以下是一个自定义反馈策略的示例：
+#### Custom Feedback Strategy
 
 ```
 const CUSTOM_INVALID_CLASS = 'custom-invalid';
@@ -149,11 +160,10 @@ export class CustomValidationFeedbackStrategy implements ValidationFeedbackStrat
 }
 ```
 
-## Documents
+## Documentation
 
-[如何优雅的使用 Angular 表单验证](https://zhuanlan.zhihu.com/p/51467181)
-
-[Angular 表单验证类库 ngx-validator 1.0 正式发布](https://github.com/why520crazy/ngx-validator/blob/master/1.0.0-publish.md)
+-   [如何优雅的使用 Angular 表单验证](https://zhuanlan.zhihu.com/p/51467181)
+-   [Angular 表单验证类库 ngx-validator 1.0 正式发布](https://github.com/why520crazy/ngx-validator/blob/master/1.0.0-publish.md)
 
 ## Development
 
@@ -174,12 +184,22 @@ $ npm run pub
 
 ## Links
 
-[Angular.io](https://angular.io)
-
-[Angular.cn](https://angular.cn)
-
-[Worktile.com](https://worktile.com?utm_source=w5c-ngx-validator)
+-   [Angular.io](https://angular.io)
+-   [Angular.cn](https://angular.cn)
+-   [Worktile.com](https://worktile.com?utm_source=w5c-ngx-validator)
 
 ## License
 
 [MIT License](https://github.com/why520crazy/ngx-validator/blob/master/LICENSE)
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore -->
+<table><tr><td align="center"><a href="https://www.zhihu.com/people/why520crazy/activities"><img src="https://avatars2.githubusercontent.com/u/3959960?v=4" width="100px;" alt="why520crazy"/><br /><sub><b>why520crazy</b></sub></a><br /><a href="#question-why520crazy" title="Answering Questions">💬</a></td><td align="center"><a href="https://github.com/luxiaobei"><img src="https://avatars1.githubusercontent.com/u/13583957?v=4" width="100px;" alt="luxiaobei"/><br /><sub><b>luxiaobei</b></sub></a><br /><a href="https://github.com/why520carzy/@why520crazy/ngx-validator/commits?author=luxiaobei" title="Code">💻</a></td><td align="center"><a href="https://github.com/walkerkay"><img src="https://avatars1.githubusercontent.com/u/15701592?v=4" width="100px;" alt="Walker"/><br /><sub><b>Walker</b></sub></a><br /><a href="#design-walkerkay" title="Design">🎨</a></td></tr></table>
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!

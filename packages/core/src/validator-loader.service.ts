@@ -39,7 +39,7 @@ export class NgxValidatorLoader {
         return this.config.validationFeedbackStrategy;
     }
 
-    get validateOn () {
+    get validateOn() {
         if (!this.config.validateOn) {
             this.config.validateOn = 'submit';
         }
@@ -59,7 +59,7 @@ export class NgxValidatorLoader {
      * @param name formControl name, e.g. username or email
      * @param key validator name, e.g. required or pattern
      */
-    getErrorMessage(name: string, key: string, validationErrorValues?: any) {
+    getErrorMessage(name: string, key: string) {
         let message = '';
         if (this.validationMessages[name] && this.validationMessages[name][key]) {
             message = this.validationMessages[name][key];
@@ -68,16 +68,6 @@ export class NgxValidatorLoader {
         }
         return message;
     }
-
-    // getErrorMessages(name: string, validationErrors: ValidationErrors) {
-    //     const messages = [];
-    //     for (const validationError in validationErrors) {
-    //         if (validationErrors.hasOwnProperty(validationError)) {
-    //             messages.push(this.getErrorMessage(name, validationError, validationErrors[validationError]));
-    //         }
-    //     }
-    //     return messages;
-    // }
 
     addValidationMessages(messages: NgxValidationMessages) {
         Object.assign(this.config.validationMessages, messages);

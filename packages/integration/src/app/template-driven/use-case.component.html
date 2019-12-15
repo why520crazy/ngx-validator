@@ -1,124 +1,119 @@
 <div class="col-sm col-sm-6">
+  <div class="form-group form-check">
+    <input
+      type="checkbox"
+      class="form-check-input"
+      id="exampleCheck1"
+      [(ngModel)]="validateOn"
+      (change)="changeValidateOn()"
+    />
+    <label class="form-check-label" for="exampleCheck1">validate on blur</label>
+  </div>
+  <form
+    name="exampleForm"
+    *ngIf="loadingDone"
+    novalidate
+    #ngxFormValidator="ngxFormValidator"
+    [ngxFormValidator]="validatorConfig"
+  >
     <div class="form-group">
-        <label for="validateOn">validateOn</label>
-        <select
-            name="validateOn"
-            class="form-control"
-            required
-            [(ngModel)]="validateOn"
-            id="validateOn"
-            (change)="changeValidateOn()"
-        >
-            <option value="change">change</option>
-            <option value="blur">blur</option>
-            <option value="submit">submit</option>
-        </select>
+      <label for="email1">Email</label>
+      <input
+        type="email"
+        class="form-control"
+        name="email"
+        id="email1"
+        [(ngModel)]="model.email"
+        required
+        email
+        placeholder="Enter email (validators: required & email)"
+      />
     </div>
-    <form
-        name="exampleForm"
-        *ngIf="loadingDone"
-        novalidate
-        #ngxFormValidator="ngxFormValidator"
-        [ngxFormValidator]="validatorConfig"
-    >
-        <div class="form-group">
-            <label for="email1">Email address</label>
-            <input
-                type="email"
-                class="form-control"
-                name="email"
-                id="email1"
-                [(ngModel)]="model.email"
-                required
-                email
-                placeholder="Enter email (validators: required & email)"
-            />
-        </div>
-        <div class="form-group">
-            <label for="username">Username</label>
-            <input
-                type="text"
-                class="form-control"
-                id="username"
-                required
-                pattern="^[A-Za-z]{1}[0-9A-Za-z_]{1,19}"
-                name="username"
-                [(ngModel)]="model.username"
-                [ngxUniqueCheck]="checkUsername"
-                placeholder="Enter username (validators: required & pattern & ngxUniqueCheck: peter)"
-            />
-        </div>
-        <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input
-                type="password"
-                class="form-control"
-                [(ngModel)]="model.password"
-                name="password"
-                required
-                [maxlength]="'10'"
-                minlength="6"
-                id="exampleInputPassword1"
-                placeholder="Enter password (validators: required, minlength:6, maxlength:10)"
-            />
-        </div>
-
-        <div class="form-group">
-            <label for="exampleInputNumber1">Number</label>
-            <input
-                type="number"
-                class="form-control"
-                [(ngModel)]="model.number"
-                name="number"
-                required
-                ngxMin="10"
-                ngxMax="100"
-                id="exampleInputNumber1"
-                placeholder="Enter number (validators: required, ngxMin: 10, ngxMax: 100)"
-            />
-        </div>
-        <div class="form-group">
-            <label for="exampleCustomSelect1">Custom Select</label>
-            <app-custom-select
-                name="customSelect"
-                class="ngx-custom-select"
-                required=""
-                [(ngModel)]="model.customSelectValue"
-                id="exampleCustomSelect1"
-            >
-                <option value="1" #option>One</option>
-                <option value="2" #option>Two</option>
-            </app-custom-select>
-        </div>
-        <div class="mb-2">
-            <a href="javascript:;" (click)="showSex = !showSex">{{ showSex ? 'Hide' : 'Show' }} Sex</a>
-        </div>
-        <div class="form-group" *ngIf="showSex">
-            <label for="exampleSelectSex1">Sex</label>
-            <select
-                name="sex"
-                name="sex"
-                class="form-control"
-                required
-                [(ngModel)]="model.sex"
-                id="exampleSelectSex1"
-                placeholder="please select sex"
-            >
-                <option value="">Please select</option>
-                <option value="men">Men</option>
-                <option value="women">Women</option>
-                <option value="other">Other</option>
-            </select>
-        </div>
-        <div class="form-group" *ngIf="message">
-            <div class="alert alert-success">{{ message }}</div>
-        </div>
-        <div class="btn-groups">
-            <button type="button" (ngxFormSubmit)="submit()" class="btn btn-primary">Submit</button>
-            <button type="button" (click)="ngxFormValidator.validator.reset()" class="btn btn-info">Reset</button>
-        </div>
-    </form>
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input
+        type="text"
+        class="form-control"
+        id="username"
+        required
+        pattern="^[A-Za-z]{1}[0-9A-Za-z_]{1,19}"
+        name="username"
+        [(ngModel)]="model.username"
+        [ngxUniqueCheck]="checkUsername"
+        placeholder="Enter username (validators: required & pattern & ngxUniqueCheck: peter)"
+      />
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">Password</label>
+      <input
+        type="password"
+        class="form-control"
+        [(ngModel)]="model.password"
+        name="password"
+        required
+        [maxlength]="'10'"
+        minlength="6"
+        id="exampleInputPassword1"
+        placeholder="Enter password (validators: required, minlength:6, maxlength:10)"
+      />
+    </div>
+    <app-address-control></app-address-control>
+    <div class="form-group">
+      <label for="exampleInputNumber1">Number</label>
+      <input
+        type="number"
+        class="form-control"
+        [(ngModel)]="model.number"
+        name="number"
+        required
+        ngxMin="10"
+        ngxMax="100"
+        id="exampleInputNumber1"
+        placeholder="Enter number (validators: required, ngxMin: 10, ngxMax: 100)"
+      />
+    </div>
+    <div class="form-group">
+      <label for="exampleCustomSelect1">Custom Select</label>
+      <app-custom-select
+        name="customSelect"
+        class="ngx-custom-select"
+        required=""
+        [(ngModel)]="model.customSelectValue"
+        id="exampleCustomSelect1"
+      >
+        <option value="1" #option>One</option>
+        <option value="2" #option>Two</option>
+      </app-custom-select>
+    </div>
+    <div class="mb-2">
+      <a href="javascript:;" (click)="showSex = !showSex">{{ showSex ? 'Hide' : 'Show' }} Sex</a>
+    </div>
+    <div class="form-group" *ngIf="showSex">
+      <label for="exampleSelectSex1">Sex</label>
+      <select
+        name="sex"
+        name="sex"
+        class="form-control"
+        required
+        [(ngModel)]="model.sex"
+        id="exampleSelectSex1"
+        placeholder="please select sex"
+      >
+        <option value="">Please select</option>
+        <option value="men">Men</option>
+        <option value="women">Women</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="form-group" *ngIf="message">
+      <div class="alert alert-success">{{ message }}</div>
+    </div>
+    <div class="btn-groups">
+      <button type="button" (ngxFormSubmit)="submit()" class="btn btn-primary">Submit</button>
+      <button type="button" (click)="ngxFormValidator.validator.reset()" class="btn btn-info">Reset</button>
+    </div>
+  </form>
 </div>
 <div class="col-sm col-sm-6">
-    <app-code-example [examples]="codeExamples"></app-code-example>
+  <app-code-example [examples]="codeExamples"></app-code-example>
 </div>

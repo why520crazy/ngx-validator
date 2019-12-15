@@ -14,10 +14,25 @@ import { AppTemplateDrivenUseCaseComponent } from './template-driven/use-case.co
 import { AppReactiveDrivenUseCaseComponent } from './reactive-driven/use-case.component';
 import { CustomSelectComponent } from './custom-select/custom-select.component';
 import { CodeExampleComponent } from './code-example/code-example.component';
+import { AppAddressControlComponent } from './address-control/address-control.component';
 
 export function hljsLanguages() {
     return [{ name: 'typescript', func: typescript }, { name: 'scss', func: scss }, { name: 'xml', func: xml }];
 }
+
+const GLOBAL_VALIDATION_MESSAGES = {
+    required: 'This option cannot be empty',
+    maxlength: 'The length of this option input cannot be greater than {requiredLength}',
+    minlength: 'The length of this option input cannot be less than {requiredLength}',
+    ngxUniqueCheck: 'The input value already exists, please re-enter',
+    email: 'The format of the input message is incorrect',
+    repeat: 'Inconsistent input twice',
+    pattern: 'The option input format is incorrect',
+    number: 'Must enter a number',
+    url: 'The input URL format is incorrect',
+    max: 'The input value of this option cannot be greater than {max}',
+    min: 'The input value of this option cannot be less than {min}'
+};
 
 @NgModule({
     declarations: [
@@ -25,14 +40,16 @@ export function hljsLanguages() {
         CodeExampleComponent,
         AppTemplateDrivenUseCaseComponent,
         AppReactiveDrivenUseCaseComponent,
-        CustomSelectComponent
+        CustomSelectComponent,
+        AppAddressControlComponent
     ],
     imports: [
         BrowserModule,
         FormsModule,
         ReactiveFormsModule,
         NgxValidatorModule.forRoot({
-            validateOn: 'submit'
+            validateOn: 'submit',
+            globalValidationMessages: GLOBAL_VALIDATION_MESSAGES
         }),
         HighlightModule.forRoot({
             languages: hljsLanguages

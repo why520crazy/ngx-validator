@@ -93,7 +93,7 @@ export class NgxFormValidatorService {
         ) {
             message = this._config.validationMessages[name][validationErrorName];
         } else {
-            message = this.thyFormValidateLoader.getErrorMessage(name, validationErrorName, validationErrorValues);
+            message = this.thyFormValidateLoader.getErrorMessage(name, validationErrorName);
         }
 
         return transformMessage(validationErrorName, message, validationErrorValues);
