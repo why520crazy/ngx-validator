@@ -1,4 +1,4 @@
-import { Directive, forwardRef, Attribute, Injectable, ElementRef, Input } from '@angular/core';
+import { Directive, forwardRef, Input } from '@angular/core';
 import {
     NG_VALIDATORS,
     Validator,
@@ -13,8 +13,7 @@ import { Observable, of } from 'rxjs';
 import { NgxValidators } from '../validators';
 
 @Directive({
-    selector:
-        '[ngxMin][formControlName],[ngxMin][formControl],[ngxMin][ngModel],',
+    selector: '[ngxMin][formControlName],[ngxMin][formControl],[ngxMin][ngModel],',
     providers: [
         {
             provide: NG_VALIDATORS,
@@ -38,8 +37,7 @@ export class MinValidatorDirective implements Validator {
 }
 
 @Directive({
-    selector:
-        '[ngxMax][formControlName],[ngxMax][formControl],[ngxMax][ngModel]',
+    selector: '[ngxMax][formControlName],[ngxMax][formControl],[ngxMax][ngModel]',
     providers: [
         {
             provide: NG_VALIDATORS,

@@ -65,14 +65,52 @@ export class NgxFormValidatorService {
         return this.validations[name];
     }
 
+    private _getValidateOn(): NgxValidateOn {
+        return (this._config && this._config.validateOn) || this.thyFormValidateLoader.validateOn;
+    }
+
+    private _setControlValidateByBlur(control: NgControl) {
+        const element: HTMLElement = this._getElement(control.name);
+        if (element) {
+            element.onblur = (event: FocusEvent) => {
+                this.validateControl(control.name);
+            };
+        }
+    }
+
+    private _setControlValidateByChange(control: NgControl) {
+        control.valueChanges
+            .pipe(
+                debounceTime(100),
+                distinctUntilChanged(),
+                filter(item => {
+                    return item;
+                }),
+                switchMap(item => {
+                    this.validateControl(control.name);
+                    return of([]);
+                })
+            )
+            .subscribe();
+    }
+
     private _initializeFormControlValidation(name: string, control: AbstractControl | FormControlName | NgControl) {
         this.validations[name] = {
             hasError: false,
             errorMessages: []
         };
-        control.valueChanges.subscribe(item => {
-            this._clearElementError(name);
-        });
+
+        if (this._getValidateOn() === 'change') {
+            this._setControlValidateByChange(control as NgControl);
+        } else {
+            if (this._getValidateOn() === 'blur') {
+                this._setControlValidateByBlur(control as NgControl);
+            }
+
+            control.valueChanges.subscribe(item => {
+                this._clearElementError(name);
+            });
+        }
     }
 
     private _restFormControlValidation(name: string) {
@@ -116,35 +154,6 @@ export class NgxFormValidatorService {
         this._getValidationFeedbackStrategy().showError(this._getElement(name), errorMessages);
     }
 
-    private _setControlValidateByBlur(control: NgControl) {
-        const element: HTMLElement = this._getElement(control.name);
-        if (element) {
-            element.onblur = (event: FocusEvent) => {
-                this.validateControl(control.name);
-            };
-        }
-    }
-
-    private _setControlValidateByChange(control: NgControl) {
-        control.valueChanges
-            .pipe(
-                debounceTime(100),
-                distinctUntilChanged(),
-                filter(item => {
-                    return item;
-                }),
-                switchMap(item => {
-                    this.validateControl(control.name);
-                    return of([]);
-                })
-            )
-            .subscribe();
-    }
-
-    private _getValidateOn(): NgxValidateOn {
-        return (this._config && this._config.validateOn) || this.thyFormValidateLoader.validateOn;
-    }
-
     get validatorConfig() {
         return this._config;
     }
@@ -161,11 +170,6 @@ export class NgxFormValidatorService {
             (controls || []).forEach((control: NgControl) => {
                 if (!this._controls.find(item => item.name === control.name)) {
                     this._initializeFormControlValidation(control.name, control);
-                    if (this._getValidateOn() === 'blur') {
-                        this._setControlValidateByBlur(control);
-                    } else if (this._getValidateOn() === 'change') {
-                        this._setControlValidateByChange(control);
-                    }
                 }
             });
             this._controls = controls;

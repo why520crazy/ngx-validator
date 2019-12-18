@@ -1,5 +1,5 @@
 import { Component, HostBinding } from '@angular/core';
-import { NgxValidatorConfig } from '@why520crazy/ngx-validator';
+import { NgxValidatorConfig, NgxValidateOn } from '@why520crazy/ngx-validator';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
@@ -26,7 +26,7 @@ export class AppTemplateDrivenUseCaseComponent {
 
     showSex = false;
 
-    validateOn = 'change';
+    validateOn: NgxValidateOn = 'change';
 
     loadingDone = true;
 
@@ -60,7 +60,7 @@ export class AppTemplateDrivenUseCaseComponent {
 
     checkUsername = (value: string) => {
         return value === 'peter' ? of(true).pipe(delay(200)) : of(false).pipe(delay(200));
-    }
+    };
 
     setMessage(message: string) {
         this.message = message;
