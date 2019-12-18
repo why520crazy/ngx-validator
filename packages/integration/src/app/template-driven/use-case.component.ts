@@ -1,5 +1,5 @@
 import { Component, HostBinding } from '@angular/core';
-import { NgxValidatorConfig } from '@why520crazy/ngx-validator';
+import { NgxValidatorConfig, NgxValidateOn } from '@why520crazy/ngx-validator';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
@@ -26,7 +26,7 @@ export class AppTemplateDrivenUseCaseComponent {
 
     showSex = false;
 
-    validateOn = false;
+    validateOn: NgxValidateOn = 'change';
 
     loadingDone = true;
 
@@ -47,12 +47,12 @@ export class AppTemplateDrivenUseCaseComponent {
                 ngxUniqueCheck: '输入的用户名已经存在，请重新输入'
             }
         },
-        validateOn: this.validateOn ? 'blur' : 'submit'
+        validateOn: this.validateOn
     };
 
     changeValidateOn() {
         this.loadingDone = false;
-        this.validatorConfig.validateOn = this.validateOn ? 'blur' : 'submit';
+        this.validatorConfig.validateOn = this.validateOn;
         setTimeout(() => {
             this.loadingDone = true;
         }, 0);

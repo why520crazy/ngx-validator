@@ -1,5 +1,5 @@
 import { Component, HostBinding } from '@angular/core';
-import { NgxValidatorConfig, NgxValidators } from '@why520crazy/ngx-validator';
+import { NgxValidatorConfig, NgxValidators, NgxValidateOn } from '@why520crazy/ngx-validator';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
@@ -34,7 +34,7 @@ export class AppReactiveDrivenUseCaseComponent {
         number: ''
     };
 
-    validateOn = false;
+    validateOn: NgxValidateOn = 'change';
 
     loadingDone = true;
 
@@ -49,7 +49,7 @@ export class AppReactiveDrivenUseCaseComponent {
                 required: 'street不能为空'
             }
         },
-        validateOn: this.validateOn ? 'blur' : 'submit'
+        validateOn: this.validateOn
     };
 
     constructor(private formBuilder: FormBuilder) {
@@ -73,7 +73,7 @@ export class AppReactiveDrivenUseCaseComponent {
 
     changeValidateOn() {
         this.loadingDone = false;
-        this.validatorConfig.validateOn = this.validateOn ? 'blur' : 'submit';
+        this.validatorConfig.validateOn = this.validateOn;
         setTimeout(() => {
             this.loadingDone = true;
         });
