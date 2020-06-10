@@ -41,7 +41,7 @@ export class NgxFormValidatorService {
         return strategy;
     }
 
-    private _getElement(name: string) {
+    private _getElement(name: string | number) {
         const element = this._formElement[name];
         if (element) {
             return element;
@@ -73,7 +73,7 @@ export class NgxFormValidatorService {
         const element: HTMLElement = this._getElement(control.name);
         if (element) {
             element.onblur = (event: FocusEvent) => {
-                this.validateControl(control.name);
+                this.validateControl(control.name as string);
             };
         }
     }
@@ -87,7 +87,7 @@ export class NgxFormValidatorService {
                     return item;
                 }),
                 switchMap(item => {
-                    this.validateControl(control.name);
+                    this.validateControl(control.name as string);
                     return of([]);
                 })
             )
@@ -169,7 +169,7 @@ export class NgxFormValidatorService {
         if (this._getValidateOn() !== 'submit') {
             (controls || []).forEach((control: NgControl) => {
                 if (!this._controls.find(item => item.name === control.name)) {
-                    this._initializeFormControlValidation(control.name, control);
+                    this._initializeFormControlValidation(control.name as string, control);
                 }
             });
             this._controls = controls;
