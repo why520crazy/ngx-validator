@@ -15,11 +15,11 @@ export class AppReactiveDrivenUseCaseComponent {
     codeExamples = [
         {
             file: './use-case.component.ts',
-            content: require('!!raw-loader!./use-case.component.ts')
+            content: require('!!raw-loader!./use-case.component.ts').default
         },
         {
             file: './use-case.component.html',
-            content: require('!!raw-loader!./use-case.component.html')
+            content: require('!!raw-loader!./use-case.component.html').default
         }
     ];
 

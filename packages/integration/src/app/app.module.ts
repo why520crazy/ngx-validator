@@ -5,19 +5,20 @@ import { NgxValidatorModule } from '@why520crazy/ngx-validator';
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { HighlightModule } from 'ngx-highlightjs';
-
-import xml from 'highlight.js/lib/languages/xml';
-import scss from 'highlight.js/lib/languages/scss';
-import typescript from 'highlight.js/lib/languages/typescript';
+import { HighlightModule, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
 import { AppTemplateDrivenUseCaseComponent } from './template-driven/use-case.component';
 import { AppReactiveDrivenUseCaseComponent } from './reactive-driven/use-case.component';
 import { CustomSelectComponent } from './custom-select/custom-select.component';
 import { CodeExampleComponent } from './code-example/code-example.component';
 import { AppAddressControlComponent } from './address-control/address-control.component';
 
-export function hljsLanguages() {
-    return [{ name: 'typescript', func: typescript }, { name: 'scss', func: scss }, { name: 'xml', func: xml }];
+export function getHighlightLanguages() {
+    return {
+        typescript: () => import('highlight.js/lib/languages/typescript'),
+        css: () => import('highlight.js/lib/languages/css'),
+        scss: () => import('highlight.js/lib/languages/scss'),
+        xml: () => import('highlight.js/lib/languages/xml')
+    };
 }
 
 const GLOBAL_VALIDATION_MESSAGES = {
@@ -51,9 +52,7 @@ const GLOBAL_VALIDATION_MESSAGES = {
             validateOn: 'submit',
             globalValidationMessages: GLOBAL_VALIDATION_MESSAGES
         }),
-        HighlightModule.forRoot({
-            languages: hljsLanguages
-        }),
+        HighlightModule,
         RouterModule.forRoot(
             [
                 {
@@ -75,7 +74,14 @@ const GLOBAL_VALIDATION_MESSAGES = {
             }
         )
     ],
-    providers: [],
+    providers: [
+        {
+            provide: HIGHLIGHT_OPTIONS,
+            useValue: {
+                languages: getHighlightLanguages()
+            }
+        }
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

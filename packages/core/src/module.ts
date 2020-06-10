@@ -22,7 +22,7 @@ const declarations = [
     exports: [...declarations, FormsModule]
 })
 export class NgxValidatorModule {
-    static forRoot(config: NgxValidatorGlobalConfig): ModuleWithProviders {
+    static forRoot(config: NgxValidatorGlobalConfig): ModuleWithProviders<NgxValidatorModule> {
         return {
             ngModule: NgxValidatorModule,
             providers: [

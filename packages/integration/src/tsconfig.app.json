@@ -1,8 +1,9 @@
 {
-    "extends": "../tsconfig.json",
-    "compilerOptions": {
-        "outDir": "../out-tsc/app",
-        "types": ["node"]
-    },
-    "exclude": ["test.ts", "**/*.spec.ts"]
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/app",
+    "types": ["node"]
+  },
+  "files": ["main.ts", "polyfills.ts"],
+  "include": ["packages/integration/src/**/*.d.ts"]
 }

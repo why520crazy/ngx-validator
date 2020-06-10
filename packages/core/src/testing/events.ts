@@ -33,7 +33,7 @@ export function createTouchEvent(type: string, pageX = 0, pageY = 0) {
     const event = document.createEvent('UIEvent');
     const touchDetails = { pageX, pageY };
 
-    event.initUIEvent(type, true, true, window, 0);
+    event['initUIEvent'](type, true, true, window, 0);
 
     // Most of the browsers don't have a "initTouchEvent" method that can be used to define
     // the touch details.
@@ -47,12 +47,7 @@ export function createTouchEvent(type: string, pageX = 0, pageY = 0) {
 }
 
 /** Dispatches a keydown event from an element. */
-export function createKeyboardEvent(
-    type: string,
-    keyCode: number,
-    target?: Element,
-    key?: string
-) {
+export function createKeyboardEvent(type: string, keyCode: number, target?: Element, key?: string) {
     const event = document.createEvent('KeyboardEvent') as any;
     const originalPreventDefault = event.preventDefault;
 
@@ -81,11 +76,7 @@ export function createKeyboardEvent(
 }
 
 /** Creates a fake event object with any desired event type. */
-export function createFakeEvent(
-    type: string,
-    canBubble = false,
-    cancelable = true
-) {
+export function createFakeEvent(type: string, canBubble = false, cancelable = true) {
     const event = document.createEvent('Event');
     event.initEvent(type, canBubble, cancelable);
     return event;
