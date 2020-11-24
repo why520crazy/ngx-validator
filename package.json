@@ -57,7 +57,7 @@
     "all-contributors-cli": "^6.6.0",
     "codelyzer": "^5.1.2",
     "coveralls": "^3.0.9",
-    "highlight.js": "^9.13.1",
+    "highlight.js": "^10.1.2",
     "husky": "^2.3.0",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
