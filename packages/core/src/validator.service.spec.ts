@@ -10,9 +10,7 @@ describe('NgxFormValidatorService', () => {
     );
 
     it('should be created', () => {
-        const service: NgxFormValidatorService = TestBed.get(
-            NgxFormValidatorService
-        );
+        const service: NgxFormValidatorService = TestBed.inject(NgxFormValidatorService);
         expect(service).toBeTruthy();
     });
 });

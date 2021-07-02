@@ -47,7 +47,7 @@ describe('NgxValidatorModule', () => {
         TestBed.configureTestingModule({
             imports: [AppModuleDirectly]
         });
-        const service: NgxValidatorLoader = TestBed.get(NgxValidatorLoader);
+        const service: NgxValidatorLoader = TestBed.inject(NgxValidatorLoader);
         expect(service).toBeTruthy();
     });
 
@@ -55,7 +55,7 @@ describe('NgxValidatorModule', () => {
         TestBed.configureTestingModule({
             imports: [AppModuleWithConfig]
         });
-        const service: NgxValidatorLoader = TestBed.get(NgxValidatorLoader);
+        const service: NgxValidatorLoader = TestBed.inject(NgxValidatorLoader);
         expect(service).toBeTruthy();
     });
 
@@ -63,7 +63,7 @@ describe('NgxValidatorModule', () => {
         TestBed.configureTestingModule({
             imports: [AppModuleWithConfig]
         });
-        const service: NgxValidatorLoader = TestBed.get(NgxValidatorLoader);
+        const service: NgxValidatorLoader = TestBed.inject(NgxValidatorLoader);
         expect(service['config'].globalValidationMessages).toEqual(GLOBAL_VALIDATION_MESSAGES);
     });
 
@@ -71,7 +71,7 @@ describe('NgxValidatorModule', () => {
         TestBed.configureTestingModule({
             imports: [AppModuleWithConfig]
         });
-        const service: NgxValidatorLoader = TestBed.get(NgxValidatorLoader);
+        const service: NgxValidatorLoader = TestBed.inject(NgxValidatorLoader);
         expect(service['config'].validationMessages).toEqual(VALIDATION_MESSAGES);
     });
 
@@ -79,7 +79,7 @@ describe('NgxValidatorModule', () => {
         TestBed.configureTestingModule({
             imports: [AppModuleWithConfig]
         });
-        const service: NgxValidatorLoader = TestBed.get(NgxValidatorLoader);
+        const service: NgxValidatorLoader = TestBed.inject(NgxValidatorLoader);
         expect(service['config'].validationFeedbackStrategy instanceof NoopValidationFeedbackStrategy).toEqual(true);
     });
 });

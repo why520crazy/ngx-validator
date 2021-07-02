@@ -12,24 +12,24 @@ describe('NgxValidatorLoader', () => {
     );
 
     it('should be created NgxValidatorLoader service', () => {
-        const service: NgxValidatorLoader = TestBed.get(NgxValidatorLoader);
+        const service: NgxValidatorLoader = TestBed.inject(NgxValidatorLoader);
         expect(service).toBeTruthy();
         expect(service).not.toBeNull();
         expect(service).toBeDefined();
     });
 
     it(`should get empty validation messages`, () => {
-        const service: NgxValidatorLoader = TestBed.get(NgxValidatorLoader);
+        const service: NgxValidatorLoader = TestBed.inject(NgxValidatorLoader);
         expect(service.validationMessages).toEqual({});
     });
 
     it(`should get bootstrap validation feedback strategy`, () => {
-        const service: NgxValidatorLoader = TestBed.get(NgxValidatorLoader);
+        const service: NgxValidatorLoader = TestBed.inject(NgxValidatorLoader);
         expect(service.validationFeedbackStrategy instanceof BootstrapValidationFeedbackStrategy).toBe(true);
     });
 
     it(`should get default global message when formControl's message is not specified`, () => {
-        const service: NgxValidatorLoader = TestBed.get(NgxValidatorLoader);
+        const service: NgxValidatorLoader = TestBed.inject(NgxValidatorLoader);
         ['required', 'email'].forEach(validatorName => {
             expect(service.getErrorMessage(`not_exist_form_control_name`, validatorName)).toBe(
                 DEFAULT_GLOBAL_VALIDATION_MESSAGES[validatorName]
@@ -38,7 +38,7 @@ describe('NgxValidatorLoader', () => {
     });
 
     it(`should get configured global message when formControl's message is not specified`, () => {
-        const service: NgxValidatorLoader = TestBed.get(NgxValidatorLoader);
+        const service: NgxValidatorLoader = TestBed.inject(NgxValidatorLoader);
         const globalValidationMessages = {
             required: 'this is configured required message'
         };
@@ -49,7 +49,7 @@ describe('NgxValidatorLoader', () => {
     });
 
     it(`should get formControl's configured message`, () => {
-        const service: NgxValidatorLoader = TestBed.get(NgxValidatorLoader);
+        const service: NgxValidatorLoader = TestBed.inject(NgxValidatorLoader);
         const validationMessages = {
             username: {
                 required: `this is username configured required message`
