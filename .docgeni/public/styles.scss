@@ -1,0 +1,42 @@
+@import '~bootstrap/scss/bootstrap.scss';
+@import '@docgeni/template/styles/index.css';
+
+@mixin ngx-form-validation-state($state, $color) {
+    .ngx-custom-select {
+        .was-validated &:#{$state},
+        &.is-#{$state} {
+            // border-color: $color;
+            border: 1px solid $color;
+
+            @if $enable-validation-icons {
+                padding-right: $input-height-inner;
+                background-repeat: no-repeat;
+                background-position: center right calc(#{$input-height-inner} / 4);
+                background-size: calc(#{$input-height-inner} / 2) calc(#{$input-height-inner} / 2);
+
+                @if $state == 'valid' {
+                    background-image: $form-feedback-icon-valid;
+                } @else {
+                    background-image: $form-feedback-icon-invalid;
+                }
+            }
+
+            &:focus {
+                border-color: $color;
+                box-shadow: 0 0 0 $input-focus-width rgba($color, 0.25);
+            }
+
+            ~ .#{$state}-feedback,
+            ~ .#{$state}-tooltip {
+                display: block;
+            }
+        }
+    }
+}
+
+@include ngx-form-validation-state('valid', $form-feedback-valid-color);
+@include ngx-form-validation-state('invalid', $form-feedback-invalid-color);
+
+a:hover {
+    text-decoration: none;
+}

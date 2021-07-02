@@ -8,7 +8,7 @@ import {
     NgControl
 } from '@angular/forms';
 import { NgxValidatorLoader } from './validator-loader.service';
-import { NgxValidatorConfig, Dictionary, NgxValidateOn } from './validator.class';
+import { NgxValidatorConfig, NgxValidateOn } from './validator.class';
 import { transformMessage } from './message-transformers';
 import { tap, debounceTime, map, distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -26,10 +26,13 @@ export class NgxFormValidatorService {
     // public errors: string[];
 
     // 记录所有元素的验证信息
-    public validations: Dictionary<{
-        hasError?: boolean;
-        errorMessages?: string[];
-    }> = {};
+    public validations: Record<
+        string,
+        {
+            hasError?: boolean;
+            errorMessages?: string[];
+        }
+    > = {};
 
     private _getValidationFeedbackStrategy() {
         const strategy =

@@ -2,7 +2,6 @@ import { Inject, Injectable, Optional } from '@angular/core';
 import {
     NgxValidatorGlobalConfig,
     NgxValidationMessages,
-    Dictionary,
     NGX_VALIDATOR_CONFIG,
     DEFAULT_GLOBAL_VALIDATION_MESSAGES
 } from './validator.class';
@@ -73,7 +72,7 @@ export class NgxValidatorLoader {
         Object.assign(this.config.validationMessages, messages);
     }
 
-    setGlobalValidationMessages(validationMessages: Dictionary<string>) {
+    setGlobalValidationMessages(validationMessages: Record<string, string>) {
         this.config.globalValidationMessages = validationMessages;
     }
 }

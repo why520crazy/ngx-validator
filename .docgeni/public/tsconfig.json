@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc/site",
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "esModuleInterop": false,
+    "importHelpers": true,
+    "target": "es2015",
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+    "types": [
+      "node"
+    ],
+    "paths":{
+      "@why520crazy/ngx-validator/*":["../../packages/core/src/*"],
+      "@why520crazy/ngx-validator":["../../packages/core/src/index.ts","../../packages/core/src/public-api.ts"],
+    }
+  },
+  "files": [
+    "src/main.ts",
+    "src/polyfills.ts"
+  ],
+  "include": [
+    "src/**/*.d.ts"
+  ],
+  "exclude": [
+    "src/assets",
+    "test.ts"
+  ]
+}

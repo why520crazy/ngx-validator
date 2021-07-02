@@ -34,7 +34,7 @@ yarn add @why520crazy/ngx-validator
 
 #### Loading the module in the app module
 
-```
+```ts
 import { NgxValidatorModule, ValidationFeedbackStrategyBuilder } from '@why520crazy/ngx-validator';
 
 @NgModule({
@@ -59,7 +59,7 @@ class AppModule {}
 
 add `ngxFormValidator` directive to form element and add `ngxFormSubmit` directive to submit button.
 
-```
+```html
  <form name="exampleForm" novalidate [ngxFormValidator]="validatorConfig">
    <div class="form-group">
        <label for="email1">Email address</label>
@@ -143,7 +143,7 @@ get `formValidator` by `<form #formValidator="ngxFormValidator">`
 
 #### Custom Feedback Strategy
 
-```
+```ts
 const CUSTOM_INVALID_CLASS = 'custom-invalid';
 const CUSTOM_INVALID_FEEDBACK_CLASS = 'custom-invalid-feedback';
 
