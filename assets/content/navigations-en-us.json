@@ -1,0 +1,59 @@
+{
+  "navs": [
+    {
+      "id": "index",
+      "path": "",
+      "channelPath": "",
+      "title": "Intro",
+      "order": 10,
+      "contentPath": "docs/index.html"
+    },
+    {
+      "title": "Directives",
+      "path": "components",
+      "lib": "core",
+      "hide": true,
+      "hidden": true,
+      "items": [
+        {
+          "id": "validator",
+          "title": "Validator",
+          "subtitle": "",
+          "path": "components/validator",
+          "importSpecifier": "core/validator",
+          "examples": [
+            "ngx-validator-template-driven-example",
+            "ngx-validator-reactive-driven-example"
+          ],
+          "overview": true,
+          "api": true,
+          "order": 9007199254740991
+        }
+      ]
+    }
+  ],
+  "docs": [
+    {
+      "id": "index",
+      "path": "",
+      "channelPath": "",
+      "title": "Intro",
+      "order": 10,
+      "contentPath": "docs/index.html"
+    },
+    {
+      "id": "validator",
+      "title": "Validator",
+      "subtitle": "",
+      "path": "components/validator",
+      "importSpecifier": "core/validator",
+      "examples": [
+        "ngx-validator-template-driven-example",
+        "ngx-validator-reactive-driven-example"
+      ],
+      "overview": true,
+      "api": true,
+      "order": 9007199254740991
+    }
+  ]
+}

@@ -1,0 +1,156 @@
+<p>An Angular 7+ form validator library, may be the best angular validator library in the world.</p>
+<blockquote>
+<p>handle validation messages easy and automatic, don&#39;t need to manually write error tips templates, just configure validation rules, and support extensive custom feedback strategy.</p>
+</blockquote>
+
+        <h2 id="installation" class="docs-header-link">
+          <span header-link="installation"></span>
+          Installation
+        </h2>
+      <pre><code><div>npm install <span class="token variable">@why520crazy</span><span class="token operator">/</span>ngx<span class="token operator">-</span>validator <span class="token operator">-</span><span class="token operator">-</span>save
+# <span class="token operator">or</span>
+yarn add <span class="token variable">@why520crazy</span><span class="token operator">/</span>ngx<span class="token operator">-</span>validator</div></code></pre>
+        <h2 id="getting-started" class="docs-header-link">
+          <span header-link="getting-started"></span>
+          Getting Started
+        </h2>
+      
+        <h3 id="import-ngxvalidatormodule" class="docs-header-link">
+          <span header-link="import-ngxvalidatormodule"></span>
+          import NgxValidatorModule
+        </h3>
+      <p>Loading the module in the any module (AppModule or Feature module).</p>
+<pre class="language-ts"><code class="language-ts"><div><span class="token keyword">import</span> <span class="token punctuation">{</span> NgxValidatorModule<span class="token punctuation">,</span> ValidationFeedbackStrategyBuilder <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@why520crazy/ngx-validator'</span><span class="token punctuation">;</span>
+
+@<span class="token function">NgModule</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  imports<span class="token punctuation">:</span> <span class="token punctuation">[</span>
+    CommonModule<span class="token punctuation">,</span>
+    NgxValidatorModule<span class="token punctuation">.</span><span class="token function">forRoot</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        validationFeedbackStrategy<span class="token punctuation">:</span> ValidationFeedbackStrategyBuilder<span class="token punctuation">.</span><span class="token function">bootstrap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// default is bootstrap 4 style</span>
+        validationMessages<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+            username<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+                required<span class="token punctuation">:</span> <span class="token string">'Username is required.'</span><span class="token punctuation">,</span>
+                pattern<span class="token punctuation">:</span> <span class="token string">'Incorrect username format.'</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        validateOn<span class="token punctuation">:</span> <span class="token string">'submit'</span> <span class="token operator">|</span> <span class="token string">'blur'</span> <span class="token comment" spellcheck="true">// default is submit</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+  <span class="token punctuation">]</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">AppModule</span> <span class="token punctuation">{</span><span class="token punctuation">}</span></div></code></pre>
+
+        <h3 id="add-directives-to-form-elements" class="docs-header-link">
+          <span header-link="add-directives-to-form-elements"></span>
+          Add directives to form elements
+        </h3>
+      <p>add <code>ngxFormValidator</code> directive to form element and add <code>ngxFormSubmit</code> directive handle submit event.</p>
+<pre class="language-html"><code class="language-html"><div> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>form</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>exampleForm<span class="token punctuation">"</span></span> <span class="token attr-name">novalidate</span> <span class="token attr-name">[ngxFormValidator]</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>validatorConfig<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>form-group<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span> <span class="token attr-name">for</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>email1<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Email address<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>label</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>email<span class="token punctuation">"</span></span> <span class="token attr-name">email</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>form-control<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>email<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>email1<span class="token punctuation">"</span></span>
+                <span class="token attr-name">[(ngModel)]</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>model.email<span class="token punctuation">"</span></span> <span class="token attr-name">required</span> <span class="token attr-name">placeholder</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>Enter email<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>button<span class="token punctuation">"</span></span> <span class="token attr-name">(ngxFormSubmit)</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>submit()<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>btn btn-primary<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Submit<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+ <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>form</span><span class="token punctuation">></span></span></div></code></pre>
+<pre class="language-ts"><code class="language-ts"><div><span class="token comment" spellcheck="true">// .ts</span>
+validatorConfig<span class="token punctuation">:</span> NgxValidatorConfig <span class="token operator">=</span> <span class="token punctuation">{</span>
+    validationMessages<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        username<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+            required<span class="token punctuation">:</span> <span class="token string">'用户名不能为空'</span><span class="token punctuation">,</span>
+            pattern<span class="token punctuation">:</span> <span class="token string">'用户名格式不正确，以字母，数字，下划线组成，首字母不能为数字，必须是2-20个字符'</span><span class="token punctuation">,</span>
+            ngxUniqueCheck<span class="token punctuation">:</span> <span class="token string">'输入的用户名已经存在，请重新输入'</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    validateOn<span class="token punctuation">:</span> <span class="token string">'blur'</span> <span class="token operator">|</span> <span class="token string">'submit'</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token function">submit</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// handle submit event</span>
+<span class="token punctuation">}</span></div></code></pre>
+
+        <h2 id="global-configuration" class="docs-header-link">
+          <span header-link="global-configuration"></span>
+          Global configuration
+        </h2>
+      <p>Global configuration can be set by <code>NgxValidatorModule.forRoot(config)</code>, or by injecting <code>NgxValidatorLoader</code> service at runtime.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>validationMessages</td>
+<td>{[controlName: string]: {[validatorErrorKey: string]: string}}</td>
+<td>validation Rules</td>
+</tr>
+<tr>
+<td>validationFeedbackStrategy</td>
+<td>ValidationFeedbackStrategy</td>
+<td>validation feedback strategy which contains error show and hide</td>
+</tr>
+<tr>
+<td>globalValidationMessages</td>
+<td>{[validatorErrorKey: string]: string}</td>
+<td>validator default validation rules</td>
+</tr>
+<tr>
+<td>validateOn</td>
+<td>&#39;submit&#39; | &#39;blur&#39;</td>
+<td>validate trigger</td>
+</tr>
+</tbody></table>
+<br >
+
+<p>Default <code>globalValidationMessages</code> rules as below:</p>
+<pre><code><div>{
+    required<span class="token punctuation">:</span> <span class="token string">'该选项不能为空'</span><span class="token punctuation">,</span>
+    maxlength<span class="token punctuation">:</span> <span class="token string">'该选项输入值长度不能大于{requiredLength}'</span><span class="token punctuation">,</span>
+    minlength<span class="token punctuation">:</span> <span class="token string">'该选项输入值长度不能小于{requiredLength}'</span><span class="token punctuation">,</span>
+    ngxUniqueCheck<span class="token punctuation">:</span> <span class="token string">'输入值已经存在，请重新输入'</span><span class="token punctuation">,</span>
+    email<span class="token punctuation">:</span> <span class="token string">'输入邮件的格式不正确'</span><span class="token punctuation">,</span>
+    repeat<span class="token punctuation">:</span> <span class="token string">'两次输入不一致'</span><span class="token punctuation">,</span>
+    pattern<span class="token punctuation">:</span> <span class="token string">'该选项输入格式不正确'</span><span class="token punctuation">,</span>
+    number<span class="token punctuation">:</span> <span class="token string">'必须输入数字'</span><span class="token punctuation">,</span>
+    url<span class="token punctuation">:</span> <span class="token string">'输入URL格式不正确'</span><span class="token punctuation">,</span>
+    max<span class="token punctuation">:</span> <span class="token string">'该选项输入值不能大于{max}'</span><span class="token punctuation">,</span>
+    min<span class="token punctuation">:</span> <span class="token string">'该选项输入值不能小于{min}'</span>
+}<span class="token comment" spellcheck="true">;</span></div></code></pre><p>The priority of ngx-form&#39;s <code>validationMessages</code> config is greater than <code>validationMessages</code>,
+it will use <code>globalValidationMessages</code> when an element doesn&#39;t match form config <code>validationMessages</code> or global config validationMessages</p>
+
+        <h2 id="extensions" class="docs-header-link">
+          <span header-link="extensions"></span>
+          Extensions
+        </h2>
+      <p>Get <code>formValidator</code> directive by <code>&lt;form #formValidator=&quot;ngxFormValidator&quot;&gt;</code> or <code>ViewChild</code></p>
+<ol>
+<li><code>formValidator.validator.validateControl(name: string)</code> validate an control individually</li>
+<li><code>formValidator.validator.markControlAsError(name: string, errorMessage: string)</code> show error by server&#39;s error code for an control</li>
+</ol>
+
+        <h2 id="custom-feedback-strategy" class="docs-header-link">
+          <span header-link="custom-feedback-strategy"></span>
+          Custom Feedback Strategy
+        </h2>
+      <pre class="language-ts"><code class="language-ts"><div><span class="token keyword">const</span> CUSTOM_INVALID_CLASS <span class="token operator">=</span> <span class="token string">'custom-invalid'</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> CUSTOM_INVALID_FEEDBACK_CLASS <span class="token operator">=</span> <span class="token string">'custom-invalid-feedback'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">CustomValidationFeedbackStrategy</span> <span class="token keyword">implements</span> <span class="token class-name">ValidationFeedbackStrategy</span> <span class="token punctuation">{</span>
+    <span class="token function">showError</span><span class="token punctuation">(</span>element<span class="token punctuation">:</span> HTMLElement<span class="token punctuation">,</span> errorMessages<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword">void</span> <span class="token punctuation">{</span>
+        element<span class="token punctuation">.</span>classList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>CUSTOM_INVALID_CLASS<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// add element show error message</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">removeError</span><span class="token punctuation">(</span>element<span class="token punctuation">:</span> HTMLElement<span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword">void</span> <span class="token punctuation">{</span>
+        element<span class="token punctuation">.</span>classList<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>CUSTOM_INVALID_CLASS<span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token comment" spellcheck="true">// remove element error message</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+NgxValidatorModule<span class="token punctuation">.</span><span class="token function">forRoot</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token operator">...</span>
+    validationFeedbackStrategy<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">CustomValidationFeedbackStrategy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token operator">...</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span></div></code></pre>

@@ -1,0 +1,60 @@
+<div><span class="token keyword">import</span> <span class="token punctuation">{</span> Component<span class="token punctuation">,</span> HostBinding <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@angular/core'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> NgxValidatorConfig<span class="token punctuation">,</span> NgxValidateOn <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@why520crazy/ngx-validator'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> of <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> delay <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/operators'</span><span class="token punctuation">;</span>
+
+@<span class="token function">Component</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    selector<span class="token punctuation">:</span> <span class="token string">'ngx-validator-template-driven-example'</span><span class="token punctuation">,</span>
+    templateUrl<span class="token punctuation">:</span> <span class="token string">'./template-driven.component.html'</span><span class="token punctuation">,</span>
+    styleUrls<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'./template-driven.component.scss'</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">NgxValidatorTemplateDrivenExampleComponent</span> <span class="token punctuation">{</span>
+    message <span class="token operator">=</span> <span class="token string">''</span><span class="token punctuation">;</span>
+
+    showSex <span class="token operator">=</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+
+    validateOn<span class="token punctuation">:</span> NgxValidateOn <span class="token operator">=</span> <span class="token string">'change'</span><span class="token punctuation">;</span>
+
+    loadingDone <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+
+    model <span class="token operator">=</span> <span class="token punctuation">{</span>
+        username<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+        email<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+        password<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+        <span class="token keyword">number</span><span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+        sex<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+        customSelectValue<span class="token punctuation">:</span> <span class="token string">''</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+    validatorConfig<span class="token punctuation">:</span> NgxValidatorConfig <span class="token operator">=</span> <span class="token punctuation">{</span>
+        validationMessages<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+            username<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+                required<span class="token punctuation">:</span> <span class="token string">'用户名不能为空'</span><span class="token punctuation">,</span>
+                pattern<span class="token punctuation">:</span> <span class="token string">'用户名格式不正确，以字母，数字，下划线组成，首字母不能为数字，必须是2-20个字符'</span><span class="token punctuation">,</span>
+                ngxUniqueCheck<span class="token punctuation">:</span> <span class="token string">'输入的用户名已经存在，请重新输入'</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        validateOn<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>validateOn
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+    <span class="token function">changeValidateOn</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>loadingDone <span class="token operator">=</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>validatorConfig<span class="token punctuation">.</span>validateOn <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>validateOn<span class="token punctuation">;</span>
+        <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>loadingDone <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    checkUsername <span class="token operator">=</span> <span class="token punctuation">(</span>value<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> value <span class="token operator">===</span> <span class="token string">'peter'</span> <span class="token operator">?</span> <span class="token function">of</span><span class="token punctuation">(</span><span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span><span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">:</span> <span class="token function">of</span><span class="token punctuation">(</span><span class="token keyword">false</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span><span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+    <span class="token function">setMessage</span><span class="token punctuation">(</span>message<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>message <span class="token operator">=</span> message<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">submit</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setMessage</span><span class="token punctuation">(</span><span class="token string">'This form has submit'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</div>
