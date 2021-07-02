@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [10.0.0](https://github.com/why520crazy/ngx-validator/compare/v9.0.0...v10.0.0) (2021-07-02)
+
 ## [9.0.0](https://github.com/why520crazy/ngx-validator/compare/v1.0.0...v9.0.0) (2020-06-10)
 
 ### Build System
