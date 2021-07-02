@@ -4,12 +4,12 @@
       "id": "index",
       "path": "",
       "channelPath": "",
-      "title": "Intro",
+      "title": "介绍",
       "order": 10,
-      "contentPath": "docs/index.html"
+      "contentPath": "docs/zh-cn/index.html"
     },
     {
-      "title": "Directives",
+      "title": "组件",
       "path": "components",
       "lib": "core",
       "items": [
@@ -35,7 +35,7 @@
       "isExternal": true
     },
     {
-      "title": "CHANGELOG",
+      "title": "更新日志",
       "path": "https://github.com/why520crazy/ngx-validator/blob/master/CHANGELOG.md",
       "isExternal": true
     }
@@ -45,9 +45,9 @@
       "id": "index",
       "path": "",
       "channelPath": "",
-      "title": "Intro",
+      "title": "介绍",
       "order": 10,
-      "contentPath": "docs/index.html"
+      "contentPath": "docs/zh-cn/index.html"
     },
     {
       "id": "validator",
