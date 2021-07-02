@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { NgxValidatorModule } from './module';
 import { NgModule } from '@angular/core';
-import { NgxValidatorLoader } from './public_api';
+import { NgxValidatorLoader } from './public-api';
 import { ValidationFeedbackStrategyBuilder, NoopValidationFeedbackStrategy } from './strategies';
 
 const GLOBAL_VALIDATION_MESSAGES = {

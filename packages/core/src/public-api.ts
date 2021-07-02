@@ -10,3 +10,4 @@ export * from './directives/validators';
 export * from './directives/form-submit.directive';
 export * from './strategies';
 export { NgxValidators } from './validators';
+export * from './version';
