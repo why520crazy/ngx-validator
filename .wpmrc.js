@@ -15,6 +15,6 @@ module.exports = {
     hooks: {
         prepublish: 'npm run build',
         postreleaseBranch: 'git add .',
-        postpblish: 'npm run pub-only'
+        postpublish: 'npm run pub-only'
     }
 };
