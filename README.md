@@ -43,7 +43,7 @@ See https://why520crazy.github.io/ngx-validator/
 $ git clone git@github.com:why520crazy/ngx-validator.git
 $ cd ngx-validator
 $ npm install
-$ npm run start
+$ npm run start // http://127.0.0.1:4900
 $ npm run test
 ```
 

@@ -4,7 +4,7 @@
   "description": "Angular7+ form validator, make error tips easy and automatic. don't need to manually write error tips templates.",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "npm run start:docs",
     "start:docs": "docgeni serve --port 4900",
     "build": "ng build core --prod",
     "build:docs": "docgeni build --prod --base-href=/ngx-validator/",
@@ -21,6 +21,13 @@
     "contributors:generate": "all-contributors generate",
     "report-coverage": "cat ./coverage/lcov.info | coveralls"
   },
+  "keywords": [
+    "validator",
+    "angular",
+    "form",
+    "validation",
+    "validate"
+  ],
   "private": false,
   "repository": "https://github.com/why520crazy/ngx-validator",
   "author": "why520crazy <mail@why520crazy@163.com>",
