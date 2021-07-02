@@ -7,7 +7,7 @@
     "start": "ng serve",
     "start:docs": "docgeni serve --port 4900",
     "build": "ng build core --prod",
-    "build:docs": "docgeni build --prod --base-href='ngx-validator'",
+    "build:docs": "docgeni build --prod --base-href=/ngx-validator/",
     "pub-only": "npm publish ./dist/core --access=public",
     "pub": "wpm publish",
     "pull-latest": "git checkout master && git pull origin master",
