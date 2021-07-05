@@ -4,14 +4,14 @@
 module.exports = {
     mode: 'lite',
     title: 'NGX-VALIDATOR',
-    logoUrl: 'https://cdn.pingcode.com/open-sources/docgeni/logo.png',
+    logoUrl: 'https://cdn.pingcode.com/open-sources/angular/angular.svg',
     repoUrl: 'https://github.com/why520crazy/ngx-validator',
     description: '',
     docsDir: 'docs',
     navs: [
         null,
         {
-            title: 'Directives',
+            title: 'Components',
             path: 'components',
             lib: 'core',
             locales: {

@@ -6,6 +6,7 @@
     "ng": "ng",
     "start": "npm run start:docs",
     "start:docs": "docgeni serve --port 4900",
+    "build-docs": "docgeni serve --skip-site",
     "build": "ng build core --prod",
     "build:docs": "docgeni build --prod --base-href=/ngx-validator/",
     "pub-only": "npm publish ./dist/core --access=public",

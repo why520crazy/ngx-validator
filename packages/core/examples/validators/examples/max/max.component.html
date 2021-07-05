@@ -1,0 +1,22 @@
+<form name="exampleForm" novalidate #ngxFormValidator="ngxFormValidator" [ngxFormValidator]="validatorConfig">
+  <div class="form-group">
+    <label for="email1">Max</label>
+    <input
+      type="number"
+      class="form-control"
+      name="number-max"
+      id="number-max"
+      [(ngModel)]="value"
+      required
+      ngxMax="10"
+      placeholder="Enter number (validators: ngxMax <= 10)"
+    />
+  </div>
+  <div class="form-group" *ngIf="message">
+    <div class="alert alert-success">{{ message }}</div>
+  </div>
+  <div class="btn-groups">
+    <button type="button" (ngxFormSubmit)="submit()" class="btn btn-primary">Submit</button>
+    <button type="button" (click)="ngxFormValidator.validator.reset()" class="btn btn-info">Reset</button>
+  </div>
+</form>

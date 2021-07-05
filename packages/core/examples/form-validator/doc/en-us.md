@@ -1,4 +1,6 @@
 ---
+title: Form Validator
+name: validator
 ---
 
 `[ngxFormValidator]` provide form validation config and validate feature.

@@ -1,4 +1,6 @@
 ---
+title: Form Validator
+name: validator
 ---
 
 `[ngxFormValidator]` 在表单上配置验证规则
