@@ -7,6 +7,7 @@ import { NgxFormSubmitDirective } from './directives/form-submit.directive';
 import { MaxValidatorDirective, MinValidatorDirective, NgxUniqueCheckDirective } from './directives/validators';
 
 import { NgxValidatorGlobalConfig, NGX_VALIDATOR_CONFIG } from './validator.class';
+import { NgxValidatorLoader } from './validator-loader.service';
 
 const declarations = [
     NgxFormValidatorDirective,
@@ -18,6 +19,7 @@ const declarations = [
 
 @NgModule({
     declarations: declarations,
+    providers: [NgxValidatorLoader],
     imports: [FormsModule],
     exports: [...declarations, FormsModule]
 })

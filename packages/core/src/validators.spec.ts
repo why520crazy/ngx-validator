@@ -1,21 +1,25 @@
-import { FormControl, ValidationErrors } from '@angular/forms';
+import { AbstractControl, FormControl, ValidationErrors } from '@angular/forms';
 import { of, Observable } from 'rxjs';
 import { NgxValidators } from './validators';
 
 describe('NgxValidators', () => {
     describe('ngxUniqueCheck', () => {
-        let ngxUniqueCheck;
+        let ngxUniqueCheck: (
+            control: AbstractControl
+        ) => Promise<ValidationErrors | null> | Observable<ValidationErrors | null>;
 
         const uniqueCheck = value => {
             return value === 'unique' ? of(false) : of(true);
         };
 
-        const handleUniqueCheck = (payload: Observable<ValidationErrors | null>) => {
-            let errorMap;
-            payload.subscribe(data => {
-                errorMap = data;
-            });
-            return errorMap;
+        const handleUniqueCheck = (payload: Promise<ValidationErrors | null> | Observable<ValidationErrors | null>) => {
+            let errorMap: ValidationErrors;
+            if (payload instanceof Observable) {
+                payload.subscribe(data => {
+                    errorMap = data;
+                });
+                return errorMap;
+            }
         };
 
         beforeEach(() => {
@@ -39,7 +43,9 @@ describe('NgxValidators', () => {
         });
 
         it('should invalid on a repeat value', () => {
-            expect(handleUniqueCheck(ngxUniqueCheck(new FormControl('repeat'))).ngxUniqueCheck).toEqual({ value: true });
+            expect(handleUniqueCheck(ngxUniqueCheck(new FormControl('repeat'))).ngxUniqueCheck).toEqual({
+                value: true
+            });
         });
     });
 });

@@ -3,7 +3,9 @@ import { of, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 export class NgxValidators {
-    static uniqueCheckValidator(uniqueCheckFn: (value: any) => Observable<boolean>) {
+    static uniqueCheckValidator(
+        uniqueCheckFn: (value: string) => Observable<boolean>
+    ): (control: AbstractControl) => Promise<ValidationErrors | null> | Observable<ValidationErrors | null> {
         const result = (
             control: AbstractControl
         ): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {

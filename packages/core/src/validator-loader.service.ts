@@ -5,7 +5,6 @@ import {
     NGX_VALIDATOR_CONFIG,
     DEFAULT_GLOBAL_VALIDATION_MESSAGES
 } from './validator.class';
-import { ValidationErrors } from '@angular/forms';
 import { ValidationFeedbackStrategy, ValidationFeedbackStrategyBuilder } from './strategies';
 
 const defaultValidatorConfig: NgxValidatorGlobalConfig = {
@@ -13,9 +12,7 @@ const defaultValidatorConfig: NgxValidatorGlobalConfig = {
     validationMessages: {}
 };
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class NgxValidatorLoader {
     private config: NgxValidatorGlobalConfig;
 
