@@ -15,7 +15,7 @@
       "items": [
         {
           "id": "validator",
-          "title": "Validator",
+          "title": "Form Validator",
           "subtitle": "",
           "path": "components/validator",
           "importSpecifier": "core/validator",
@@ -25,6 +25,21 @@
           ],
           "overview": true,
           "api": true,
+          "order": 9007199254740991
+        },
+        {
+          "id": "validators",
+          "title": "Validators",
+          "subtitle": "",
+          "path": "components/validators",
+          "importSpecifier": "core/validators",
+          "examples": [
+            "ngx-validators-max-example",
+            "ngx-validators-min-example",
+            "ngx-validators-unique-check-example"
+          ],
+          "overview": true,
+          "api": false,
           "order": 9007199254740991
         }
       ]
@@ -51,7 +66,7 @@
     },
     {
       "id": "validator",
-      "title": "Validator",
+      "title": "Form Validator",
       "subtitle": "",
       "path": "components/validator",
       "importSpecifier": "core/validator",
@@ -61,6 +76,21 @@
       ],
       "overview": true,
       "api": true,
+      "order": 9007199254740991
+    },
+    {
+      "id": "validators",
+      "title": "Validators",
+      "subtitle": "",
+      "path": "components/validators",
+      "importSpecifier": "core/validators",
+      "examples": [
+        "ngx-validators-max-example",
+        "ngx-validators-min-example",
+        "ngx-validators-unique-check-example"
+      ],
+      "overview": true,
+      "api": false,
       "order": 9007199254740991
     }
   ]
