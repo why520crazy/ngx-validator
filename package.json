@@ -61,7 +61,7 @@
     "@types/jasmine": "~3.6.0",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.1",
-    "@worktile/pkg-manager": "0.0.1",
+    "@worktile/pkg-manager": "0.1.0",
     "all-contributors-cli": "^6.6.0",
     "coveralls": "^3.0.9",
     "highlight.js": "^10.4.1",
