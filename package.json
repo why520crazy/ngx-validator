@@ -54,7 +54,7 @@
     "@angular/cli": "^16.2.10",
     "@angular/compiler-cli": "^16.2.12",
     "@angular/language-service": "^16.2.12",
-    "@commitlint/cli": "^7.5.2",
+    "@commitlint/cli": "^18.4.3",
     "@commitlint/config-conventional": "^7.5.0",
     "@docgeni/cli": "^2.0.0",
     "@docgeni/template": "^2.0.0",
