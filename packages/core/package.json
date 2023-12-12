@@ -1,6 +1,6 @@
 {
   "name": "@why520crazy/ngx-validator",
-  "version": "12.0.0",
+  "version": "13.0.0",
   "description": "Angular7+ form validator, make error tips easy and automatic. don't need to manually write error tips templates.",
   "private": false,
   "repository": "https://github.com/why520crazy/ngx-validator",
